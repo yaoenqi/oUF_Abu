@@ -1,0 +1,22 @@
+## Interface: 60000
+## Author: Abu
+## Title: oUF_|cffffffffAbu|r
+## RequiredDeps: oUF
+## Version: 6.0.2-3
+## SavedVariables: oUFAbuSettings, oUFAbuAuraFilters
+## SavedVariablesPerCharacter: oUFAbuProfile
+
+Libs\libs.xml
+AuraList.lua
+
+Init.lua
+
+Modules\modules.xml
+Settings\settings.xml
+Elements\elements.xml
+
+Functions.lua
+Aurafilter.lua
+
+Layout.lua
+LayoutArena.lua
