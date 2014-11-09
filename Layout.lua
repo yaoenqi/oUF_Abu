@@ -380,10 +380,10 @@ local function CreateUnitLayout(self, unit)
 	table.insert(self.mouseovers, self.Health)
 	self.Health.PostUpdate = ns.PostUpdateHealth
 	self.Health.Smooth = true
-	self.Health.colorTapping = true
 	self.Health.frequentUpdates = cUnit == "boss"
 
 	if config.healthcolormode == 'CUSTOM' then self.Health:SetStatusBarColor(unpack(config.healthcolor)) end
+	self.Health.colorTapping = config.healthcolormode ~= 'CUSTOM'
 	self.Health.colorClass = config.healthcolormode == 'CLASS'
 	self.Health.colorReaction = config.healthcolormode == 'CLASS'
 	self.Health.colorSmooth = config.healthcolormode == 'NORMAL'
