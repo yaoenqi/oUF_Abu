@@ -1,5 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-	<Script file="db.lua"/>
+	<Script file="db.lua"/>	
+	<Script file="anchors.lua"/>	
 	<Script file="settings.lua"/>
-	<Script file="anchors.lua"/>
 </Ui>

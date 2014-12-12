@@ -349,9 +349,7 @@ local function CreateUnitLayout(self, unit)
 
 	--[[	 Mouse Interraction		]]
 	self:RegisterForClicks('AnyUp')
-	self:SetAttribute('*type2', 'menu')
-
-	self.menu = ns.SpawnDropDownMenu
+	
 	self:HookScript("OnEnter", ns.UnitFrame_OnEnter)
 	self:HookScript("OnLeave", ns.UnitFrame_OnLeave)
 

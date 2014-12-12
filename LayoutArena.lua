@@ -42,9 +42,6 @@ local function CreateArenaLayout(self, unit)
 	local uconfig = ns.config[self.cUnit]
 
 	self:RegisterForClicks('AnyUp')
-	self:SetAttribute('*type2', 'menu')
-
-	self.menu = ns.SpawnDropDownMenu
 	
 	if (config.focBut ~= 'NONE') then
 		self:SetAttribute(config.focMod.."type"..config.focBut, 'focus')
