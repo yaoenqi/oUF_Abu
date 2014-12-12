@@ -149,6 +149,7 @@ function ns.CreateCastbars(self)
 			Flash:SetBorderPadding(3, 3, 4 + uconfig.cbheight, 3)
 		end
 		Castbar.Flash = Flash
+		Castbar.Ticks = ns.config.castbarticks
 	end
 
 	if (uconfig.cbicon ~= 'NONE') then
@@ -217,7 +218,7 @@ end
 
 function ns.PostStop(Castbar, unit, spellname, castid)
 	--Castbar:SetValue(Castbar.max)
-	if (unit == 'player') then
+	if (Castbar.Ticks) then
 		CastingBarFrameTicksSet(Castbar, unit, name, true)
 	end
 end
@@ -228,13 +229,11 @@ function ns.PostChannelStart(Castbar, unit, name)
 	end
 
 	ns.UpdateCastbarColor(Castbar, unit)
-	if (unit == 'player') then
-		if Castbar.SafeZone then
-			Castbar.SafeZone:SetDrawLayer("BORDER", 1)
-		end
-		if (ns.config.castbarticks) then
-			CastingBarFrameTicksSet(Castbar, unit, name)
-		end
+	if Castbar.SafeZone then
+		Castbar.SafeZone:SetDrawLayer("BORDER", 1)
+	end
+	if (Castbar.Ticks) then
+		CastingBarFrameTicksSet(Castbar, unit, name)
 	end
 end
 

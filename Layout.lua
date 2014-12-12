@@ -490,6 +490,12 @@ local function CreateUnitLayout(self, unit)
 			absorb.spark = spark
 			self.HealPrediction.TotalAbsorb = absorb
 		end
+		
+		-- Combat CombatFeedbackText 
+		if (config.combatText) then
+			self.CombatFeedbackText = ns.CreateFontString(self, 18, 'CENTER', 'OUTLINE')
+			self.CombatFeedbackText:SetPoint('CENTER', self.Portrait)
+		end
 	end
 
 	--[[ 	Portrait Timer		]]	
@@ -612,12 +618,6 @@ local function CreateUnitLayout(self, unit)
 		self.Resting:SetPoint('CENTER', self.Level, -0.5, 0)
 		self.Resting:SetSize(31, 34)
 
-		-- Combat CombatFeedbackText 
-		if (config.combatText) then
-			self.CombatFeedbackText = ns.CreateFontString(self, 18, 'CENTER', 'OUTLINE')
-			self.CombatFeedbackText:SetPoint('CENTER', self.Portrait)
-		end
-
 		-- player frame vehicle/normal update
 		self:RegisterEvent('UNIT_ENTERED_VEHICLE', UpdatePlayerFrame)
 		self:RegisterEvent('UNIT_ENTERING_VEHICLE', UpdatePlayerFrame)
@@ -635,14 +635,6 @@ local function CreateUnitLayout(self, unit)
 		table.insert(self.__elements, function(self, _, unit)
 			self.Texture:SetTexture(GetTargetTexture(unit, UnitClassification(unit)))
 		end)
-	end
-	
-	if (cUnit == 'target') then
-		-- Combat feedback
-		if (config.combatText) then
-			self.CombatFeedbackText = ns.CreateFontString(self, 18, 'CENTER', 'OUTLINE')
-			self.CombatFeedbackText:SetPoint('CENTER', self.Portrait)
-		end
 	end
 
 	--[[ 	Auras		]]
@@ -824,24 +816,18 @@ oUF:Factory( function(self)
 
 	local player = self:Spawn('player', 'oUF_AbuPlayer')
 	player:SetPoint('CENTER', oUF_AbuPlayerAnchor)
-	player:SetScript('OnDragStart', PlayerFrame_OnDragStart)
-	player:SetScript('OnDragStop', PlayerFrame_OnDragStop)
 
 	local pet = self:Spawn('pet', 'oUF_AbuPet')
 	pet:SetPoint('TOPLEFT', player, 'BOTTOMLEFT', 23, -20)
 
 	local target = self:Spawn('target', 'oUF_AbuTarget')
 	target:SetPoint('CENTER', oUF_AbuTargetAnchor)
-	target:SetScript('OnDragStart', TargetFrame_OnDragStart)
-	target:SetScript('OnDragStop', TargetFrame_OnDragStop)
 
 	local targettarget = self:Spawn('targettarget', 'oUF_AbuTargetTarget')
 	targettarget:SetPoint('TOPLEFT', target, 'BOTTOMRIGHT', -78, -15)
 
 	local focus = self:Spawn('focus', 'oUF_AbuFocus')
 	focus:SetPoint('CENTER', oUF_AbuFocusAnchor)
-	focus:SetScript('OnDragStart', FocusFrame_OnDragStart)
-	focus:SetScript('OnDragStop', FocusFrame_OnDragStop)
 
 	local focustarget = self:Spawn('focustarget', 'oUF_AbuFocusTarget')
 	focustarget:SetPoint('TOPLEFT', focus, 'BOTTOMRIGHT', -78, -15)

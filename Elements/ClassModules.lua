@@ -256,7 +256,7 @@ function ns.classModule.WARLOCK(self, config, uconfig)
 	-- Demonology - Dont want to color this one
 	DemonicFuryBarFrame:SetScale(uconfig.scale * 0.8)
 	DemonicFuryBarFrame:ClearAllPoints()
-	DemonicFuryBarFrame:SetPoint('TOP', self, 'BOTTOM', 35, 12)
+	DemonicFuryBarFrame:SetPoint('TOP', self, 'BOTTOM', 33, 12)
 end
 
 function ns.classModule.WARRIOR(self, config, uconfig)

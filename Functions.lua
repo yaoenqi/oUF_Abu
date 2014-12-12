@@ -78,11 +78,12 @@ local function SetValueText(element, tag, cur, max, color, notMana)
 		tag = "$cur"
 	end
 
-	tag = tag:gsub('$cur', format('%s', (cur > 0 and FormatValue(cur)) or ''))
-	tag = tag:gsub('$0cur', format('%s', FormatValue(cur)))
-	tag = tag:gsub('$max', format('%s', FormatValue(max)))
-	tag = tag:gsub('$def', format('-%s', (cur ~= max and FormatValue(max-cur) or '')))
-	tag = tag:gsub('$perc', format('%d%s', cur / max * 100, '%%'))
+	tag = tag
+		:gsub('$cur', format('%s', (cur > 0 and FormatValue(cur)) or ''))
+		:gsub('$0cur', format('%s', FormatValue(cur)))
+		:gsub('$max', format('%s', FormatValue(max)))
+		:gsub('$def', format('-%s', (cur ~= max and FormatValue(max-cur) or '')))
+		:gsub('$perc', format('%d%s', cur / max * 100, '%%'))
 
 	element:SetFormattedText("|cff%02x%02x%02x%s|r", color[1]*255, color[2]*255, color[3]*255, tag)
 end
