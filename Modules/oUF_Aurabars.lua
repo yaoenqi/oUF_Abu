@@ -102,9 +102,11 @@ local function Enable(self, unit)
 		bar.ForceUpdate = ForceUpdate
 
 		if not bar.filter then bar.filter = "HELPFUL" end
-		assert(type(bar.spellID) == "number", "Aurabar.spellID isn't a number")
-		bar.spellName, bar.rank = GetSpellInfo(bar.spellID)
+		if bar.spellID then
+			bar.spellName, bar.rank = GetSpellInfo(bar.spellID)
+		end
 		if not bar.rank then bar.rank = ""; end
+		
 		if(not bar:GetStatusBarTexture()) then
 			bar:SetStatusBarTexture([=[Interface\TargetingFrame\UI-StatusBar]=])
 		end
