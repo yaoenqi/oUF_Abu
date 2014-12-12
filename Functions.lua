@@ -126,7 +126,7 @@ do
 			UpdatePortraitColor(self, unit, cur, max)
 		end
 
-		if (self.Name.Bg) then 	-- For boss frames
+		if (self.Name) and (self.Name.Bg) then 	-- For boss frames
 			self.Name.Bg:SetVertexColor(UnitSelectionColor(unit))
 		end
 

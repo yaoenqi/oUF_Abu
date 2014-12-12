@@ -76,7 +76,7 @@ local DataNormal = {
 		hpt = {                   x = 1,    y = 1,   j = "CENTER", s = 13 },
 		mpb = { w = 69,  h = 8,   x = 0,    y = 0,   },
 		mpt = {                   x = 0,    y = 0,   j = "CENTER", s = 13 },
-		nam = { w = 110, h = 10,  x = 20,   y = 15,  j = "LEFT",   s = 14 },
+		--nam = { w = 110, h = 10,  x = 20,   y = 15,  j = "LEFT",   s = 14 },
 		por = { w = 37,  h = 37,  x = -41,  y = 10,  },
 		glo = { w = 128, h = 64,  x = -4,   y = 12,  t = pathNormal.."Party-Flash", c = {0, 1, 1, 0}},
 	},
@@ -144,7 +144,7 @@ local DataFat = {
 		hpt = {                   x = 1,    y = 1,   j = "CENTER", s = 13 },
 		mpb = { w = 69,  h = 8,   x = 0,    y = 0,   },
 		mpt = {                   x = 0,    y = 0,   j = "CENTER", s = 13 },
-		nam = { w = 110, h = 10,  x = 20,   y = 15,  j = "LEFT",   s = 14 },
+		--nam = { w = 110, h = 10,  x = 20,   y = 15,  j = "LEFT",   s = 14 },
 		por = { w = 37,  h = 37,  x = -41,  y = 10,  },
 		glo = { w = 128, h = 64,  x = -4,   y = 12,  t = pathFat.."Party-Flash", c = {0, 1, 1, 0}},
 	},
@@ -300,8 +300,10 @@ local function UpdateUnitFrameLayout(frame, unit)
 		frame.Power.Value:SetPoint('CENTER', frame.Power, data.mpt.x, data.mpt.y)
 	end
 	-- NameText
-	frame.Name:SetSize(data.nam.w, data.nam.h)
-	frame.Name:SetPoint("TOP", frame.Health, data.nam.x, data.nam.y)
+	if frame.Name then
+		frame.Name:SetSize(data.nam.w, data.nam.h)
+		frame.Name:SetPoint("TOP", frame.Health, data.nam.x, data.nam.y)
+	end
 	-- Portrait
 	if frame.Portrait then
 		frame.Portrait:SetSize(data.por.w, data.por.h)
@@ -407,8 +409,10 @@ local function CreateUnitLayout(self, unit)
 	end
 
 	--[[ 	Name Text		]]
-	self.Name = ns.CreateFontStringBig(self, data.nam.s, data.nam.j)
-	self:Tag(self.Name, '[name]')	 
+	if data.nam then
+		self.Name = ns.CreateFontStringBig(self, data.nam.s, data.nam.j)
+		self:Tag(self.Name, '[name]')
+	end
 
 	--[[ 	Portrait		]]
 	if data.por then
@@ -590,8 +594,6 @@ local function CreateUnitLayout(self, unit)
 		-- Vengeance support
 		if config.showVengeance then
 			self.Resolve = ns.CreateOutsideBar(self, true, 1, 0, 0)
-			--self.Resolve.Percent = ns.CreateFontString(self.Resolve, 13, 'CENTER')
-			--self.Resolve.Percent:SetPoint('CENTER', self.Resolve)
 		end
 
 		-- PvP Timer
@@ -826,7 +828,7 @@ oUF:Factory( function(self)
 	player:SetScript('OnDragStop', PlayerFrame_OnDragStop)
 
 	local pet = self:Spawn('pet', 'oUF_AbuPet')
-	pet:SetPoint('TOPLEFT', player, 'BOTTOMLEFT', 43, -20)
+	pet:SetPoint('TOPLEFT', player, 'BOTTOMLEFT', 23, -20)
 
 	local target = self:Spawn('target', 'oUF_AbuTarget')
 	target:SetPoint('CENTER', oUF_AbuTargetAnchor)
