@@ -58,7 +58,8 @@ oUF.Tags.Methods['name'] = function(unit)
 		else 
 			color = oUF.colors.reaction[UnitReaction(unit, "player") or 5]
 		end
-	else
+	end
+	if not color then
 		color = ns.config.TextNameColor
 	end
 
