@@ -34,7 +34,13 @@ function ns.classModule.DRUID(self, config, uconfig)
 	EclipseBarFrame:ClearAllPoints()
 	EclipseBarFrame:SetPoint('TOP', self, 'BOTTOM', 30, 3)
 	EclipseBarFrame:Show()
-	EclipseBarFrame:GetRegions():SetVertexColor(0.8, 1, 1) --------
+	EclipseBarFrame:GetRegions():SetVertexColor(0.8, 1, 1)
+
+	local fs = EclipseBarFrame.PowerText
+	fs.basesize = 10
+	fs:SetFont(ns.config.fontNormal, (10 * config.fontNormalSize), config.fontNormalOutline)
+	fs:SetShadowOffset(1, -1)
+	table.insert(ns.fontstrings, fs)
 
 	-- Druid mushroom timer
 	TotemFrame:ClearAllPoints()
@@ -259,8 +265,17 @@ function ns.classModule.WARRIOR(self, config, uconfig)
 		Aurabar.spellID = 12880
 
 		Aurabar.Visibility = function(self, event, unit)
-			local masteryIndex = GetSpecialization()
-			return (masteryIndex and masteryIndex == 2)
+			local bar = self.Aurabar
+			local index = GetSpecialization() or 0
+
+			if (index == 2) then -- Enrage(fury)
+				bar:SetStatusBarColor(1, 0, 0)
+				bar.spellName, bar.rank = GetSpellInfo(12880)
+			elseif (index == 1) then --Sweeping(arms)
+				bar:SetStatusBarColor(1, .6, 0)
+				bar.spellName, bar.rank = GetSpellInfo(12328)
+			end
+			return (index == 2 or index == 1)
 		end
 
 		self.Aurabar = Aurabar
