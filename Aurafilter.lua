@@ -146,18 +146,17 @@ ns.CustomAuraFilters = {
 	end,
 	target = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, canStealOrPurge, shouldConsolidate, spellId, canApplyAura, isBossDebuff, isCastByPlayer, ...)
 		local v = genFilter[spellId]
-		if v and filters[v] then 				-- [[ In Filters ]]--
+		if v and filters[v] then 					-- [[ In Filters ]]--
 			return filters[v](self, unit, caster)
 		elseif UnitPlayerControlled(unit) then 		-- [[	Player   ]]--
 			if UnitCanAttack("player", unit) then 	-- [[   Hostile  ]]--
 				return true
 			else 									-- [[  Friendly  ]]--
-				-- Show all auras on friendly players unless in filters & hide stupid ones
 				return (not shouldConsolidate) or (canApplyAura)
 			end
-		else 									-- [[ 	NPC 	 ]]--
+		else 										-- [[ 	NPC 	 ]]--
 			-- Always show BUFFS, Show boss debuffs, aura cast by the unit, or auras cast by the player's vehicle.
-			return (iconFrame.filter) == "HELPFUL" or (isBossDebuff) or (isPlayer[caster]) or (caster == unit) 
+			return (iconFrame.filter == "HELPFUL") or (isBossDebuff) or (isPlayer[caster]) or (caster == unit) 
 		end
 	end,
 	party = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, canStealOrPurge, shouldConsolidate, spellId, canApplyAura, isBossDebuff, isCastByPlayer, ...)
