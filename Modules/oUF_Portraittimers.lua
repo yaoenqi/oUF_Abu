@@ -4,29 +4,30 @@ local oUF = ns.oUF or oUF
 
 local PortraitTimerDB = { }
 
+
+local 	GetTime, GetSpellInfo, UnitBuff, UnitDebuff = 
+		GetTime, GetSpellInfo, UnitBuff, UnitDebuff
+local floor, fmod = floor, math.fmod
+local day, hour, minute = 86400, 3600, 60
+
 do
-	local c = 1
-	local function add(list)
+	local function add(list, type)
 		for i = 1, #list do
-			PortraitTimerDB[c] = list[i]
-			c = c + 1
+			local spellname = GetSpellInfo(list[i])
+			table.insert(PortraitTimerDB, {name = spellname, filter = type})
 		end
 	end
 	local l = ns.AuraList
-	add(l.Immunity)
-	add(l.Stun)
-	add(l.CC)
-	add(l.CCImmunity)
-	add(l.Defensive)
-	add(l.Offensive)
-	add(l.Helpful)
-	add(l.Silence)
-	add(l.Misc)
+	add(l.Immunity, 'HELPFUL')
+	add(l.Stun, 'HARMFUL')
+	add(l.CC, 'HARMFUL')
+	add(l.CCImmunity, 'HELPFUL')
+	add(l.Defensive, 'HELPFUL')
+	add(l.Offensive, 'HELPFUL')
+	add(l.Helpful, 'HELPFUL')
+	add(l.Silence, 'HARMFUL')
+	add(l.Misc, 'HELPFUL')
 end
-
-local GetTime = GetTime
-local floor, fmod = floor, math.fmod
-local day, hour, minute = 86400, 3600, 60
 
 local function ExactTime(time)
 	return format("%.1f", time), (time * 100 - floor(time * 100))/100
@@ -80,13 +81,10 @@ local Update = function(self, event, unit)
 
 	local pt = self.PortraitTimer
 	for i = 1, #PortraitTimerDB do
-		local spell, rank = GetSpellInfo(PortraitTimerDB[i])
+		local spell = PortraitTimerDB[i].name
 		local name, _, texture, _, _, duration, expires
 		if spell then
-			name, _, texture, _, _, duration, expires = UnitBuff(unit, spell)
-			if not name then
-				name, _, texture, _, _, duration, expires = UnitDebuff(unit, spell)
-			end
+			name, _, texture, _, _, duration, expires = UnitAura(unit, spell, "", PortraitTimerDB[i].filter)
 		end
 		if name then
 			UpdateIcon(pt, texture, duration, expires)
@@ -98,15 +96,14 @@ local Update = function(self, event, unit)
 			end
 
 			return
-		else
-			if (pt:IsShown()) then
-				pt:Hide()
-			end
-
-			if (self.CombatFeedbackText) then
-				self.CombatFeedbackText.maxAlpha = 1
-			end
 		end
+	end
+	if (pt:IsShown()) then
+		pt:Hide()
+	end
+
+	if (self.CombatFeedbackText) then
+		self.CombatFeedbackText.maxAlpha = 1
 	end
 end
 
