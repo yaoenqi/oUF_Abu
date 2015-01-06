@@ -83,10 +83,10 @@ function oUFAbu:SetProfile(id)
 		if oldID ~= id then	-- Clean the old profile
 			oUFAbuSettings[oldID] = cleanDB(oUFAbuSettings[oldID], ns.defaultConfig)
 		end
+
 		oUFAbuProfile['profile'] = id
 		
 		oUFAbuSettings[id] = initDB(oUFAbuSettings[id], ns.defaultConfig)
-
 		ns.config = oUFAbuSettings[id]
 		return true
 	else

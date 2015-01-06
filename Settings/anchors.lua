@@ -96,7 +96,7 @@ end
 -- set points
 local POINT, PARENT = "TOP", UIParent
 
-function anchor_GetCurrent(anchor)
+local function anchor_GetCurrent(anchor)
 	local point, _, rpoint, x, y = anchor:GetPoint()
 
 	-- GetPoint doesnt give from the point "TOP" so lets figure it out

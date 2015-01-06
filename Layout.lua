@@ -67,7 +67,7 @@ local DataNormal = {
 		-----------------------------------------------
 		nam = { w = 65,  h = 10,  x = 11,   y = -18, j = "LEFT",   s = 13 },
 		por = { w = 40,  h = 40,  x = -40,  y = 10,  },
-		-----------------------------------------------
+		------------------------------------------------
     },
 	pet = {
 		siz = { w = 110, h = 37   },
@@ -182,29 +182,27 @@ local function GetDBUnit(cUnit)
 end
 
 local function GetData(cUnit)
-	local dbunit = GetDBUnit(cUnit)
-	if config[cUnit].style then
-		if config[cUnit].style == "fat" then
-			return DataFat[dbunit]
-		end
+	local dbUnit = GetDBUnit(cUnit)
+	if (ns.config[cUnit].style == "fat") then
+		return DataFat[dbUnit]
 	end
-	return DataNormal[dbunit]
+	return DataNormal[dbUnit]
 end
 
 local function GetTargetTexture(cUnit, type)
-	local dbUnit = GetDBUnit(cUnit) --2
+	local dbUnit = GetDBUnit(cUnit)
 	if dbUnit == "vehicle" or dbUnit == "vehicleorganic" then
 		return GetData(cUnit).tex.t
 	end
 	if dbUnit == "player" then
-		if config.playerStyle == "custom" then
-			return config.customPlayerTexture
+		if ns.config.playerStyle == "custom" then
+			return ns.config.customPlayerTexture
 		end
-		type = config.playerStyle
+		type = ns.config.playerStyle
 	end
 
 	-- only "target", "focus" & "player" gets this far
-	local data = config[cUnit].style == "normal" and DataNormal.targetTexture or DataFat.targetTexture
+	local data = ns.config[cUnit].style == "normal" and DataNormal.targetTexture or DataFat.targetTexture
 	if data[type] then
 		return data[type]
 	else
@@ -213,7 +211,7 @@ local function GetTargetTexture(cUnit, type)
 end
 
 local function UpdatePlayerFrame(self, ...)
-	local data = GetData("player")
+	local data = GetData(self.cUnit)
 
 	self.Texture:SetSize(data.tex.w, data.tex.h)
 	self.Texture:SetPoint('CENTER', self, data.tex.x, data.tex.y)
@@ -272,7 +270,7 @@ local function UpdateUnitFrameLayout(frame, unit)
 	-- Frame Size
 	frame:SetSize(data.siz.w, data.siz.h)
 	frame:SetScale(uconfig.scale or 1)
-	frame:EnableMouse((not config.clickThrough) or (frame.IsPartyFrame))
+	frame:EnableMouse((not ns.config.clickThrough) or (frame.IsPartyFrame))
 
 	 -- Player frame, its special
 	if cUnit == "player" then 
@@ -319,6 +317,7 @@ end
 
 function oUFAbu:UpdateBaseFrames(optUnit)
 	if InCombatLockdown() then return; end
+	config = ns.config
 	if optUnit and optUnit:find("%d") then
 		optUnit = optUnit:match('^.%a+')
 	end
@@ -805,8 +804,8 @@ local function CreateUnitLayout(self, unit)
 end
 
 oUF:Factory( function(self)
-	config = ns.config
 	playerClass = select(2, UnitClass('player'))
+	config = ns.config
 
 	self:RegisterStyle('oUF_Abu', CreateUnitLayout)
 	self:SetActiveStyle('oUF_Abu')
