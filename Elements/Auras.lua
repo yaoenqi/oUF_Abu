@@ -92,7 +92,7 @@ function ns.PostCreateAuraIcon( element, button )
 		tinsert(ns.fontstrings, button.count)
 
 		button.cd:SetReverse(true)
-		button.cd:SetDrawEdge(false)
+		button.cd:SetDrawEdge(true)
 		button.cd:ClearAllPoints()
 		button.cd:SetPoint('TOPRIGHT', button.icon, 'TOPRIGHT', -1, -1)
 		button.cd:SetPoint('BOTTOMLEFT', button.icon, 'BOTTOMLEFT', 1, 1)
@@ -154,37 +154,6 @@ function ns.PostUpdateAuraIcon( element, unit, button, index, offset )
 			end
 			button.timeLeft = 0
 			button:SetScript('OnUpdate', nil)
-		end
-	elseif OmniCC then -- Use OmniCC if enabled
-		if button.timer then return end
-
-		for i = 1, button:GetNumChildren() do
-			local child = select(i, button:GetChildren())
-			if child.text and (child.icon == button.icon or child.cooldown == button.cd) then
-				-- found it!
-				local noop = function() return end
-
-				child.ClearAllPoints = noop
-				child.SetAlpha = noop
-				child.SetPoint = noop
-				child.SetScale = noop
-
-				child.text:ClearAllPoints()
-				child.text.ClearAllPoints = noop
-
-				child.text:SetPoint("CENTER", button, "TOP", 0, 0)
-				child.text.SetPoint = noop
-
-				child.text:SetFont(ns.config.fontNormal, 12, 'THINOUTLINE')
-				child.text.SetFont = noop
-
-				child.text:SetTextColor(1, 1, 1)
-				child.text.SetTextColor = noop
-				child.text.SetVertexColor = noop
-
-				tinsert(ns.fontstrings, child.text)
-				button.timer = child.text
-			end
 		end
 	end
 end
