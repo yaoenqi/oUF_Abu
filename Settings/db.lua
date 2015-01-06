@@ -77,6 +77,7 @@ ns.defaultConfig = {
 	showAnticipation = true,
 	showSlicenDice = true,
 	classPortraits = false,
+	showShrooms = true,
 
 	absorbBar = true,
 	absorbtexture = 'Interface\\AddOns\\oUF_Abu\\Media\\Texture\\absorbTexture',
@@ -91,7 +92,8 @@ ns.defaultConfig = {
 		cbwidth = 200,
 		cbheight = 18,
 		cbicon = 'NONE',
-		cbposition = {0, 0},
+		position = 'CENTER/-205/-160',
+		cbposition = 'BOTTOM/0/150',
 	},
 
 	pet = {
@@ -103,7 +105,8 @@ ns.defaultConfig = {
 		cbwidth = 200,
 		cbheight = 18,
 		cbicon = 'NONE',
-		cbposition = {0, 0},
+		position = 'BOTTOM/-220/225',
+		cbposition = 'BOTTOM/0/180',
 	},
 
 	target = {
@@ -117,7 +120,8 @@ ns.defaultConfig = {
 		cbwidth = 200,
 		cbheight = 18,
 		cbicon = 'NONE',
-		cbposition = {0, 0},
+		position = 'CENTER/205/-160',
+		cbposition = 'BOTTOM/0/350',
 	},
 	
 	targettarget = {
@@ -135,10 +139,11 @@ ns.defaultConfig = {
 		buffPos = "NONE",
 		debuffPos = "BOTTOM",
 		cbshow = true, 
-		cbposition = {0, 0},
+		cboffset = {0, 0},
 		cbwidth = 180,
 		cbheight = 20,
 		cbicon = 'NONE',
+		position = 'LEFT/300/80'
 	},
 	
 	focustarget = {
@@ -153,6 +158,7 @@ ns.defaultConfig = {
 		scale = 1.1,
 		HealthTag = "MINIMAL",
 		PowerTag = "DISABLE",
+		position = 'LEFT/80/290'
 	},
 
 	boss = {
@@ -160,21 +166,23 @@ ns.defaultConfig = {
 		HealthTag = "PERCENT",
 		PowerTag = "PERCENT",
 		cbshow = true,
-		cbposition = {0, 0},
+		cboffset = {0, 0},
 		cbwidth = 150,
 		cbheight = 18,
 		cbicon = 'NONE',
+		position = 'RIGHT/-188/255'
 	},
 
 	arena = {
 		scale = 1.1,
 		HealthTag = "BOTH",
 		PowerTag = "PERCENT",
-		cbposition = {0, 0},
+		cboffset = {0, 0},
 		cbshow = true, 
 		cbwidth = 150,
 		cbheight = 22,
 		cbicon = 'NONE',
+		position = 'RIGHT/-175/225'
 	},
 }
 -----------------------------------------------------------------------

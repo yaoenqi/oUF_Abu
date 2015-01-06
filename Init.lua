@@ -168,11 +168,11 @@ end
 
 ----------------------[[	Setup Options   ]]-------------------------
 function oUFAbu:SetupOptions()
-	local options = CreateFrame('Frame', 'oUFAbuOptions')
+	local options = CreateFrame('Frame', 'oUF_AbuOptions')
 	options:Hide()
 	options.name = 'oUF Abu'
 
-	local auras = CreateFrame("Frame", 'AuraFilters', options)
+	local auras = CreateFrame("Frame", 'oUF_AbuAuraFilters', options)
 	auras.name = 'Aura Filters'
 	auras.parent = options.name
 
@@ -234,7 +234,7 @@ end
 
 function oUFAbu:OnSlashCommand(command)
 	if (command == "lock" or command == "unlock") then
-		self:ToggleDummyFrames()
+		self:ToggleAllAnchors()
 	elseif self:LoadOptions() then
 		InterfaceOptionsFrame_OpenToCategory('oUF Abu')
 		InterfaceOptionsFrame_OpenToCategory('oUF Abu')

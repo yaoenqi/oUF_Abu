@@ -344,9 +344,7 @@ local function CreateUnitLayout(self, unit)
 	self.mouseovers = {}
 
 	if (self.IsTargetFrame) then
-		self:SetFrameLevel(30)
-	else
-		self:SetFrameLevel(10)
+		self:SetFrameLevel(4)
 	end
 
 	--[[	 Mouse Interraction		]]
@@ -815,19 +813,19 @@ oUF:Factory( function(self)
 	self:SetActiveStyle('oUF_Abu')
 
 	local player = self:Spawn('player', 'oUF_AbuPlayer')
-	player:SetPoint('CENTER', oUF_AbuPlayerAnchor)
+	ns.CreateUnitAnchor(player, player, player, nil, 'player')
 
 	local pet = self:Spawn('pet', 'oUF_AbuPet')
-	pet:SetPoint('TOPLEFT', player, 'BOTTOMLEFT', 23, -20)
+	ns.CreateUnitAnchor(pet, pet, pet, nil, 'pet')
 
 	local target = self:Spawn('target', 'oUF_AbuTarget')
-	target:SetPoint('CENTER', oUF_AbuTargetAnchor)
+	ns.CreateUnitAnchor(target, target, target, nil, 'target')
 
 	local targettarget = self:Spawn('targettarget', 'oUF_AbuTargetTarget')
 	targettarget:SetPoint('TOPLEFT', target, 'BOTTOMRIGHT', -78, -15)
 
 	local focus = self:Spawn('focus', 'oUF_AbuFocus')
-	focus:SetPoint('CENTER', oUF_AbuFocusAnchor)
+	ns.CreateUnitAnchor(focus, focus, focus, nil, 'focus')
 
 	local focustarget = self:Spawn('focustarget', 'oUF_AbuFocusTarget')
 	focustarget:SetPoint('TOPLEFT', focus, 'BOTTOMRIGHT', -78, -15)
@@ -841,7 +839,8 @@ oUF:Factory( function(self)
 			'showParty', true,
 			'yOffset', -30
 		)
-		party:SetPoint('TOPLEFT', oUF_AbuPartyAnchor)
+
+		ns.CreateUnitAnchor(party, "oUF_AbuPartyUnitButton1", "oUF_AbuPartyUnitButton4", nil, 'party')
 	end
 
 	if (config.showBoss) then
@@ -849,11 +848,13 @@ oUF:Factory( function(self)
 		for i = 1, MAX_BOSS_FRAMES do
 			boss[i] = self:Spawn('boss'..i, 'oUF_AbuBossFrame'..i)
 			if (i == 1) then
-				boss[i]:SetPoint('TOPRIGHT', oUF_AbuBossAnchor)
+				boss[i]:SetPoint('TOPRIGHT', UIParent)
 			else
 				boss[i]:SetPoint('TOPLEFT', boss[(i - 1)], 'BOTTOMLEFT', 0, -45)   
 			end
 		end
+
+		ns.CreateUnitAnchor(boss[1], boss[1], boss[5], "DIALOG", 'boss1', 'boss2', 'boss3', 'boss4', 'boss5')
 	end
 
 	--[[ MirrorTimers ]]--

@@ -1,237 +1,289 @@
 --[[-----------------------------------------------------------------------------
 
 	Anchor frames for player, targer, focus, party, raid & boss
+
+	TODO work with non UIParent paraents
 --]]-----------------------------------------------------------------------------
 local _, ns = ...
 
-local pos = {
-	player = {'CENTER', -235, -200},
-	target = {'CENTER', 235, -200},
-	focus = {'CENTER', -650, 80},
-	party = {'TOPLEFT', 25, -240},
-	boss = {'TOPRIGHT', -110, -235},
-	arena = {'TOPRIGHT', -95, -230},
-}
+---------------------------------------------------------------------------------
+--		Functions for showing phony unitframes
 
-local function SetUpAnchor(frame, unit)
-	frame.unit = unit
+local enableDummies
+do 
+	local function toggleUnitFrame(obj, show)
+		if show then
+			obj.old_unit = obj.unit
+			obj.unit = "player"
+			obj.old_OnUpdate = obj:GetScript("OnUpdate")
 
-	frame:SetPoint(unpack(pos[unit]))
-	frame:SetMovable(true)
-	frame:SetSize(1,1)
-end
+			obj:SetScript("OnUpdate", nil)
+			UnregisterUnitWatch(obj)
+			RegisterUnitWatch(obj, true)
 
-local oUF_AbuPlayerAnchor = CreateFrame("Frame","oUF_AbuPlayerAnchor", UIParent)
-SetUpAnchor(oUF_AbuPlayerAnchor, 'player')
-local oUF_AbuTargetAnchor = CreateFrame("Frame","oUF_AbuTargetAnchor", UIParent)
-SetUpAnchor(oUF_AbuTargetAnchor, 'target')
-local oUF_AbuFocusAnchor = CreateFrame("Frame","oUF_AbuFocusAnchor", UIParent)
-SetUpAnchor(oUF_AbuFocusAnchor, 'focus')
+			obj:Show()
+			if obj.CCastbar then
+				obj.CCastbar:DummyCastbar()
+			end
+		elseif (obj.old_unit) then
+			obj.unit = obj.old_unit or obj.unit
+			obj.old_unit = nil
 
-local oUF_AbuPartyAnchor = CreateFrame("Frame","oUF_AbuPartyAnchor", UIParent)
-SetUpAnchor(oUF_AbuPartyAnchor, "party")
-local oUF_AbuBossAnchor = CreateFrame("Frame","oUF_AbuBossAnchor", UIParent)
-SetUpAnchor(oUF_AbuBossAnchor, "boss")
-local oUF_AbuArenaAnchor = CreateFrame("Frame","oUF_AbuArenaAnchor", UIParent)
-SetUpAnchor(oUF_AbuArenaAnchor, "arena")
+			UnregisterUnitWatch(obj) -- Reset the object
+			RegisterUnitWatch(obj)
 
-local function ToggleUnitFrame(obj, show)
-	if not show then
-		obj.unit = obj.old_unit or obj.unit
-		obj.old_unit = nil
+			if obj.old_OnUpdate then
+				obj:SetScript("OnUpdate", obj.old_OnUpdate)
+				obj.old_OnUpdate = nil
+			end
 
-		UnregisterUnitWatch(obj) -- Reset the object
-		RegisterUnitWatch(obj)
-
-		if obj.old_OnUpdate then
-			obj:SetScript("OnUpdate", obj.old_OnUpdate)
-			obj.old_OnUpdate = nil
-		end
-
-		obj:UpdateAllElements("OnShow")
-	elseif show then
-		obj.old_unit = obj.unit
-		obj.unit = "player"
-		obj.old_OnUpdate = obj:GetScript("OnUpdate")
-
-		obj:SetScript("OnUpdate", nil)
-		UnregisterUnitWatch(obj)
-		RegisterUnitWatch(obj, true)
-
-		obj:Show()
-		if obj.CCastbar then
-			obj.CCastbar:DummyCastbar()
+			obj:UpdateAllElements("OnShow")
 		end
 	end
-end
 
-local function DummyFrame_SetUnitScripts(frame, ...)
-	local function script(self, show)
+	local function showSingleUnit(self, show)
 		for _, obj in pairs(oUF.objects) do
 			local unit = obj:GetAttribute("unit")
 			if (unit) then
 				for i = 1, #self.units do
 					if (unit == self.units[i]) then
-						ToggleUnitFrame(obj, show)
+						toggleUnitFrame(obj, show)
 					end
 				end
 			end
 		end
 	end
 
-	frame.units = {...}
-	frame:SetScript("OnShow", function(self)
-		script(self, true)
-	end)
-	frame:SetScript("OnHide", function(self)
-		script(self)
-	end)
+	function enableDummies(anchor)
+		if anchor.isHeader then
+			anchor:SetScript("OnShow", function(self)
+				SecureStateDriverManager:SetAttribute("setframe", self.object)
+				self.oldstate_driver = SecureStateDriverManager:GetAttribute("setstate"):gsub("state%-visibility%s", "") -- i suck at string formatting
+				local numMembers = math.max(GetNumSubgroupMembers(LE_PARTY_CATEGORY_HOME) or 0, GetNumSubgroupMembers(LE_PARTY_CATEGORY_INSTANCE) or 0)
+				self.object:SetAttribute("startingIndex", (numMembers - 3))
+				RegisterAttributeDriver(self.object, 'state-visibility', 'show')
+
+				for i = 1, self.object:GetNumChildren() do
+					local obj = select(i, self.object:GetChildren())
+					toggleUnitFrame(obj, true)
+				end
+			end)
+			anchor:SetScript("OnHide", function(self)
+				self.object:SetAttribute("showParty", true)
+				RegisterAttributeDriver(self.object, "state-visibility", self.oldstate_driver)
+				self.oldstate_driver = nil
+				self.object:SetAttribute("startingIndex", nil)
+
+				for i = 1, self.object:GetNumChildren() do
+					local obj = select(i, self.object:GetChildren())
+					toggleUnitFrame(obj, false)
+				end
+			end)
+		else
+			anchor:SetScript("OnShow", function(self)
+				showSingleUnit(self, true)
+			end)
+			anchor:SetScript("OnHide", function(self)
+				showSingleUnit(self)
+			end)
+		end
+	end
 end
 
-local function DummyFrame_SetHeaderScripts(frame, header)
-	frame.header = header
-	frame:SetScript("OnShow", function(self)
-		SecureStateDriverManager:SetAttribute("setframe", self.header)
-		self.oldstate_driver = SecureStateDriverManager:GetAttribute("setstate"):gsub("state%-visibility%s", "") -- i suck at string formatting
-		local numMembers = math.max(GetNumSubgroupMembers(LE_PARTY_CATEGORY_HOME) or 0, GetNumSubgroupMembers(LE_PARTY_CATEGORY_INSTANCE) or 0)
-		self.header:SetAttribute("startingIndex", (numMembers - 3))
-		RegisterAttributeDriver(self.header, 'state-visibility', 'show')
-		for i = 1, self.header:GetNumChildren() do
-			local obj = select(i, self.header:GetChildren())
-			ToggleUnitFrame(obj, true)
-		end
-	end)
-	frame:SetScript("OnHide", function(self)
-		self.header:SetAttribute("showParty", true)
-		RegisterAttributeDriver(self.header, "state-visibility", self.oldstate_driver)
-		self.oldstate_driver = nil
-		self.header:SetAttribute("startingIndex", nil)
-		for i = 1, self.header:GetNumChildren() do
-			local obj = select(i, self.header:GetChildren())
-			ToggleUnitFrame(obj)
-		end
-	end)
+-------------------------------------------------------------------------
+-- 		Positions
+
+-- set points
+local POINT, PARENT = "TOP", UIParent
+
+function anchor_GetCurrent(anchor)
+	local point, _, rpoint, x, y = anchor:GetPoint()
+
+	-- GetPoint doesnt give from the point "TOP" so lets figure it out
+	local width, height = anchor:GetSize()
+
+	if point:find('LEFT') then
+		x = x + (width / 2 )
+	elseif  point:find('RIGHT') then
+		x = x - (width / 2)
+	end
+
+	if point:find('BOTTOM') then
+		y = y + height
+	elseif (not point:find('TOP')) then
+		y = y + height/2
+	end
+
+	local scale = anchor.object:GetEffectiveScale() / UIParent:GetScale()
+	return POINT, PARENT, rpoint, math.floor(x/scale + .5), math.floor(y/scale + .5)
 end
 
-local DummyFrames
-local function CreateDummyFrames()
-	DummyFrames = {};
-	--Party:
-	local function createFrame(anchor)
-		local f = CreateFrame("Button", anchor:GetName().."Dummy", UIParent)
-		f.anchor = anchor
-		f:Hide()
-		f:EnableMouse(true)
-
-		f:SetScript('OnMouseUp', function(self, button) -- reset
-			if (IsAltKeyDown()) and (button == "LeftButton") then
-				local anchor = self.anchor
-				anchor:ClearAllPoints();
-				anchor:SetPoint(unpack(pos[anchor.unit]));
-				anchor:SetUserPlaced(false);
-				anchor:SetClampedToScreen(false);
-			end
-		end)
-
-		f:SetScript('OnDragStart', function(self)
-			if IsShiftKeyDown() then
-				local anchor = self.anchor
-				anchor:StartMoving();
-				anchor:SetUserPlaced(true);
-				anchor:SetClampedToScreen(true);
-			end
-		end)
-
-		f:SetScript('OnDragStop', function(self)
-			local anchor = self.anchor
-			anchor:StopMovingOrSizing();
-		end)
-
-		table.insert(DummyFrames, f)
-		return f
+local function anchor_GetSaved(anchor, default)
+	local data
+	if (not default) then
+		data = ns.config[anchor.key1][anchor.key2]
+		if type(data) == "table" then
+			data = nil
+		end
+	end
+	if (not data) then
+		data = ns.defaultConfig[anchor.key1][anchor.key2]
 	end
 
-	local party = oUF_AbuParty
-	if party then
-		local p = createFrame(oUF_AbuPartyAnchor) 
-		DummyFrame_SetHeaderScripts(p, party)
-		p:Show()
-		p:Hide() -- forcing it so we can set points
-		p:SetPoint('TOPLEFT', oUF_AbuPartyAnchor)
-		p:SetPoint('BOTTOMRIGHT', oUF_AbuPartyUnitButton4)
-		p:SetFrameStrata("HIGH")
+	local rp, x, y = string.split('/', data)
+	return POINT, PARENT, rp, tonumber(x), tonumber(y)
+end
+
+local function anchor_Save(anchor, reset)
+	local _, rp, x, y
+	if reset then
+		_, _, rp, x, y = anchor_GetSaved(anchor, true)
+	else
+		_, _, rp, x, y = anchor_GetCurrent(anchor)
+	end
+	ns.config[anchor.key1][anchor.key2] = string.format('%s/%d/%d', rp, x, y)
+end
+
+-------------------------------------------------------------------------
+-- 		Creating anchors
+
+local AnchorFrames = {}
+local function CreateAnchor(frame, name, key1, key2, tlP, brP, strata)
+	local anchor = CreateFrame('Button', name..'Anchor', UIParent)
+	anchor:EnableMouse(true)
+	anchor:SetFrameStrata(strata or 'HIGH')
+	anchor:SetMovable(true)
+	anchor:RegisterForDrag("LeftButton")
+	anchor:RegisterForClicks("AnyUp")
+	anchor:SetClampedToScreen(true)
+
+	anchor.topleftPoint = type(tlP) == "string" and tlP or tlP:GetName()
+	anchor.botrightPoint = type(brP) == "string" and brP or brP:GetName()
+	anchor.object = frame
+	anchor.key1 = key1
+	anchor.key2 = key2
+
+	anchor:SetScript('OnMouseUp', function(self, button)
+		if (IsAltKeyDown()) and (button == "LeftButton") then
+			anchor_Save(self, true)
+		end
+		self:Update()
+	end)
+
+	anchor:SetScript('OnDragStart', function(self)
+		if IsShiftKeyDown() then
+			self:StartMoving()
+			self:Release()
+		end
+	end)
+
+	anchor:SetScript('OnDragStop', function(self)
+		self:StopMovingOrSizing()
+		anchor_Save(self)
+		self:Update()
+	end)
+
+	anchor.Update = function(self)
+		local obj = self.object
+		obj:ClearAllPoints()
+		obj:SetPoint(anchor_GetSaved(self))
+		
+		self:ClearAllPoints()
+		self:SetPoint('TOPLEFT', self.topleftPoint)
+		self:SetPoint('BOTTOMRIGHT', self.botrightPoint)
 	end
 
-	if oUF_AbuArenaFrame1 then
-		local a = createFrame(oUF_AbuArenaAnchor)
-		DummyFrame_SetUnitScripts(a, "arena1", "arena2", "arena3", "arena4", "arena5")
-		a:SetPoint('TOPRIGHT', oUF_AbuArenaAnchor)
-		a:SetPoint("BOTTOMLEFT", oUF_AbuArenaFrame5)
-		a:SetFrameStrata("HIGH")
+	anchor.Release = function(self)
+		local obj = self.object
+		obj:ClearAllPoints()
+		obj:SetPoint(POINT, self)
 	end
 
-	if oUF_AbuBossFrame1 then
-		local b = createFrame(oUF_AbuBossAnchor)
-		DummyFrame_SetUnitScripts(b, "boss1", "boss2", "boss3", "boss4", "boss5")
-		b:SetPoint('TOPRIGHT', oUF_AbuBossAnchor)
-		b:SetPoint("BOTTOMLEFT", oUF_AbuBossFrame5)
-		b:SetFrameStrata("DIALOG") --above arena
+	-- Tooltips
+	anchor:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_TOP")
+		GameTooltip:AddLine(self:GetName():gsub('Anchor', ''))
+		GameTooltip:AddLine("Hold down SHIFT to drag",1,1,1)
+		GameTooltip:AddLine("ALT click to reset position",1,1,1)
+		GameTooltip:Show()
+	end)
+	anchor:SetScript("OnLeave", function(self)
+		GameTooltip:Hide()
+	end)
+
+	AnchorFrames[#AnchorFrames + 1] = anchor
+	return anchor
+end
+
+function ns.CreateUnitAnchor(frame, tlP, brP, strata, ...) -- ... = unit(s)
+	local key1 = frame.cUnit or ...
+	local anchor = CreateAnchor(frame, frame:GetName():gsub("%d", ""), key1, 'position', tlP, brP, strata)
+
+	anchor.units = {...}
+	anchor.isHeader = frame:GetAttribute('oUF-headerType') and true or false
+
+	enableDummies(anchor)
+	-- Forces the creation of header children, so we get the full size
+	if anchor.isHeader then
+		anchor:GetScript('OnShow')(anchor)
 	end
 
-	local singleUnits = {"player", "target", "focus"}
-	for i = 1, #singleUnits do
-		local unit = singleUnits[i]
-		local framename = 'oUF_Abu'..unit:gsub('^%a', string.upper)
-		local a = _G[framename.."Anchor"]
-		local f = createFrame(a)
-		DummyFrame_SetUnitScripts(f, unit)
-		f:SetAllPoints(_G[framename])
-		f:SetFrameStrata("HIGH")
-	end
+	anchor:Update()
+	anchor:Hide()
+
+	return anchor
+end
+
+function ns.CreateCastbarAnchor(frame)
+	local name = frame:GetName()
+	local a = CreateAnchor(frame, name, frame:GetParent().cUnit, 'cbposition', name, name)
+
+	a:Update()
+	a:Hide()
+
+	return a
 end
 
 function oUFAbu:PLAYER_REGEN_DISABLED()
 	self:Print("Nice one, you broke it! Frames locked.")
-	self:ToggleDummyFrames(true)
+	self:ToggleAllAnchors(true)
 end
 
-local DummyFrames_Locked = true
-function oUFAbu:ToggleDummyFrames(hide)
-	if (not DummyFrames) then CreateDummyFrames(); end
+local LOCKED = true
+function oUFAbu:ToggleAllAnchors(force_Lock)
 
-	if DummyFrames_Locked and not hide then
+	if LOCKED and (not force_Lock) then
 		if InCombatLockdown() then return self:Print("Can't unlock frames in combat."); end
 		self:RegisterEvent("PLAYER_REGEN_DISABLED")
-		for i = 1, #DummyFrames do
-			local doll = DummyFrames[i]
-			doll:RegisterForDrag("LeftButton")
-			doll:RegisterForClicks("AnyUp")
-			doll:SetScript("OnEnter", function(self)
-				GameTooltip:SetOwner(self, "ANCHOR_TOP")
-				local name = self:GetName():gsub('AnchorDummy', '')
-				GameTooltip:AddLine(name)
-				GameTooltip:AddLine("Hold down SHIFT to drag",1,1,1)
-				GameTooltip:AddLine("ALT click to reset position",1,1,1)
-				GameTooltip:Show()
-			end)
-			doll:SetScript("OnLeave", GameTooltip.Hide)
-			doll:Show()
-		end
 		self:Print("Frame unlocked!")
-		DummyFrames_Locked = false
-		return true
-	elseif (not DummyFrames_Locked) then
-		self:UnregisterEvent("PLAYER_REGEN_DISABLED")
-		for i = 1, #DummyFrames do
-			local doll = DummyFrames[i]
-			doll:Hide()
-			doll:RegisterForDrag()
-			doll:RegisterForClicks()
-			doll:SetScript("OnEnter", nil)
-			doll:SetScript("OnLeave", nil)
+
+		for i = 1, #AnchorFrames do
+			AnchorFrames[i]:Show()
 		end
-		self:Print("Frame locked!")
-		DummyFrames_Locked = true
-		return false
+
+	elseif (not LOCKED) then
+		self:UnregisterEvent("PLAYER_REGEN_DISABLED")
+		self:Print("Frame locked!")	
+
+		for i = 1, #AnchorFrames do
+			AnchorFrames[i]:Hide()
+		end
 	end
+
+	LOCKED = (not LOCKED)
+	return LOCKED
+end
+
+function oUFAbu:UpdateAnchorPositions()
+	if InCombatLockdown() then
+		self:Print("Not in combat jackass")
+		return
+	end
+	for i = 1, #AnchorFrames do
+		AnchorFrames[i]:Update()
+	end
+end
+
+function oUFAbu:GetAnchorFrames()
+	return AnchorFrames
 end

@@ -34,10 +34,7 @@ local function cleanDB(db, defaults)
 end
 
 local function isValidID(id)
-	if type(id) ~= "string" or id == "" then
-		return false 
-	end
-	return true
+	return type(id) == "string" and #id > 0
 end
 
 
@@ -45,6 +42,9 @@ end
 function oUFAbu:CreateProfile(id)
 	if isValidID(id) and not oUFAbuSettings[id] then
 		oUFAbuSettings[id] = initDB(oUFAbuSettings[id], ns.defaultConfig)
+		if (id ~= "Default") then
+			self:SetProfile(id)
+		end
 		return true
 	end
 	return false
@@ -89,8 +89,9 @@ function oUFAbu:SetProfile(id)
 
 		ns.config = oUFAbuSettings[id]
 		return true
+	else
+		return self:SetProfile('Default')
 	end
-	return false
 end
 
 function oUFAbu:ResetProfile(id)
@@ -109,6 +110,9 @@ function oUFAbu:CreateAuraProfile(id)
 	if isValidID(id) and not oUFAbuAuraFilters[id] then
 
 		oUFAbuAuraFilters[id] = initDB(oUFAbuAuraFilters[id], ns.defaultAuras)
+		if (id ~= "Default") then
+			self:SetAuraProfile(id)
+		end
 		return true
 	end
 	return false

@@ -97,9 +97,6 @@ end
 
 function ns.CreateCastbars(self)
 	local BasePos = {
-		player = 	{'BOTTOM', 'BOTTOM', 0, 130},
-		pet = 		{'BOTTOM', 'BOTTOM', 0, 270},
-		target = 	{'BOTTOM', 'BOTTOM', 0, 330},
 		focus = 	{'BOTTOM', 'TOP', 0, 30},
 		boss =		{'TOPRIGHT', 'TOPLEFT', -10, 0},
 		arena = 	{'TOPRIGHT', 'TOPLEFT', -30, -10},
@@ -107,19 +104,17 @@ function ns.CreateCastbars(self)
 
 	local uconfig = ns.config[self.cUnit]
 	if not uconfig.cbshow then return end
-	local parent
-	local point, rpoint, x, y = unpack(BasePos[self.cUnit])
-	local addX, addY = unpack(uconfig.cbposition)
-	if self.cUnit == 'player' or self.cUnit == 'target' or self.cUnit == 'pet' then 
-		parent = UIParent
-	else
-		parent = self
-	end
 
 	local Castbar = ns.CreateStatusBar(self, 'BORDER', self:GetName()..'Castbar')
 	Castbar:SetSize(uconfig.cbwidth, uconfig.cbheight)
-	Castbar:SetPoint(point, parent, rpoint, (x + addX), (y + addY))--
 	ns.CreateBorder(Castbar, 11, 3)
+
+	if (self.cUnit == 'player' or self.cUnit == 'target' or self.cUnit == 'pet') then
+		ns.CreateCastbarAnchor(Castbar)
+	else
+		local point, rpoint, x, y = unpack(BasePos[self.cUnit])
+		Castbar:SetPoint(point, self, rpoint, x + uconfig.cboffset[1], y + uconfig.cboffset[2])
+	end
 
 	Castbar.Background = Castbar:CreateTexture(nil, 'BACKGROUND')
 	Castbar.Background:SetTexture('Interface\\Buttons\\WHITE8x8')
@@ -131,11 +126,6 @@ function ns.CreateCastbars(self)
 		SafeZone:SetVertexColor(unpack(ns.config.castbarSafezoneColor))
 		table.insert(ns.statusbars, SafeZone)
 		Castbar.SafeZone = SafeZone
-
-		local Spark = Castbar:CreateTexture(nil, "ARTWORK")
-		Spark:SetSize(15, (uconfig.cbheight * 2))
-		Spark:SetBlendMode("ADD")	
-		Castbar.Spark = Spark
 
 		local Flash = CreateFrame("Frame", nil, Castbar)
 		Flash:SetAllPoints(Castbar)
@@ -151,6 +141,11 @@ function ns.CreateCastbars(self)
 		Castbar.Flash = Flash
 		Castbar.Ticks = ns.config.castbarticks
 	end
+	
+	local Spark = Castbar:CreateTexture(nil, "ARTWORK")
+	Spark:SetSize(15, (uconfig.cbheight * 2))
+	Spark:SetBlendMode("ADD")	
+	Castbar.Spark = Spark
 
 	if (uconfig.cbicon ~= 'NONE') then
 		local Icon = Castbar:CreateTexture(nil, 'ARTWORK')

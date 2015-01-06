@@ -149,11 +149,14 @@ oUF:Factory(function(self)
 	for i = 1, 5 do
 		arena[i] = self:Spawn('arena'..i, 'oUF_AbuArenaFrame'..i)
 		if (i == 1) then
-			arena[i]:SetPoint('TOPRIGHT', oUF_AbuArenaAnchor)
+			arena[i]:SetPoint('TOPRIGHT', UIParent)
 		else
 			arena[i]:SetPoint('TOPLEFT', arena[i-1], 'BOTTOMLEFT', 0, -40)
 		end
 	end
+	
+	local a = ns.CreateUnitAnchor(arena[1], arena[1], arena[5], nil, "arena1", "arena2", "arena3", "arena4", "arena5")
+	--arena[1]:SetPoint('TOPRIGHT', a)
 
 	local arenaprep = {}
 	for i = 1, 5 do

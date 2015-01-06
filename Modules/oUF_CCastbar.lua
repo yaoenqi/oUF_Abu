@@ -498,7 +498,7 @@ end
 
 local function UnrealCastbar(castbar)
 	castbar.duration = 0
-	castbar.max = 30
+	castbar.max = 300
 	castbar:SetMinMaxValues(0, castbar.max)
 	castbar:SetValue(castbar.duration)
 

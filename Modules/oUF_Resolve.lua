@@ -77,7 +77,7 @@ local function Update(self, event, unit)
 	if (element.PreUpdate) then
 		element:PreUpdate()
 	end
-
+	
 	local _, _, _, _, _, _, _, _, _, _, _, _, _, _, perc, dmgIntake = UnitBuff(unit, element.spellname, element.rank)
 
 	if (not perc) or (perc and (perc/MAXMOD + .5) < 1) then
