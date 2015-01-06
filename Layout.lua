@@ -162,13 +162,12 @@ local DataFat = {
     boss = DataNormal.boss,
 }
 
-local function GetDBUnit(unit)
-	unit = ns.cUnit(unit) --3
-	if unit == "focus" then
+local function GetDBUnit(cUnit)
+	if cUnit == "focus" then
 		return "target"
-	elseif unit == "focustarget" then
+	elseif cUnit == "focustarget" then
 		return "targettarget"
-	elseif unit == "player" or unit == "vehicle" then -- can player be vehicle?
+	elseif cUnit == "player" or cUnit == "vehicle" then -- can player be vehicle?
 		if UnitHasVehicleUI('player') then
 			if (UnitVehicleSkin('player') == 'Natural') then
 				return "vehicleorganic"
@@ -179,23 +178,23 @@ local function GetDBUnit(unit)
 			return "player"
 		end
 	end
-	return unit
+	return cUnit
 end
 
-local function GetData(unit)
-	local dbunit = GetDBUnit(unit)
-	if config[unit].style then
-		if config[unit].style == "fat" then
+local function GetData(cUnit)
+	local dbunit = GetDBUnit(cUnit)
+	if config[cUnit].style then
+		if config[cUnit].style == "fat" then
 			return DataFat[dbunit]
 		end
 	end
 	return DataNormal[dbunit]
 end
 
-local function GetTargetTexture(unit, type)
-	local dbUnit = GetDBUnit(unit) --2
+local function GetTargetTexture(cUnit, type)
+	local dbUnit = GetDBUnit(cUnit) --2
 	if dbUnit == "vehicle" or dbUnit == "vehicleorganic" then
-		return GetData(unit).tex.t
+		return GetData(cUnit).tex.t
 	end
 	if dbUnit == "player" then
 		if config.playerStyle == "custom" then
@@ -205,7 +204,7 @@ local function GetTargetTexture(unit, type)
 	end
 
 	-- only "target", "focus" & "player" gets this far
-	local data = config[unit].style == "normal" and DataNormal.targetTexture or DataFat.targetTexture
+	local data = config[cUnit].style == "normal" and DataNormal.targetTexture or DataFat.targetTexture
 	if data[type] then
 		return data[type]
 	else
