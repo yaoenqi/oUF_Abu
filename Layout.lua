@@ -631,7 +631,7 @@ local function CreateUnitLayout(self, unit)
 		self.QuestIcon:SetPoint('CENTER', self.Health, 'TOPRIGHT', 1, 10)
 
 		table.insert(self.__elements, function(self, _, unit)
-			self.Texture:SetTexture(GetTargetTexture(unit, UnitClassification(unit)))
+			self.Texture:SetTexture(GetTargetTexture(self.cUnit, UnitClassification(unit)))
 		end)
 	end
 
