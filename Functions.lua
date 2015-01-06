@@ -170,7 +170,7 @@ end
 function ns.UpdateIncHeals(self, event, unit)
 	if (self.unit ~= unit) then return end
 	local hp = self.HealPrediction
-	local curHP, _, maxHP = self.Health:GetValue(), self.Health:GetMinMaxValues()
+	local curHP, maxHP = UnitHealth(unit), UnitHealthMax(unit)
 	local incHeal = UnitGetIncomingHeals(unit) or 0
 	local healAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
 

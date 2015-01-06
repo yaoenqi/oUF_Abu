@@ -28,6 +28,16 @@ end
 
 function ns.classModule.DRUID(self, config, uconfig)
 	if self.cUnit ~= "player" then return; end
+	-- Druid Manabar
+	self.DruidMana = ns.CreateOutsideBar(self, false, 0, 0, 1)
+	self.DruidMana.colorPower = true
+
+	self.DruidMana.Value = ns.CreateFontString(self.DruidMana, 13, 'CENTER')
+	self.DruidMana.Value:SetPoint('CENTER', self.DruidMana, 0, 0.5)
+	self.DruidMana.Value:Hide()
+	self:Tag(self.DruidMana.Value, '[druidmana]')
+
+	-- Eclipsebar
 	EclipseBarFrame:SetParent(self)
 	EclipseBarFrame:SetScale(uconfig.scale * 0.82)
 	EclipseBar_OnLoad(EclipseBarFrame)
@@ -42,57 +52,53 @@ function ns.classModule.DRUID(self, config, uconfig)
 	fs:SetShadowOffset(1, -1)
 	table.insert(ns.fontstrings, fs)
 
-	-- Druid mushroom timer
+	-- Druid mushrooms
 	TotemFrame:ClearAllPoints()
-	TotemFrame:SetPoint('TOP', self, 'BOTTOM', 50, 20)
 	TotemFrame:SetParent(self)
-	TotemFrame:SetScale(uconfig.scale * 0.65)
-	TotemFrame:Show()
+	TotemFrame:SetScale(uconfig.scale * 0.75)
 
 	for i = 1, 3 do
-		_G['TotemFrameTotem'..i]:EnableMouse(false)
-		_G['TotemFrameTotem'..i]:SetAlpha(0)
-		_G['TotemFrameTotem'..i.. 'Duration']:SetParent(self)
-		_G['TotemFrameTotem'..i.. 'Duration']:SetDrawLayer('OVERLAY')
-		_G['TotemFrameTotem'..i.. 'Duration']:SetFont(config.fontNormal, 12)
-		_G['TotemFrameTotem'..i.. 'Duration']:SetTextColor(0.3, 1, 0)
-	end
+		local name = 'TotemFrameTotem'..i
+		local totem = _G[name]
+		local text = _G[name..'Duration']
+		local cooldown = _G[name..'IconCooldown']
 
-	TotemFrameTotem1Duration:ClearAllPoints()
-	TotemFrameTotem1Duration:SetPoint('RIGHT', TotemFrameTotem2Duration, 'LEFT', -6, 0)
-	TotemFrameTotem3Duration:ClearAllPoints()
-	TotemFrameTotem3Duration:SetPoint('LEFT', TotemFrameTotem2Duration, 'RIGHT', 5, 0)
+		text:ClearAllPoints()
+		text:SetFont(config.fontNormal, 12, 'OUTLINE')
+		text:SetDrawLayer('ARTWORK')
+		text.basesize = 12
+		text.ignoreOutline = true
+		table.insert(ns.fontstrings, text)
 
-		-- Druid Manabar
-	self.DruidMana = ns.CreateOutsideBar(self, false, 0, 0, 1)
-	self.DruidMana.colorPower = true
-
-	self.DruidMana.Value = ns.CreateFontString(self.DruidMana, 13, 'CENTER')
-	self.DruidMana.Value:SetPoint('CENTER', self.DruidMana, 0, 0.5)
-	self.DruidMana.Value:Hide()
-	self:Tag(self.DruidMana.Value, '[druidmana]')
-
-	local function MoveShrooms(self)
-		if (EclipseBarFrame:IsVisible()) then
-			TotemFrameTotem2Duration:ClearAllPoints()
-			TotemFrameTotem2Duration:SetPoint('TOP', self.Power, 'BOTTOM', 0, -29)
-		elseif (self.DruidMana:IsVisible()) then
-			TotemFrameTotem2Duration:ClearAllPoints()
-			TotemFrameTotem2Duration:SetPoint('TOP', self.Power, 'BOTTOM', 0, -15)
+		if ns.config.showShrooms then
+			local _, someframe = totem:GetChildren()
+			ns.PaintFrames(someframe:GetRegions())
+			text:SetParent(cooldown)
+			text:ClearAllPoints()
+			text:SetPoint('CENTER', 1, 0)
 		else
-			TotemFrameTotem2Duration:ClearAllPoints()
-			TotemFrameTotem2Duration:SetPoint('TOP', self.Power, 'BOTTOM', 0, -4)
+			totem:SetAlpha(0)
+			cooldown.Show = function(self) self:Hide() end
+			text:SetParent(TotemFrame)
+			text:SetPoint('CENTER', -40 + (i-1) * 29 , 13)
 		end
 	end
 
-	-- Move the shroomtimer if the eclipsebar or druid manabar is shown
-	self.DruidMana:HookScript('OnHide', function() MoveShrooms(self)end)
-	self.DruidMana:HookScript('OnShow', function() MoveShrooms(self)end)
-	
-	EclipseBarFrame:SetScript('OnHide', function() MoveShrooms(self)end)
-	EclipseBarFrame:SetScript('OnShow', function() MoveShrooms(self)end)
-	
-	MoveShrooms(self)
+	hooksecurefunc("TotemFrame_Update", function()
+		local form  = GetShapeshiftFormID();
+		TotemFrame:ClearAllPoints()
+		if ( form == MOONKIN_FORM or not form ) then
+			if ( GetSpecialization() == 1 ) then
+				TotemFrame:SetPoint("TOPLEFT", self, "TOPLEFT", 79, -74);
+			else
+				TotemFrame:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 50, 0);
+			end
+		elseif ( form == BEAR_FORM or form == CAT_FORM ) then
+			TotemFrame:SetPoint("TOPLEFT", self, "TOPLEFT", 80, -58);
+		else
+			TotemFrame:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 50, 0);
+		end
+	end)
 end
 
 function ns.classModule.MAGE(self, config, uconfig)
