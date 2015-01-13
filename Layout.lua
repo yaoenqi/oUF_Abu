@@ -88,7 +88,7 @@ local DataNormal = {
 		mpb = { w = 70,  h = 7,   x = 0,    y = 0,   },
 		mpt = {                   x = 0,    y = -2,  j = "CENTER", s = 12 },
 		nam = { w = 110, h = 10,  x = 0,    y = 15,  j = "CENTER", s = 14 },
-		por = { w = 37,  h = 37,  x = -39,  y = 6,   },
+		por = { w = 37,  h = 37,  x = -39,  y = 7,   },
 		glo = { w = 128, h = 63,  x = -3,   y = 4,   t = pathNormal.."Party-Flash", c = {0, 1, 0, 1}},
 	},
     boss = {
@@ -156,7 +156,7 @@ local DataFat = {
         mpb = { w = 70,  h = 7,   x = 0,    y = 0,   },
         mpt = {                   x = 0,    y = -1,   j = "CENTER", s = 12 },
         nam = { w = 110, h = 10,  x = 0,    y = 15,  j = "CENTER", s = 14 },
-        por = { w = 37,  h = 37,  x = -39,  y = 6,   },
+        por = { w = 37,  h = 37,  x = -39,  y = 7,   },
         glo = { w = 128, h = 63,  x = -3,   y = 4,   t = pathFat.."Party-Flash", c = {0, 1, 0, 1}},
     },
     boss = DataNormal.boss,
@@ -752,6 +752,25 @@ local function CreateUnitLayout(self, unit)
 		self.Debuffs.PostUpdateIcon = ns.PostUpdateAuraIcon
 		self.Debuffs.PostUpdate     = ns.PostUpdateAuras
 		self.Debuffs.parent = self
+
+		self.Buffs = CreateFrame('Frame', nil, self)
+		self.Buffs:SetFrameStrata('BACKGROUND')
+		self.Buffs:SetHeight((SIZE+GAP))
+		self.Buffs:SetWidth((SIZE+GAP) * 4)
+		self.Buffs.size = SIZE
+		self.Buffs.spacing = GAP
+		self.Buffs:SetPoint('TOPLEFT', self.Health, 'BOTTOMLEFT', 2, -11)
+		self.Buffs.initialAnchor = 'LEFT'
+		self.Buffs['growth-y'] = 'DOWN'
+		self.Buffs['growth-x'] = 'RIGHT'
+		self.Buffs.num = 4
+
+		self.Buffs.CustomFilter   = ns.CustomAuraFilters.party
+		self.Buffs.PostCreateIcon = ns.PostCreateAuraIcon
+		self.Buffs.PostUpdateIcon = ns.PostUpdateAuraIcon
+		self.Buffs.PostUpdate     = ns.PostUpdateAuras
+		self.Buffs.parent = self
+
 	elseif (cUnit == "boss") then
 		local GAP = 4.5
 		local SIZE = 30
@@ -889,33 +908,3 @@ oUF:Factory( function(self)
 		bar.text = text
 	end	
 end)
-
--- test func, breaks alot
-----------------------------------------------------------------------------|-
-function oUFAbu:TestBase()												----|-
-	for _, v in pairs(oUF.objects) do 									----|-
-		v.unit = "target"												----|-
-		local buffs = v.Buffs or v.Auras								----|-
-		local debuffs = v.Debuffs										----|-
-		if buffs and buffs.CustomFilter then							----|-
-			buffs.CustomFilter = nil									----|-
-		end																----|-
-		if debuffs and debuffs.CustomFilter then						----|-
-			debuffs.CustomFilter = nil									----|-
-		end																----|-
-		v.Hide = function() return end 									----|-
-		v:Show()														----|-
-	end																	----|-
-	local time = 0														----|-
-	local f = CreateFrame("Frame")										----|-
-	f:SetScript("OnUpdate", function(self, elapsed)						----|-
-		time = time + elapsed											----|-
-		if ( time > 2 ) then											----|-
-			for _, v in pairs(oUF.objects) do							----|-
-				v:UpdateAllElements("OptionsRefresh")					----|-
-			end															----|-
-			time = 0													----|-
-		end																----|-
-	end)																----|-
-end 																	----|-
-----------------------------------------------------------------------------|- 

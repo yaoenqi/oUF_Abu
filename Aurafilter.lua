@@ -161,7 +161,11 @@ ns.CustomAuraFilters = {
 	end,
 	party = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, canStealOrPurge, shouldConsolidate, spellId, canApplyAura, isBossDebuff, isCastByPlayer, ...)
 		local v = genFilter[spellId]
-		return v and v ~= 3 or true
+		if (iconFrame.filter == "HELPFUL") then -- BUFFS
+			return (not shouldConsolidate and isPlayer[caster]) or isBossDebuff
+		else
+			return v ~= 3 	-- DEBUFFS
+		end
 	end,
 	arena = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, canStealOrPurge, shouldConsolidate, spellId, canApplyAura, isBossDebuff, isCastByPlayer, ...)
 		return arenaFilter[spellId]
