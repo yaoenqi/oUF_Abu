@@ -172,15 +172,19 @@ local function CreateAnchor(frame, name, key1, key2, tlP, brP, strata)
 
 	anchor:SetScript('OnDragStart', function(self)
 		if IsShiftKeyDown() then
+			self.isMoving = true
 			self:StartMoving()
 			self:Release()
 		end
 	end)
 
 	anchor:SetScript('OnDragStop', function(self)
-		self:StopMovingOrSizing()
-		anchor_Save(self)
-		self:Update()
+		if self.isMoving then
+			self:StopMovingOrSizing()
+			anchor_Save(self)
+			self:Update()
+		end
+		self.isMoving = nil
 	end)
 
 	anchor.Update = function(self)
