@@ -15,7 +15,7 @@ local function AddAnimation(group, type, order, key, dur, ...)
 end
 
 function ns.classModule.DEATHKNIGHT(self, config, uconfig)
-	if self.cUnit ~= "player" then return; end
+	if self.cUnit ~= "player" or not config.DEATHKNIGHT then return; end
 	RuneFrame:SetParent(self)
 	RuneFrame_OnLoad(RuneFrame)
 	RuneFrame:ClearAllPoints()
@@ -27,7 +27,7 @@ function ns.classModule.DEATHKNIGHT(self, config, uconfig)
 end
 
 function ns.classModule.DRUID(self, config, uconfig)
-	if self.cUnit ~= "player" then return; end
+	if self.cUnit ~= "player" or not config.DRUID then return; end
 	-- Druid Manabar
 	self.DruidMana = ns.CreateOutsideBar(self, false, 0, 0, 1)
 	self.DruidMana.colorPower = true
@@ -140,7 +140,7 @@ function ns.classModule.MAGE(self, config, uconfig)
 end
 
 function ns.classModule.MONK(self, config, uconfig)
-	if self.cUnit ~= "player" then return; end
+	if self.cUnit ~= "player" or not config.MONK then return; end
 	-- Orbs
 	MonkHarmonyBar:SetParent(self)
 	MonkHarmonyBar:SetScale(uconfig.scale * 0.81)
@@ -174,7 +174,7 @@ function ns.classModule.MONK(self, config, uconfig)
 end
 
 function ns.classModule.PALADIN(self, config, uconfig)
-	if self.cUnit == "player" then
+	if self.cUnit == "player" and config.PALADIN then
 		PaladinPowerBar:SetParent(self)
 		PaladinPowerBar:SetScale(uconfig.scale * 0.81)
 		PaladinPowerBar_OnLoad(PaladinPowerBar)
@@ -186,7 +186,7 @@ end
 
 function ns.classModule.PRIEST(self, config, uconfig)
 	if (self.IsMainFrame) then
-		if self.cUnit == "player" then
+		if self.cUnit == "player" and config.PRIEST  then
 			PriestBarFrame:SetParent(self)
 			PriestBarFrame_OnLoad(PriestBarFrame)
 			PriestBarFrame:ClearAllPoints()
@@ -211,9 +211,9 @@ function ns.classModule.ROGUE(self, config, uconfig)
 end
 
 function ns.classModule.SHAMAN(self, config, uconfig)
-	if self.cUnit ~= "player" then return; end
+	if self.cUnit ~= "player" or not config.SHAMAN then return; end
 	TotemFrame:ClearAllPoints()
-	TotemFrame:SetPoint('TOP', self.Power, 'BOTTOM', -2, -0)
+	TotemFrame:SetPoint('TOP', self.Power, 'BOTTOM', -6, -0)
 	TotemFrame:SetParent(self)
 	TotemFrame:SetScale(uconfig.scale * 0.65)
 	TotemFrame:Show()
@@ -236,33 +236,24 @@ function ns.classModule.SHAMAN(self, config, uconfig)
 end
 
 function ns.classModule.WARLOCK(self, config, uconfig)
-	if self.cUnit ~= "player" then return; end
-	WarlockPowerFrame:SetParent(self)
-	WarlockPowerFrame:SetScale(uconfig.scale * 0.8)
+	if self.cUnit ~= "player" or not config.WARLOCK then return; end
 	WarlockPowerFrame_OnLoad(WarlockPowerFrame)
+	WarlockPowerFrame:SetParent(self)
+	WarlockPowerFrame:ClearAllPoints()
+	WarlockPowerFrame:SetPoint('TOP', self, 'BOTTOM', 30, -2)
 
-	ShardBarFrame:SetScale(uconfig.scale * 0.8)
-	ShardBarFrame:ClearAllPoints()
-	ShardBarFrame:SetPoint('TOP', self, 'BOTTOM', 30, -2)
+	-- Affliction
 	for i = 1, 4 do
 		local shard = _G["ShardBarFrameShard"..i];
-		ns.PaintFrames(select(5,shard:GetRegions()))
+		ns.PaintFrames(select(5,shard:GetRegions()), .2)
 	end
 
 	-- Destruction
-	BurningEmbersBarFrame:SetScale(uconfig.scale * 0.8)
-	BurningEmbersBarFrame:ClearAllPoints()
-	BurningEmbersBarFrame:SetPoint('TOP', self, 'BOTTOM', 30, 0)
-	ns.PaintFrames(BurningEmbersBarFrame.background)
+	ns.PaintFrames(BurningEmbersBarFrame.background, .3)
 	for i = 1, 4 do
 		local ember = BurningEmbersBarFrame["ember"..i];
 		ns.PaintFrames(ember.border)
 	end
-
-	-- Demonology - Dont want to color this one
-	DemonicFuryBarFrame:SetScale(uconfig.scale * 0.8)
-	DemonicFuryBarFrame:ClearAllPoints()
-	DemonicFuryBarFrame:SetPoint('TOP', self, 'BOTTOM', 33, 12)
 end
 
 function ns.classModule.WARRIOR(self, config, uconfig)

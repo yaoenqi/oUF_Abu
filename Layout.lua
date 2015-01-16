@@ -585,7 +585,7 @@ local function CreateUnitLayout(self, unit)
 	-- Update layout
 	UpdateUnitFrameLayout(self, cUnit)
 	-- Load Class Modules
-	if ns.classModule[playerClass] then
+	if ns.classModule[playerClass] and config then
 		ns.classModule[playerClass](self, config, uconfig)
 	end
 	-- Combo Points

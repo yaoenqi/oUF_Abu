@@ -79,6 +79,15 @@ ns.defaultConfig = {
 	classPortraits = false,
 	showShrooms = true,
 
+	-- blizzard class stuff
+	DEATHKNIGHT = true,
+	DRUID = true,
+	PALADIN = true,
+	SHAMAN = true,
+	PRIEST = true,
+	MONK = true,
+	WARLOCK = true,
+
 	absorbBar = true,
 	absorbtexture = 'Interface\\AddOns\\oUF_Abu\\Media\\Texture\\absorbTexture',
 	absorbspark = 'Interface\\AddOns\\oUF_Abu\\Media\\Texture\\absorbSpark',
