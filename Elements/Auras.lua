@@ -65,51 +65,50 @@ local function Aura_OnClick(self)
 end
 
 function ns.PostCreateAuraIcon( element, button )
-	if (not button.Shadow) then
-		button:SetFrameLevel(1)
+	
+	button:SetFrameLevel(1)
+	button.overlay:SetTexture(ns.config.auraBorder, 'BORDER')
+	button.overlay:SetTexCoord(0, 1, 0, 1)
+	button.overlay:ClearAllPoints()
+	button.overlay:SetPoint('TOPRIGHT', button.icon, 1.35, 1.35)
+	button.overlay:SetPoint('BOTTOMLEFT', button.icon, -1.35, -1.35)
 
-		button.overlay:SetTexture(ns.config.auraBorder, 'BORDER')
-		button.overlay:SetTexCoord(0, 1, 0, 1)
-		button.overlay:ClearAllPoints()
-		button.overlay:SetPoint('TOPRIGHT', button.icon, 1.35, 1.35)
-		button.overlay:SetPoint('BOTTOMLEFT', button.icon, -1.35, -1.35)
+	button.Shadow = button:CreateTexture(nil, 'BACKGROUND')
+	button.Shadow:SetPoint('TOPLEFT', button.icon, 'TOPLEFT', -4, 4)
+	button.Shadow:SetPoint('BOTTOMRIGHT', button.icon, 'BOTTOMRIGHT', 4, -4)
+	button.Shadow:SetTexture(ns.config.auraShadow)
+	button.Shadow:SetVertexColor(0, 0, 0, 1)
 
-		button.Shadow = button:CreateTexture(nil, 'BACKGROUND')
-		button.Shadow:SetPoint('TOPLEFT', button.icon, 'TOPLEFT', -4, 4)
-		button.Shadow:SetPoint('BOTTOMRIGHT', button.icon, 'BOTTOMRIGHT', 4, -4)
-		button.Shadow:SetTexture(ns.config.auraShadow)
-		button.Shadow:SetVertexColor(0, 0, 0, 1)
-
-		if element.gap then
-			element.PostUpdateGapIcon = function(element, unit, icon, visibleBuffs)
-				icon.Shadow:Hide()
-			end
+	if element.gap then
+		element.PostUpdateGapIcon = function(element, unit, icon, visibleBuffs)
+			icon.Shadow:Hide()
 		end
-
-		button.count:SetFont(ns.config.fontNormal, 11, 'THINOUTLINE')
-		button.count:SetShadowOffset(0, 0)
-		button.count:SetPoint('BOTTOMRIGHT', 2, 0)
-		tinsert(ns.fontstrings, button.count)
-
-		button.cd:SetReverse(true)
-		button.cd:SetDrawEdge(true)
-		button.cd:ClearAllPoints()
-		button.cd:SetPoint('TOPRIGHT', button.icon, 'TOPRIGHT', -1, -1)
-		button.cd:SetPoint('BOTTOMLEFT', button.icon, 'BOTTOMLEFT', 1, 1)
-
-		if ns.config.useAuraTimer then
-			button.cd.noCooldownCount = true
-			if button.cd.SetHideCountdownNumbers then
-				button.cd:SetHideCountdownNumbers(true)
-			end
-			button.timer = ns.CreateFontString(button.cd, 12, 'CENTER', 'THINOUTLINE')
-			button.timer:SetPoint("CENTER", button, "TOP", 0, 0)
-		end
-
-		button:RegisterForClicks("LeftButtonUp")
-		button:SetScript("OnClick", Aura_OnClick)
 	end
 
+	button.count:SetFont(ns.config.fontNormal, 11, 'THINOUTLINE')
+	button.count:SetShadowOffset(0, 0)
+	button.count:SetPoint('BOTTOMRIGHT', 2, 0)
+	tinsert(ns.fontstrings, button.count)
+
+	button.cd:SetReverse(true)
+	button.cd:SetDrawEdge(true)
+	button.cd:ClearAllPoints()
+	button.cd:SetPoint('TOPRIGHT', button.icon, 'TOPRIGHT', -1, -1)
+	button.cd:SetPoint('BOTTOMLEFT', button.icon, 'BOTTOMLEFT', 1, 1)
+
+	if ns.config.useAuraTimer then
+		button.cd.noCooldownCount = true
+		if button.cd.SetHideCountdownNumbers then
+			button.cd:SetHideCountdownNumbers(true)
+		end
+		button.timer = ns.CreateFontString(button.cd, 12, 'CENTER', 'THINOUTLINE')
+		button.timer:SetPoint("CENTER", button, "TOP", 0, 0)
+	end
+
+	button:RegisterForClicks("LeftButtonUp")
+	button:SetScript("OnClick", Aura_OnClick)
+
+	element.showStealableBuffs = true
 	button.icon:SetTexCoord(0.03, 0.97, 0.03, 0.97)
 end
 
@@ -119,17 +118,16 @@ function ns.PostUpdateAuraIcon( element, unit, button, index, offset )
 	button.overlay:Show()
 	button.Shadow:Show()
 
-	if (canStealOrPurge) then
-		button.overlay:SetVertexColor(.99, .97, .65)
+	--if (canStealOrPurge) then
+	--	button.overlay:SetVertexColor(.99, .97, .65)
+	--else
+	if (button.isDebuff) then
+		local color = DebuffTypeColor[dtype] or DebuffTypeColor['none']
+		button.overlay:SetVertexColor(color.r, color.g, color.b)
 	else
-		if (button.isDebuff) then
-			local color = DebuffTypeColor[dtype] or DebuffTypeColor['none']
-			button.overlay:SetVertexColor(color.r, color.g, color.b)
-		else
-			ns.PaintFrames(button.overlay)
-		end
+		ns.PaintFrames(button.overlay)
 	end
-
+	--end
 	button.spellID = spellID
 
 	if ns.config.colorPlayerDebuffsOnly and unit == 'target' and button.isDebuff and not button.isPlayer then

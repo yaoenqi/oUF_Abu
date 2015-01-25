@@ -63,7 +63,7 @@ local function getClassColor(unit)
 	else
 		return colors.reaction[UnitReaction(unit, "player") or 5]
 	end
-	return {1,1,1}
+	return colors.fallback
 end
 
 local UnitIsGhost, GetSpellInfo, UnitIsConnected, UnitIsDead, UnitIsDeadOrGhost, UnitIsPlayer, UnitReaction, UnitIsEnemy, UnitSelectionColor =
