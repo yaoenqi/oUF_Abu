@@ -79,7 +79,7 @@ function ns.PostCreateAuraIcon( element, button )
 	button.Shadow:SetTexture(ns.config.auraShadow)
 	button.Shadow:SetVertexColor(0, 0, 0, 1)
 
-	if element.gap then
+	if element.gap and not element.PostUpdateGapIcon then
 		element.PostUpdateGapIcon = function(element, unit, icon, visibleBuffs)
 			icon.Shadow:Hide()
 		end
@@ -109,6 +109,8 @@ function ns.PostCreateAuraIcon( element, button )
 	button:SetScript("OnClick", Aura_OnClick)
 
 	element.showStealableBuffs = true
+	button.stealable:SetDrawLayer("OVERLAY", 1)
+
 	button.icon:SetTexCoord(0.03, 0.97, 0.03, 0.97)
 end
 
@@ -118,16 +120,14 @@ function ns.PostUpdateAuraIcon( element, unit, button, index, offset )
 	button.overlay:Show()
 	button.Shadow:Show()
 
-	--if (canStealOrPurge) then
-	--	button.overlay:SetVertexColor(.99, .97, .65)
-	--else
 	if (button.isDebuff) then
 		local color = DebuffTypeColor[dtype] or DebuffTypeColor['none']
 		button.overlay:SetVertexColor(color.r, color.g, color.b)
 	else
-		ns.PaintFrames(button.overlay)
+		local color = ns.config.frameColor
+		button.overlay:SetVertexColor(color[1], color[2], color[3])
 	end
-	--end
+
 	button.spellID = spellID
 
 	if ns.config.colorPlayerDebuffsOnly and unit == 'target' and button.isDebuff and not button.isPlayer then
