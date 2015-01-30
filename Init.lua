@@ -1,5 +1,6 @@
 
-local _, ns = ...
+local OUF_ABU, ns = ...
+local OUF_ABUOPTIONS = "oUF_AbuOptions"
 
 ns.fontstrings = {} -- For fonstrings
 ns.fontstringsB = {}-- For big fonstrings
@@ -7,7 +8,6 @@ ns.statusbars = {}  -- For statusbars
 ns.paintframes = {} -- For coloring frames
 
 local L = {
-	OptionsNotLoaded = 'Options could not be loaded because it is %s.',
 	OptionsLoadAfterCB = 'Options will be loaded after combat!',
 }
 
@@ -52,7 +52,7 @@ oUFAbu:SetScript("OnEvent", function(self, event, ...)
 end)
 
 function oUFAbu:ADDON_LOADED(event, addon)
-	if addon == "oUF_Abu" then
+	if addon == OUF_ABU then
 		local SharedMedia = LibStub("LibSharedMedia-3.0", true)
 		if SharedMedia then
 			SharedMedia:Register("font", "Accidental Presidency",   [[Interface\AddOns\oUF_Abu\Media\Font\fontNumber.ttf]])
@@ -195,7 +195,7 @@ end
 
 ----------------------[[	Setup Options   ]]-------------------------
 function oUFAbu:SetupOptions()
-	local options = CreateFrame('Frame', 'oUF_AbuOptions')
+	local options = CreateFrame('Frame', OUF_ABUOPTIONS)
 	options:Hide()
 	options.name = 'oUF Abu'
 
@@ -232,7 +232,7 @@ function oUFAbu:SetupOptions()
 end
 
 function oUFAbu:LoadOptions()
-	if IsAddOnLoaded("oUF_AbuOptions") then return true; end
+	if IsAddOnLoaded(OUF_ABUOPTIONS) then return true; end
 
 	if InCombatLockdown() then
 		ns.Print(L['OptionsLoadAfterCB'])
@@ -246,14 +246,10 @@ function oUFAbu:PLAYER_REGEN_ENABLED(event)
 	if event then
 		self:UnregisterEvent(event)
 	end
-	local loaded, reason = LoadAddOn('oUF_AbuOptions')
+	local loaded, reason = LoadAddOn(OUF_ABUOPTIONS)
 	if not loaded then
-		if reason == "DISABLED" then
-			EnableAddOn('oUF_AbuOptions')
-			LoadAddOn('oUF_AbuOptions')
-		else
-			ns.Print(L['OptionsNotLoaded'], _G['ADDON_'..reason]:lower())
-		end
+		ns.Print(string.format(ADDON_LOAD_FAILED, OUF_ABUOPTIONS, _G['ADDON_'..reason]))
+		return;
 	end
 	InterfaceOptionsFrame_OpenToCategory('oUF Abu')
 	InterfaceOptionsFrame_OpenToCategory('oUF Abu')

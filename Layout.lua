@@ -435,9 +435,9 @@ local function CreateUnitLayout(self, unit)
 	if (self.IsMainFrame) then
 		--[[ 	Level text		]]
 		self.Level = self:CreateFontString(nil, 'ARTWORK')
-		self.Level:SetFont('Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontNumber.ttf', 17, 'THINOUTLINE')
+		self.Level:SetFont('Interface\\AddOns\\oUF_Abu\\Media\\Font\\fontNumber.ttf', 16, 'THINOUTLINE')
 		self.Level:SetShadowOffset(0, 0)
-		self.Level:SetPoint('CENTER', self.Texture, (cUnit == 'player' and -63) or 63.5, -16)
+		self.Level:SetPoint('CENTER', self.Texture, (cUnit == 'player' and -63) or 63, -16)
 		self:Tag(self.Level, '[level]')
 
 		--[[ PvP Icon  ]] --
