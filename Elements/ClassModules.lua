@@ -1,18 +1,5 @@
 local _, ns = ...
 ns.classModule = {}
--- group, type, order, key, dur, from, to
-local function AddAnimation(group, type, order, key, dur, ...)
-	local a = group:CreateAnimation(type)
-	if order then 	a:SetOrder(order) 	end
-	if key then 	a:SetChildKey(key) 	end
-	if dur then 	a:SetDuration(dur) 	end
-	if type == "ALPHA" then
-		local from, to = ...
-		if from then 	a:SetFromAlpha(from) 		end
-		if to then 		a:SetToAlpha(to) 			end
-	end
-	return a
-end
 
 function ns.classModule.DEATHKNIGHT(self, config, uconfig)
 	if self.cUnit ~= "player" or not config.DEATHKNIGHT then return; end
@@ -204,10 +191,11 @@ function ns.classModule.PRIEST(self, config, uconfig)
 end
 
 function ns.classModule.ROGUE(self, config, uconfig)
-	if self.cUnit ~= "player" then return; end
-	local Aurabar = ns.CreateOutsideBar(self, true, 1, .6, 0)
-	Aurabar.spellID = 5171
-	self.Aurabar = Aurabar
+	if self.cUnit == "player" and config.showSlicenDice then
+		local Aurabar = ns.CreateOutsideBar(self, true, 1, .6, 0)
+		Aurabar.spellID = 5171
+		self.Aurabar = Aurabar
+	end
 end
 
 function ns.classModule.SHAMAN(self, config, uconfig)
@@ -322,8 +310,13 @@ function ns.CreateComboPoints(self)
 
 			p.anim = p.flash:CreateAnimationGroup()
 			p.anim:SetToFinalAlpha(true)
-			AddAnimation(p.anim, "ALPHA", 1, nil, .2, 0, 1)
-			AddAnimation(p.anim, "ALPHA", 2, nil, .2, 1, 0)
+			for i = 1, 2 do
+				local a = p.anim:CreateAnimation('ALPHA')
+				a:SetOrder(i)
+				a:SetDuration(0.2)
+				a:SetFromAlpha(i == 1 and 0 or 1)
+				a:SetToAlpha(i == 1 and 1 or 0)
+			end
 
 			if (anticipation) then
 				anticipation.maxStacks = MAX_COMBO_POINTS
