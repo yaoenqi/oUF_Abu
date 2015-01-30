@@ -4,10 +4,6 @@
 --]]--------------------------------------------------------------------
 
 local _, ns = ...
-local _, playerClass, classId = UnitClass("player")
-
-local isPhysicalUser = ns.MultiCheck(classId, 1, 2, 3, 4, 6, 7, 10, 11)
-local isSpellUser = ns.MultiCheck(classId, 5, 7, 8, 9, 11)
 
 --[[ Default Aura Filter ]]
 local BaseAuras = {
@@ -44,30 +40,6 @@ do
 		end
 	end
 end
-
-------------------------------------------------------------------------
---	Magic Vulnerability
-
-if isSpellUser then
-	BaseAuras[1490]  = 0 -- Curse of the Elements (warlock)
-	BaseAuras[34889] = 0 -- Fire Breath (hunter dragonhawk)
-	BaseAuras[24844] = 0 -- Lightning Breath (hunter wind serpent)
-	BaseAuras[93068] = 0 -- Master Poisoner (rogue)
-end
-
-------------------------------------------------------------------------
---	Physical Vulnerability
-
-if isPhysicalUser then
-	BaseAuras[55749] = 0 -- Acid Rain (hunter worm)
-	BaseAuras[35290] = 0 -- Gore (hunter boar)
---	BaseAuras[81326] = 0 -- Physical Vulnerability (death knight, paladin, warrior)
-	BaseAuras[50518] = 0 -- Ravage (hunter ravager)
-	BaseAuras[57386] = 0 -- Stampede (hunter rhino)
-	BaseAuras[113746]= 0 -- Weakened Armor
-	BaseAuras[64382] = 0 -- Shattering Throw
-end
-
 
 ------------------------------------------------------------------------
 
@@ -160,11 +132,10 @@ ns.CustomAuraFilters = {
 		end
 	end,
 	party = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, canStealOrPurge, shouldConsolidate, spellId, canApplyAura, isBossDebuff, isCastByPlayer, ...)
-		local v = genFilter[spellId]
 		if (iconFrame.filter == "HELPFUL") then -- BUFFS
 			return (not shouldConsolidate and isPlayer[caster]) or isBossDebuff
 		else
-			return v ~= 3 	-- DEBUFFS
+			return genFilter[spellId] ~= 3 	-- DEBUFFS
 		end
 	end,
 	arena = function(self, unit, iconFrame, name, rank, icon, count, debuffType, duration, expirationTime, caster, canStealOrPurge, shouldConsolidate, spellId, canApplyAura, isBossDebuff, isCastByPlayer, ...)

@@ -1,12 +1,11 @@
-
 local _, ns = ...
 local oUF = ns.oUF or oUF
 
 local PortraitTimerDB = { }
 
 
-local 	GetTime, GetSpellInfo, UnitBuff, UnitDebuff = 
-		GetTime, GetSpellInfo, UnitBuff, UnitDebuff
+local 	GetTime, GetSpellInfo, UnitAura = 
+		GetTime, GetSpellInfo, UnitAura
 local floor, fmod = floor, math.fmod
 local day, hour, minute = 86400, 3600, 60
 
@@ -81,11 +80,7 @@ local Update = function(self, event, unit)
 
 	local pt = self.PortraitTimer
 	for i = 1, #PortraitTimerDB do
-		local spell = PortraitTimerDB[i].name
-		local name, _, texture, _, _, duration, expires
-		if spell then
-			name, _, texture, _, _, duration, expires = UnitAura(unit, spell, "", PortraitTimerDB[i].filter)
-		end
+		local name, _, texture, _, _, duration, expires = UnitAura(unit, PortraitTimerDB[i].name, "", PortraitTimerDB[i].filter)
 		if name then
 			UpdateIcon(pt, texture, duration, expires)
 
