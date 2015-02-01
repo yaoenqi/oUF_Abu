@@ -5,6 +5,7 @@
 	TODO work with non UIParent paraents
 --]]-----------------------------------------------------------------------------
 local _, ns = ...
+local L = ns.L
 
 ---------------------------------------------------------------------------------
 --		Functions for showing phony unitframes
@@ -183,6 +184,8 @@ local function CreateAnchor(frame, name, key1, key2, tlP, brP, strata)
 			self:StopMovingOrSizing()
 			anchor_Save(self)
 			self:Update()
+			
+			
 		end
 		self.isMoving = nil
 	end)
@@ -206,9 +209,9 @@ local function CreateAnchor(frame, name, key1, key2, tlP, brP, strata)
 	-- Tooltips
 	anchor:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_TOP")
-		GameTooltip:AddLine(self:GetName():gsub('Anchor', ''))
-		GameTooltip:AddLine("Hold down SHIFT to drag",1,1,1)
-		GameTooltip:AddLine("ALT click to reset position",1,1,1)
+		GameTooltip:AddLine(self.objectname)
+		GameTooltip:AddLine(L.Anchors_tooltipline1,1,1,1)
+		GameTooltip:AddLine(L.Anchors_tooltipline2,1,1,1)
 		GameTooltip:Show()
 	end)
 	anchor:SetScript("OnLeave", function(self)
@@ -225,6 +228,7 @@ function ns.CreateUnitAnchor(frame, tlP, brP, strata, ...) -- ... = unit(s)
 
 	anchor.units = {...}
 	anchor.isHeader = frame:GetAttribute('oUF-headerType') and true or false
+	anchor.objectname = L[key1]
 
 	enableDummies(anchor)
 	-- Forces the creation of header children, so we get the full size
@@ -240,7 +244,10 @@ end
 
 function ns.CreateCastbarAnchor(frame)
 	local name = frame:GetName()
-	local a = CreateAnchor(frame, name, frame:GetParent().cUnit, 'cbposition', name, name)
+	local key1 = frame:GetParent().cUnit
+
+	local a = CreateAnchor(frame, name, key1, 'cbposition', name, name)
+	a.objectname = L[key1].." "..L.Castbar
 
 	a:Update()
 	a:Hide()
@@ -249,17 +256,17 @@ function ns.CreateCastbarAnchor(frame)
 end
 
 function oUFAbu:PLAYER_REGEN_DISABLED()
-	self:Print("Nice one, you broke it! Frames locked.")
+	self:Print(L.Anchors_Locked)
 	self:ToggleAllAnchors(true)
 end
 
 local LOCKED = true
 function oUFAbu:ToggleAllAnchors(force_Lock)
-
+	
 	if LOCKED and (not force_Lock) then
-		if InCombatLockdown() then return self:Print("Can't unlock frames in combat."); end
+		if InCombatLockdown() then return self:Print(L.Anchor_InCombat); end
 		self:RegisterEvent("PLAYER_REGEN_DISABLED")
-		self:Print("Frame unlocked!")
+		self:Print(L.Anchors_Unlocked)
 
 		for i = 1, #AnchorFrames do
 			AnchorFrames[i]:Show()
@@ -267,7 +274,7 @@ function oUFAbu:ToggleAllAnchors(force_Lock)
 
 	elseif (not LOCKED) then
 		self:UnregisterEvent("PLAYER_REGEN_DISABLED")
-		self:Print("Frame locked!")	
+		self:Print(L.Anchors_Locked)	
 
 		for i = 1, #AnchorFrames do
 			AnchorFrames[i]:Hide()
@@ -280,7 +287,7 @@ end
 
 function oUFAbu:UpdateAnchorPositions()
 	if InCombatLockdown() then
-		self:Print("Not in combat jackass")
+		self:Print(L.Anchor_InCombat)
 		return
 	end
 	for i = 1, #AnchorFrames do

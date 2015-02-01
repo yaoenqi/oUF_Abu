@@ -174,4 +174,11 @@ AuraList.Taunt = {
 	'355',		-- Taunt
 	'114198',	-- Mocking Banner
 }
+
+for k, v in pairs(AuraList) do
+	for i = 1, #v do
+		assert(GetSpellInfo(v[i]), string.format("Invalid spellID: %d", v[i]))
+	end
+end
+
 ns.AuraList = AuraList

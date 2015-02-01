@@ -1,5 +1,7 @@
 local _, ns = ...
 
+-- Default Profile Name
+oUFAbu.DEFAULT = "Default"
 -- For handling everything with profiles and settings
 
 -- [[ Utility Methods ]] --
@@ -42,7 +44,7 @@ end
 function oUFAbu:CreateProfile(id)
 	if isValidID(id) and not oUFAbuSettings[id] then
 		oUFAbuSettings[id] = initDB(oUFAbuSettings[id], ns.defaultConfig)
-		if (id ~= "Default") then
+		if (id ~= self.DEFAULT) then
 			self:SetProfile(id)
 		end
 		return true
@@ -51,9 +53,9 @@ function oUFAbu:CreateProfile(id)
 end
 
 function oUFAbu:DeleteProfile(id)
-	if not oUFAbuSettings[id] or id == 'Default' then return false end
+	if not oUFAbuSettings[id] or id == self.DEFAULT then return false end
 	if ( id == self:GetProfileID() ) then
-		self:SetProfile('Default')
+		self:SetProfile(self.DEFAULT)
 	end
 
 	oUFAbuSettings[id] = nil
@@ -90,7 +92,7 @@ function oUFAbu:SetProfile(id)
 		ns.config = oUFAbuSettings[id]
 		return true
 	else
-		return self:SetProfile('Default')
+		return self:SetProfile(self.DEFAULT)
 	end
 end
 
@@ -110,7 +112,7 @@ function oUFAbu:CreateAuraProfile(id)
 	if isValidID(id) and not oUFAbuAuraFilters[id] then
 
 		oUFAbuAuraFilters[id] = initDB(oUFAbuAuraFilters[id], ns.defaultAuras)
-		if (id ~= "Default") then
+		if (id ~= self.DEFAULT) then
 			self:SetAuraProfile(id)
 		end
 		return true
@@ -119,9 +121,9 @@ function oUFAbu:CreateAuraProfile(id)
 end
 
 function oUFAbu:DeleteAuraProfile(id)
-	if (not oUFAbuAuraFilters[id]) or id == 'Default' then return false end
+	if (not oUFAbuAuraFilters[id]) or id == self.DEFAULT then return false end
 	if ( id == self:GetAuraProfileID() ) then
-		self:SetAuraProfile('Default')
+		self:SetAuraProfile(self.DEFAULT)
 	end
 
 	oUFAbuAuraFilters[id] = nil
@@ -133,7 +135,7 @@ function oUFAbu:GetAuraSettings()
 end
 
 function oUFAbu:GetAuraProfileID()
-	return oUFAbuProfile['auraprofile'] or 'Default'
+	return oUFAbuProfile['auraprofile'] or self.DEFAULT
 end
 
 function oUFAbu:GetAllAuraProfiles()
@@ -168,12 +170,12 @@ function oUFAbu:SetupSettings()
 
 	-- Settings
 	_G.oUFAbuSettings = initDB(oUFAbuSettings)
-	self:CreateProfile('Default')
+	self:CreateProfile(self.DEFAULT)
 	self:SetProfile(self:GetProfileID())
 
 	-- Auras
 	_G.oUFAbuAuraFilters = initDB(oUFAbuAuraFilters)
-	self:CreateAuraProfile('Default')
+	self:CreateAuraProfile(self.DEFAULT)
 	self:SetAuraProfile(self:GetAuraProfileID())
 end
 

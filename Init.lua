@@ -7,9 +7,8 @@ ns.fontstringsB = {}-- For big fonstrings
 ns.statusbars = {}  -- For statusbars
 ns.paintframes = {} -- For coloring frames
 
-local L = {
-	OptionsLoadAfterCB = 'Options will be loaded after combat!',
-}
+ns.L = {}
+ns.locale = GetLocale()
 
 ------------------------------------------------------------------------
 --  Colors
@@ -235,7 +234,7 @@ function oUFAbu:LoadOptions()
 	if IsAddOnLoaded(OUF_ABUOPTIONS) then return true; end
 
 	if InCombatLockdown() then
-		ns.Print(L['OptionsLoadAfterCB'])
+		ns.Print(L['OptionsLoadAfterCombat'])
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
 		return false
 	end
@@ -246,6 +245,8 @@ function oUFAbu:PLAYER_REGEN_ENABLED(event)
 	if event then
 		self:UnregisterEvent(event)
 	end
+
+	self.localization = ns.L -- locale for options
 	local loaded, reason = LoadAddOn(OUF_ABUOPTIONS)
 	if not loaded then
 		ns.Print(string.format(ADDON_LOAD_FAILED, OUF_ABUOPTIONS, _G['ADDON_'..reason]))

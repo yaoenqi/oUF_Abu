@@ -7,9 +7,10 @@
 ## SavedVariablesPerCharacter: oUFAbuProfile
 
 Libs\libs.xml
-AuraList.lua
 
 Init.lua
+Localization\localization.xml
+AuraList.lua
 
 Modules\modules.xml
 Settings\settings.xml

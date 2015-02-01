@@ -91,7 +91,7 @@ local function Update(self, event, unit)
 
 	local realPerc = math.floor(perc/MAXMOD + .5)
 	element:SetValue(realPerc)
-
+	
 	if element.Percent then
 		element.Percent:SetText(realPerc .. "%")
 	end
@@ -157,7 +157,7 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		element:SetMinMaxValues(0, MAXMOD*100)
+		element:SetMinMaxValues(0, 100)
 		
 		if (element:IsObjectType('StatusBar') and (not element:GetStatusBarTexture())) then
 			element:SetStatusBarTexture([=[Interface\TargetingFrame\UI-StatusBar]=])
@@ -183,6 +183,13 @@ local function Enable(self, unit)
 		self:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR', VisibilityPath)
 		self:RegisterEvent("UNIT_ENTERED_VEHICLE", VisibilityPath)
 		self:RegisterEvent("UNIT_EXITED_VEHICLE", VisibilityPath)
+
+		-- Smoothing
+		oUF:RegisterInitCallback(function(obj)
+			if obj.SmoothBar and obj.Resolve and (not obj.Resolve.SetValue_) then
+				obj:SmoothBar(obj.Resolve)
+			end
+		end)
 		return true
 	end
 end
@@ -196,5 +203,4 @@ local function Disable(self)
 		self:UnregisterEvent("UNIT_EXITED_VEHICLE", VisibilityPath)
 	end
 end
-
 oUF:AddElement('Resolve', Path, Enable, Disable)

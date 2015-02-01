@@ -1,9 +1,5 @@
 local _, ns = ...
-
-local L = {
-	AuraAdded = 'Spell "%s" (%d) was added to the aura filter.',
-	AuraExists = 'Spell "%s" (%d) already exists',
-}
+local L = ns.L
 
 local floor, format = floor, string.format
 local MINUTE = 60
