@@ -199,7 +199,7 @@ function oUFAbu:SetupOptions()
 	options.name = 'oUF Abu'
 
 	local auras = CreateFrame("Frame", 'oUF_AbuAuraFilters', options)
-	auras.name = 'Aura Filters'
+	auras.name = ns.L.AuraFilters
 	auras.parent = options.name
 
 	options:SetScript("OnShow", function(self)

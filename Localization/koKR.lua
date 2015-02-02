@@ -144,6 +144,7 @@ local L = ns.L
 --	L.Positions_X = "Horizontal [x]"
 --	L.Positions_Y = "Vertical [y]"
 --	L.Positions_Point = "Point"
+--	L.Positions_Toggle = "Toggle Anchors"
 
 --	---- UNITS
 --	L.Tag_Numeric = "Numeric"

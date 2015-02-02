@@ -138,11 +138,12 @@ local L = ns.L
 	L.Font_NameOutline = "名字轮廓类型"
 
 	---- POSITIONS
-	L.Positions = "Positions"
-	L.Positions_Name = "Unit Frame"
-	L.Positions_X = "Horizontal [x]"
-	L.Positions_Y = "Vertical [y]"
-	L.Positions_Point = "Point"
+--	L.Positions = "Positions"
+--	L.Positions_Name = "Unit Frame"
+--	L.Positions_X = "Horizontal [x]"
+--	L.Positions_Y = "Vertical [y]"
+--	L.Positions_Point = "Point"
+--	L.Positions_Toggle = "Toggle Anchors"
 
 	---- UNITS
 	L.Tag_Numeric = "数值"

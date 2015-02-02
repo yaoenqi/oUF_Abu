@@ -3,9 +3,9 @@ local L = ns.L
 
 
 --  [[ 		Main Addon 		]]  --
-	L.OptionsLoadAfterCombat = 'Options will be loaded after combat!'
-	L.AuraAdded = 'Spell "%s" (%d) was added to the aura filter.'
-	L.AuraExists = 'Spell "%s" (%d) already exists'
+	L.OptionsLoadAfterCombat = "Options will be loaded after combat!"
+	L.AuraAdded = "Spell '%s' (%d) was added to the aura filter."
+	L.AuraExists = "Spell '%s' (%d) already exists"
 	L.Anchors_Unlocked = "Frames unlocked."
 	L.Anchors_Locked = "Frames locked."
 	L.Anchors_tooltipline1 = "Hold SHIFT to drag"
@@ -143,6 +143,7 @@ local L = ns.L
 	L.Positions_X = "Horizontal [x]"
 	L.Positions_Y = "Vertical [y]"
 	L.Positions_Point = "Point"
+	L.Positions_Toggle = "Toggle Anchors"
 
 	---- UNITS
 	L.Tag_Numeric = "Numeric"
