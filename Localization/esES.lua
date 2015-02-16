@@ -114,17 +114,11 @@ local L = ns.L
 --	L.Color_Latency = "Castbar Latency Color"
 --	L.Color_Backdrop = "Bar Backdrop Color"
 
---	L.Color_Health = "Health Color"
---	L.Color_HealthCustom = "Custom Health Color"
---	L.Color_Power = "Power Color"
---	L.Color_PowerCustom = "Custom Power Color"
-
+--	L.Color_HealthBar = "Health Bar Color"
+--	L.Color_PowerBar = "Power Bar Color"
 --	L.Color_NameText = "Name Text Color"
---	L.Color_NameTextCustom = "Custom Name Text Color"
 --	L.Color_HealthText = "Health Text Color"
---	L.Color_HealthTextCustom = "Custom Health Text Color"
 --	L.Color_PowerText = "Power Text Color"
---	L.Color_PowerTextCustom = "Custom Power Text Color"
 
 --	---- FONTS
 --	L.Font = "Font"

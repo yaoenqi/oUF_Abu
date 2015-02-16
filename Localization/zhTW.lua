@@ -3,17 +3,17 @@ if ns.locale ~= "ztTW" then return; end
 local L = ns.L
 
 --  [[ 		Main Addon 		]]  --
---	L.OptionsLoadAfterCombat = 'Options will be loaded after combat!'
---	L.AuraAdded = 'Spell "%s" (%d) was added to the aura filter.'
---	L.AuraExists = 'Spell "%s" (%d) already exists'
---	L.Anchors_Unlocked = "Frames unlocked."
---	L.Anchors_Locked = "Frames locked."
---	L.Anchors_tooltipline1 = "Hold SHIFT to drag"
---	L.Anchors_tooltipline2 = "ALT-click to reset position"
---	L.Anchors_InCombat = "Can't unlock frames in combat."
+	L.OptionsLoadAfterCombat = '選項將在脫離戰鬥後加載!'
+	L.AuraAdded = 'Spell "%s" (%d) 已添加到光環過濾器.'
+	L.AuraExists = 'Spell "%s" (%d) 已存在'
+	L.Anchors_Unlocked = "框架已解鎖."
+	L.Anchors_Locked = "框架已鎖定."
+	L.Anchors_tooltipline1 = "按住 SHIFT鍵 拖動"
+	L.Anchors_tooltipline2 = "按住 ALT鍵單擊 重置位置"
+	L.Anchors_InCombat = "不能在戰鬥中解鎖框架."
 
 --  [[		OPTIONS 		]] --
-	L.ReloadUIWarning_Desc = "你的改動需要重載 \n 界面來完全生效,重載?"
+	L.ReloadUIWarning_Desc = "你的改動需要重載 \n 界面來完全生效,是否重載?"
 	L.NoEffectUntilRL = "這些設置將在重載后生效."
 
 	---- PROFILES
@@ -23,32 +23,32 @@ local L = ns.L
 	L.AuraFilters = "光環過濾器"
 
 	L.AuraFilterGeneralDesc = "添加一個到新光環或編輯現有的."
-	L.AllFrames = "所有框體"
+	L.AllFrames = "所有框架"
 
-	L.AuraFilterArenaDesc = "競技場框體增益白名單."
-	L.ArenaFrames = "競技場框體"
+	L.AuraFilterArenaDesc = "競技場框架增益白名單."
+	L.ArenaFrames = "競技場框架"
 
-	L.AuraFilterBossDesc = "Boss框體減益白名單."
-	L.BossFrames = "Boss框體"
+	L.AuraFilterBossDesc = "首領框架減益白名單."
+	L.BossFrames = "首領框架"
 
 	L.ShowAll = "顯示所有"
 	L.OnlyOwn = "僅自己的"
-	L.HideOnFriendly = "隱藏友方"
+	L.HideOnFriendly = "隱藏友方的"
 	L.NeverShow = "從不顯示"
 
-	--L.Auras_EnterSpellID = "Enter a Spell ID"
-	--L.Auras_AlreadyAdded = "Already added!"
-	--L.Auras_InvalidSpellID = "Invalid Spell ID!"
+	L.Auras_EnterSpellID = "輸入一個法術ID"
+	L.Auras_AlreadyAdded = "已添加!"
+	L.Auras_InvalidSpellID = "無效的法術ID!"
 
 	---- GENERAL PANEL
 	L.General = "基本"
 
 	L.General_ClassModule = "啓用默認職業模塊"
 	L.General_ClassModuleTip = "爲你的職業啓用暴雪模塊."
-	L.General_Party = "啓用小隊框體"
-	L.General_PartyInRaid = "团隊中顯示小隊框體"
-	L.General_Arena = "啓用競技場框體"
-	L.General_Boss = "啓用Boss框體"
+	L.General_Party = "啓用小隊框架"
+	L.General_PartyInRaid = "团隊中顯示小隊框架"
+	L.General_Arena = "啓用競技場框架"
+	L.General_Boss = "啓用首領框架"
 	L.General_Castbars = "啓用施法條"
 	L.General_Ticks = "顯示引導法術頻率"
 	L.General_PTimer = "顯示頭像計時"
@@ -57,18 +57,18 @@ local L = ns.L
 	L.General_OnlyPlayer = "只對玩家減益着色"
 	L.General_AuraTimer = "顯示光環計時器"
 	L.General_AuraTimerTip = "禁用内置光環計時器"
-	L.General_Click = "點擊穿過框體"
-	L.General_ClickTip = "使框體可以點擊穿過."
+	L.General_Click = "點擊穿過框架"
+	L.General_ClickTip = "使框架可以點擊穿過."
 	L.General_ModKey = "焦點組合按鍵"
 	L.General_ModButton = "焦點鼠標按鍵"
 	L.General_Absorb = "啓用吸收量條"
 	L.General_AbsorbTip = "爲一個單位顯示一個總吸收量條."
 	L.General_ClassP = "啓用職業圖標頭像"
 	L.General_ClassPTip = "顯示一個職業圖標替代玩家頭像."
-	L.General_Resolve = "啓用堅毅條"
-	L.General_ResolveTip = "爲防護戰士在玩家框體上顯示一個堅毅條."
-	L.General_Enrage = "啓用戰士怒氣條"
-	L.General_EnrageTip = "爲狂怒戰士在玩家框體上顯示一個怒氣條."
+	L.General_Resolve = "啓用防護戰士堅毅條"
+	L.General_ResolveTip = "爲防護戰士在玩家框架上顯示一個堅毅條."
+	L.General_Enrage = "啓用狂怒戰士怒氣條"
+	L.General_EnrageTip = "爲狂怒戰士在玩家框架上顯示一個怒氣條."
 	L.General_WSBar = "啓用虛弱靈魂條"
 	L.General_WSBarTip = "爲牧師顯示一個虛弱靈魂條."
 	L.General_Arcane = "啓用法師奧術充能"
@@ -83,20 +83,20 @@ local L = ns.L
 	---- TEXTURES,
 	L.Texture = "材質"
 	L.Texture_Statusbar = "狀態條材質"
-	L.Texture_Frames = "框體"
+	L.Texture_Frames = "框架"
 	L.Texture_Path = "自定義材質路徑"
 
-	L.Texture_Player = "玩家框體樣式"
+	L.Texture_Player = "玩家框架樣式"
 	L.Texture_Normal = "正常"
-	L.Texture_NormalTip = "正常的玩家框體"
+	L.Texture_NormalTip = "正常的玩家框架"
 	L.Texture_Rare = "稀有"
-	L.Texture_RareTip = "玩家框體使用稀有樣式"
+	L.Texture_RareTip = "玩家框架使用稀有樣式"
 	L.Texture_Elite = "精英"
-	L.Texture_EliteTip = "玩家框體使用精英樣式"
+	L.Texture_EliteTip = "玩家框架使用精英樣式"
 	L.Texture_RareElite = "稀有精英"
-	L.Texture_RareEliteTip = "玩家框體使用稀有精英樣式"
+	L.Texture_RareEliteTip = "玩家框架使用稀有精英樣式"
 	L.Texture_Custom = "自定義"
-	L.Texture_CustomTip = "自定義玩家框體"
+	L.Texture_CustomTip = "自定義玩家框架"
 
 	-- COLORS:
 	L.Color_Class = "職業顏色"
@@ -105,24 +105,18 @@ local L = ns.L
 	L.Color_GradientTip ="使用從綠色到紅色的漸變"
 	L.Color_Custom = "自定義顏色"
 	L.Color_CustomTip = "使用一個自定義顏色"
-	L.Color_Power = "能量顏色"
-	L.Color_PowerTip = "使用能量類型的顏色"
+	L.Color_Power = "能量類型顏色"
+	L.Color_PowerTip = "以能量類型着色"
 
-	L.Color_Frame = "框體覆蓋顏色"
+	L.Color_Frame = "框架覆蓋顏色"
 	L.Color_Latency = "施法條延遲顏色"
 	L.Color_Backdrop = "背景顏色"
 
-	L.Color_Health = "生命顏色"
-	L.Color_HealthCustom = "自定義生命顏色"
-	L.Color_Power = "能量顏色"
-	L.Color_PowerCustom = "自定義能量顏色"
-
-	L.Color_NameText = "名字文本顏色"
-	L.Color_NameTextCustom = "自定義名字文本顏色"
+	L.Color_HealthBar = "生命條顏色"
+	L.Color_PowerBar = "能量條顏色"
+	L.Color_NameText = "姓名文本顏色"
 	L.Color_HealthText = "生命值文本顏色"
-	L.Color_HealthTextCustom = "自定義生命值文本顏色"
 	L.Color_PowerText = "能量值文本顏色"
-	L.Color_PowerTextCustom = "自定義能量值文本顏色"
 
 	---- FONTS
 	L.Font = "字體"
@@ -138,12 +132,12 @@ local L = ns.L
 	L.Font_NameOutline = "名字輪廓類型"
 
 	---- POSITIONS
---	L.Positions = "Positions"
---	L.Positions_Name = "Unit Frame"
---	L.Positions_X = "Horizontal [x]"
---	L.Positions_Y = "Vertical [y]"
---	L.Positions_Point = "Point"
---	L.Positions_Toggle = "Toggle Anchors"
+	L.Positions = "位置"
+	L.Positions_Name = "單位框架"
+	L.Positions_X = "水平 [x]"
+	L.Positions_Y = "垂直 [y]"
+	L.Positions_Point = "錨點"
+	L.Positions_Toggle = "切換錨點"
 
 	---- UNITS
 	L.Tag_Numeric = "數值"
@@ -157,7 +151,7 @@ local L = ns.L
 	L.Tag_PercentTip = "顯示百分比"
 	L.Tag_MinimalTip = "顯示百分比,最大時隱藏"
 	L.Tag_DeficitTip = "顯示一個損失數值"
-	L.Tag_DisableTip = "禁用這個框體的文本"
+	L.Tag_DisableTip = "禁用這個框架的文本"
 
 	L.Icon_DontShow = "不顯示"
 	L.Icon_Left = "圖標在左側"
@@ -169,8 +163,8 @@ local L = ns.L
 	L.TOP = "顶部"
 	L.BOTTOM = "底部"
 	L.LEFT = "左側"
---	L.CENTER = "Center"
---	L.RIGHT = "Right"
+	L.CENTER = "居中"
+	L.RIGHT = "右側"
 
 	L.player = PLAYER
 	L.target = TARGET

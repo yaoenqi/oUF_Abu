@@ -1,16 +1,16 @@
 local _, ns = ...
-if ns.locale ~= "zhCN" then return; end
+if ns.locale  ~= "zhCN" then return; end
 local L = ns.L
 
 --  [[ 		Main Addon 		]]  --
---	L.OptionsLoadAfterCombat = 'Options will be loaded after combat!'
---	L.AuraAdded = 'Spell "%s" (%d) was added to the aura filter.'
---	L.AuraExists = 'Spell "%s" (%d) already exists'
---	L.Anchors_Unlocked = "Frames unlocked."
---	L.Anchors_Locked = "Frames locked."
---	L.Anchors_tooltipline1 = "Hold SHIFT to drag"
---	L.Anchors_tooltipline2 = "ALT-click to reset position"
---	L.Anchors_InCombat = "Can't unlock frames in combat."
+	L.OptionsLoadAfterCombat = '选项将在脱离战斗后加载!'
+	L.AuraAdded = 'Spell "%s" (%d) 已添加到光环过滤器.'
+	L.AuraExists = 'Spell "%s" (%d) 已存在'
+	L.Anchors_Unlocked = "框体已解锁."
+	L.Anchors_Locked = "框体已锁定."
+	L.Anchors_tooltipline1 = "按住 SHIFT键 拖动"
+	L.Anchors_tooltipline2 = "按住 ALT键单击 重置位置"
+	L.Anchors_InCombat = "不能在战斗中解锁框体."
 
 --  [[		OPTIONS 		]] --
 	L.ReloadUIWarning_Desc = "你的改动需要重载 \n 界面来完全生效,重载?"
@@ -22,23 +22,23 @@ local L = ns.L
 	---- AURA PANEL
 	L.AuraFilters = "光环过滤器"
 
-	L.AuraFilterGeneralDesc = "添加一个到新光环或编辑现有的."
+	L.AuraFilterGeneralDesc = "添加一个新光环过滤或编辑现有的."
 	L.AllFrames = "所有框体"
 
 	L.AuraFilterArenaDesc = "竞技场框体增益白名单."
 	L.ArenaFrames = "竞技场框体"
 
-	L.AuraFilterBossDesc = "Boss框体减益白名单."
-	L.BossFrames = "Boss框体"
+	L.AuraFilterBossDesc = "首领框体减益白名单."
+	L.BossFrames = "首领框体"
 
 	L.ShowAll = "显示所有"
 	L.OnlyOwn = "仅自己的"
-	L.HideOnFriendly = "隐藏友方"
+	L.HideOnFriendly = "隐藏友方的"
 	L.NeverShow = "从不显示"
 
-	--L.Auras_EnterSpellID = "Enter a Spell ID"
-	--L.Auras_AlreadyAdded = "Already added!"
-	--L.Auras_InvalidSpellID = "Invalid Spell ID!"
+	L.Auras_EnterSpellID = "输入一个法术ID"
+	L.Auras_AlreadyAdded = "已添加!"
+	L.Auras_InvalidSpellID = "无效的法术ID!"
 
 	---- GENERAL PANEL
 	L.General = "基本"
@@ -48,7 +48,7 @@ local L = ns.L
 	L.General_Party = "启用小队框体"
 	L.General_PartyInRaid = "团队中显示小队框体"
 	L.General_Arena = "启用竞技场框体"
-	L.General_Boss = "启用Boss框体"
+	L.General_Boss = "启用首领框体"
 	L.General_Castbars = "启用施法条"
 	L.General_Ticks = "显示引导法术频率"
 	L.General_PTimer = "显示头像计时"
@@ -65,9 +65,9 @@ local L = ns.L
 	L.General_AbsorbTip = "为一个单位显示一个总吸收量条."
 	L.General_ClassP = "启用职业图标头像"
 	L.General_ClassPTip = "显示一个职业图标替代玩家头像."
-	L.General_Resolve = "启用坚毅条"
+	L.General_Resolve = "启用防护战士坚毅条"
 	L.General_ResolveTip = "为防护战士在玩家框体上显示一个坚毅条."
-	L.General_Enrage = "启用战士怒气条"
+	L.General_Enrage = "启用狂怒战士怒气条"
 	L.General_EnrageTip = "为狂怒战士在玩家框体上显示一个怒气条."
 	L.General_WSBar = "启用虚弱灵魂条"
 	L.General_WSBarTip = "为牧师显示一个虚弱灵魂条."
@@ -105,24 +105,18 @@ local L = ns.L
 	L.Color_GradientTip ="使用从绿色到红色的渐变"
 	L.Color_Custom = "自定义颜色"
 	L.Color_CustomTip = "使用一个自定义颜色"
-	L.Color_Power = "能量颜色"
-	L.Color_PowerTip = "使用能量类型的颜色"
+	L.Color_Power = "能量类型颜色"
+	L.Color_PowerTip = "以能量类型着色"
 
 	L.Color_Frame = "框体覆盖颜色"
 	L.Color_Latency = "施法条延迟颜色"
 	L.Color_Backdrop = "背景颜色"
 
-	L.Color_Health = "生命颜色"
-	L.Color_HealthCustom = "自定义生命颜色"
-	L.Color_Power = "能量颜色"
-	L.Color_PowerCustom = "自定义能量颜色"
-
-	L.Color_NameText = "名字文本颜色"
-	L.Color_NameTextCustom = "自定义名字文本颜色"
-	L.Color_HealthText = "生命值文本颜色"
-	L.Color_HealthTextCustom = "自定义生命值文本颜色"
-	L.Color_PowerText = "能量值文本颜色"
-	L.Color_PowerTextCustom = "自定义能量值文本颜色"
+	L.Color_HealthBar = "生命条颜色"
+	L.Color_PowerBar = "能量条颜色"
+	L.Color_NameText = "姓名文字颜色"
+	L.Color_HealthText = "生命值文字颜色"
+	L.Color_PowerText = "能量值文字颜色"
 
 	---- FONTS
 	L.Font = "字体"
@@ -130,20 +124,20 @@ local L = ns.L
 	L.Font_ThinOutline = "细轮廓"
 	L.Font_ThickOutline = "粗轮廓"
 	L.Font_OutlineMono = "单色"
-	L.Font_Number = "数字字体"
-	L.Font_NumberSize = "数字字体大小"
-	L.Font_NumberOutline = "数字轮廓类型"
-	L.Font_Name = "名字字体"
-	L.Font_NameSize = "名字字体大小"
-	L.Font_NameOutline = "名字轮廓类型"
+	L.Font_Number = "数值字体"
+	L.Font_NumberSize = "数值字体大小"
+	L.Font_NumberOutline = "轮廓类型"
+	L.Font_Name = "姓名字体"
+	L.Font_NameSize = "姓名字体大小"
+	L.Font_NameOutline = "轮廓类型"
 
 	---- POSITIONS
---	L.Positions = "Positions"
---	L.Positions_Name = "Unit Frame"
---	L.Positions_X = "Horizontal [x]"
---	L.Positions_Y = "Vertical [y]"
---	L.Positions_Point = "Point"
---	L.Positions_Toggle = "Toggle Anchors"
+	L.Positions = "位置"
+	L.Positions_Name = "单位框体"
+	L.Positions_X = "水平 [x]"
+	L.Positions_Y = "垂直 [y]"
+	L.Positions_Point = "锚点"
+	L.Positions_Toggle = "切换锚点"
 
 	---- UNITS
 	L.Tag_Numeric = "数值"
@@ -169,8 +163,8 @@ local L = ns.L
 	L.TOP = "顶部"
 	L.BOTTOM = "底部"
 	L.LEFT = "左侧"
---	L.CENTER = "Center"
---	L.RIGHT = "Right"
+	L.CENTER = "中间"
+	L.RIGHT = "右侧"
 
 	L.player = PLAYER
 	L.target = TARGET
