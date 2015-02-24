@@ -519,6 +519,14 @@ local function CreateUnitLayout(self, unit)
 		self.Name.Bg:SetPoint('BOTTOMRIGHT', self.Health, 'TOPRIGHT')
 		self.Name.Bg:SetPoint('BOTTOMLEFT', self.Health, 'TOPLEFT') 
 		self.Name.Bg:SetTexture(textPath.. 'nameBackground')
+
+		-- alt power bar
+		local altbar = _G["Boss"..unit:match("%d").."TargetFramePowerBarAlt"]
+		UnitPowerBarAlt_Initialize(altbar, unit, (uconfig.scale or 1) * 0.5, "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+		altbar:SetParent(self)
+		altbar:ClearAllPoints()
+		altbar:SetPoint("TOPRIGHT", self, "TOPLEFT", 0, 5)
+
 	else
 		--[[ 	Icons		]]
 		self.RaidIcon:SetPoint('CENTER', self.Portrait, 'TOP', 0, -1)

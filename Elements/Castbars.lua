@@ -94,13 +94,12 @@ end
 ------------------------------------------------------------------
 --						Setup Castbars 							--
 ------------------------------------------------------------------
-
+local BasePos = {
+	focus = 	{'BOTTOM', 'TOP', 0, 30},
+	boss =		{'TOPRIGHT', 'TOPLEFT', -10, 0},
+	arena = 	{'TOPRIGHT', 'TOPLEFT', -30, -10},
+}
 function ns.CreateCastbars(self)
-	local BasePos = {
-		focus = 	{'BOTTOM', 'TOP', 0, 30},
-		boss =		{'TOPRIGHT', 'TOPLEFT', -10, 0},
-		arena = 	{'TOPRIGHT', 'TOPLEFT', -30, -10},
-	}
 
 	local uconfig = ns.config[self.cUnit]
 	if not uconfig.cbshow then return end
