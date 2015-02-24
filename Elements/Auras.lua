@@ -60,8 +60,13 @@ local function Aura_OnClick(self)
 	oUFAbu:UpdateAuraLists()
 end
 
+local function fixCooldownFlash(self, start, duration)
+	if (self.duration == duration) then return; end
+	self.duration = duration
+	self:_SetCooldown(start, duration)
+end
+
 function ns.PostCreateAuraIcon( element, button )
-	
 	button:SetFrameLevel(1)
 	button.overlay:SetTexture(ns.config.auraBorder, 'BORDER')
 	button.overlay:SetTexCoord(0, 1, 0, 1)
@@ -91,6 +96,11 @@ function ns.PostCreateAuraIcon( element, button )
 	button.cd:ClearAllPoints()
 	button.cd:SetPoint('TOPRIGHT', button.icon, 'TOPRIGHT', -1, -1)
 	button.cd:SetPoint('BOTTOMLEFT', button.icon, 'BOTTOMLEFT', 1, 1)
+
+	if (element.__owner.onUpdateFrequency) then -- Fix the blinking cooldown on "invalid" units
+		button.cd._SetCooldown = button.cd.SetCooldown
+		button.cd.SetCooldown = fixCooldownFlash
+	end
 
 	if ns.config.useAuraTimer then
 		button.cd.noCooldownCount = true
