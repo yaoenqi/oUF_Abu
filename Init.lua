@@ -166,9 +166,11 @@ function oUFAbu:START_TIMER(event)
 end
 ----------------------[[	View Auras      ]]-------------------------
 function oUFAbu:MODIFIER_STATE_CHANGED(event, key, state)
-	if ( IsControlKeyDown() and (key == 'LALT' or key == 'RALT')) or
-	   ( IsAltKeyDown() and (key == 'LCTRL' or key == 'RCTRL')) then
-	   local a, b
+	if 	
+		( IsControlKeyDown() and (key == 'LALT' or key == 'RALT')) or
+		( IsAltKeyDown() and (key == 'LCTRL' or key == 'RCTRL')) 
+	then
+		local a, b
 		if state == 1 then
 			a, b = "CustomFilter", "__CustomFilter"
 		else
@@ -176,17 +178,19 @@ function oUFAbu:MODIFIER_STATE_CHANGED(event, key, state)
 		end
 		for i = 1, #oUF.objects do
 			local object = oUF.objects[i]
-			local buffs = object.Auras or object.Buffs
-			local debuffs = object.Debuffs
-			if buffs and buffs[a] then
-				buffs[b] = buffs[a]
-				buffs[a] = nil
-				buffs:ForceUpdate()
-			end
-			if debuffs and debuffs[a] then
-				debuffs[b] = debuffs[a]
-				debuffs[a] = nil
-				debuffs:ForceUpdate()
+			if object.style == "oUF_Abu" or object.style == "oUF_AbuArena" then
+				local buffs = object.Auras or object.Buffs
+				local debuffs = object.Debuffs
+				if buffs and buffs[a] then
+					buffs[b] = buffs[a]
+					buffs[a] = nil
+					buffs:ForceUpdate()
+				end
+				if debuffs and debuffs[a] then
+					debuffs[b] = debuffs[a]
+					debuffs[a] = nil
+					debuffs:ForceUpdate()
+				end
 			end
 		end
 	end
@@ -234,7 +238,7 @@ function oUFAbu:LoadOptions()
 	if IsAddOnLoaded(OUF_ABUOPTIONS) then return true; end
 
 	if InCombatLockdown() then
-		ns.Print(L['OptionsLoadAfterCombat'])
+		ns.Print(ns.L['OptionsLoadAfterCombat'])
 		self:RegisterEvent("PLAYER_REGEN_ENABLED")
 		return false
 	end

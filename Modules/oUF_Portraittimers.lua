@@ -10,10 +10,9 @@ local floor, fmod = floor, math.fmod
 local day, hour, minute = 86400, 3600, 60
 
 do
-	local function add(list, type)
+	local function add(list, filter)
 		for i = 1, #list do
-			local spellname = GetSpellInfo(list[i])
-			table.insert(PortraitTimerDB, {name = spellname, filter = type})
+			PortraitTimerDB[list[i]] = true
 		end
 	end
 	local l = ns.AuraList
@@ -76,21 +75,32 @@ end
 local Update = function(self, event, unit)
 	if (self.unit ~= unit) then 
 		return 
-	end
+	end 
 
 	local pt = self.PortraitTimer
-	for i = 1, #PortraitTimerDB do
-		local name, _, texture, _, _, duration, expires = UnitAura(unit, PortraitTimerDB[i].name, "", PortraitTimerDB[i].filter)
+	local UnitDebuff, index = UnitDebuff, 0
+	while (true) do
+		index = index + 1
+		local name, _, icon, _, _, duration, expirationTime, _, _, _, spellId = (UnitDebuff or UnitBuff)(unit, index)
 		if name then
-			UpdateIcon(pt, texture, duration, expires)
+			if PortraitTimerDB[spellId] then
+				UpdateIcon(pt, icon, duration, expirationTime)
 
-			pt:Show()
+				pt:Show()
 
-			if (self.CombatFeedbackText) then
-				self.CombatFeedbackText.maxAlpha = 0
+				if (self.CombatFeedbackText) then
+					self.CombatFeedbackText.maxAlpha = 0
+				end
+
+				return
 			end
-
-			return
+		else 
+			if UnitDebuff then
+				UnitDebuff = nil
+				index = 0
+			else
+				break;
+			end
 		end
 	end
 	if (pt:IsShown()) then
