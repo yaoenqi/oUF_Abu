@@ -13,37 +13,45 @@ local ignorePetSpells = {
 local CastingBarFrameTicksSet
 do
 	local GetSpellInfo, GetCombatRatingBonus = GetSpellInfo, GetCombatRatingBonus
-	local BaseTickDuration = {	-- Negative means not modified by haste
-		-- Warlock
-		[GetSpellInfo(689) or ""] = 1, -- Drain Life
-		[GetSpellInfo(1120) or ""] = 2, -- Drain Soul
-		[GetSpellInfo(755) or ""] = 1, -- Health Funnel
-		[GetSpellInfo(5740) or ""] = 2, -- Rain of Fire
-		[GetSpellInfo(1949) or ""] = 1, -- Hellfire
-		[GetSpellInfo(103103) or ""] = 1, -- Malefic Grasp
-		[GetSpellInfo(108371) or ""] = 1, -- Harvest Life
-		-- Druid
-		[GetSpellInfo(740) or ""] = 2, -- Tranquility
-		[GetSpellInfo(16914) or ""] = 1, -- Hurricane
-		[GetSpellInfo(106996) or ""] = 1, -- Astral STORM
-		[GetSpellInfo(127663) or ""] = -1, -- Astral Communion
-		-- Priest
-		[GetSpellInfo(47540) or ""] = 1, -- Penance
-		[GetSpellInfo(15407) or ""] = 1, -- Mind Flay
-		[GetSpellInfo(129197) or ""] = 1, -- Mind Flay (Insanity)
-		[GetSpellInfo(48045) or ""] = 1, -- Mind Sear
-		[GetSpellInfo(64843) or ""] = 2, -- Divine Hymn
-		[GetSpellInfo(64901) or ""] = 2, -- Hymn of Hope
-		-- Mage
-		[GetSpellInfo(10) or ""] = 1, -- Blizzard
-		[GetSpellInfo(5143) or ""] = 0.4, -- Arcane Missiles
-		[GetSpellInfo(12051) or ""] = 2, -- Evocation
-		-- Monk
-		[GetSpellInfo(117952) or ""] = 1, -- Crackling Jade Lightning
-		[GetSpellInfo(115175) or ""] = 1, -- Soothing Mist
-		[GetSpellInfo(113656) or ""] = 1, -- Fists of Fury
-		[GetSpellInfo(115294) or ""] = -1, -- Mana Tea
-	}
+	local _, class = UnitClass("player")
+
+	-- Negative means not modified by haste
+	local BaseTickDuration = { }
+	if class == "WARLOCK" then
+		BaseTickDuration[GetSpellInfo(689) or ""] = 1 -- Drain Life
+		BaseTickDuration[GetSpellInfo(1120) or ""] = 2 -- Drain Soul
+		BaseTickDuration[GetSpellInfo(755) or ""] = 1 -- Health Funnel
+		BaseTickDuration[GetSpellInfo(5740) or ""] = 2 -- Rain of Fire
+		BaseTickDuration[GetSpellInfo(1949) or ""] = 1 -- Hellfire
+		BaseTickDuration[GetSpellInfo(103103) or ""] = 1 -- Malefic Grasp
+		BaseTickDuration[GetSpellInfo(108371) or ""] = 1 -- Harvest Life
+	elseif class == "DRUID" then
+		BaseTickDuration[GetSpellInfo(740) or ""] = 2 -- Tranquility
+		BaseTickDuration[GetSpellInfo(16914) or ""] = 1 -- Hurricane
+		BaseTickDuration[GetSpellInfo(106996) or ""] = 1 -- Astral STORM
+		BaseTickDuration[GetSpellInfo(127663) or ""] = -1 -- Astral Communion
+	elseif class == "PRIEST" then
+		local mind_flay_TickTime = 1
+		if IsSpellKnown(157223) then --Enhanced Mind Flay
+			mind_flay_TickTime = 2/3
+		end
+		BaseTickDuration[GetSpellInfo(47540) or ""] = 1 -- Penance
+		BaseTickDuration[GetSpellInfo(15407) or ""] =  mind_flay_TickTime -- Mind Flay
+		BaseTickDuration[GetSpellInfo(129197) or ""] = mind_flay_TickTime -- Mind Flay (Insanity)
+		BaseTickDuration[GetSpellInfo(48045) or ""] = 1 -- Mind Sear
+		BaseTickDuration[GetSpellInfo(179337) or ""] = 1 -- Searing Insanity
+		BaseTickDuration[GetSpellInfo(64843) or ""] = 2 -- Divine Hymn
+		BaseTickDuration[GetSpellInfo(64901) or ""] = 2 -- Hymn of Hope
+	elseif class == "MAGE" then
+		BaseTickDuration[GetSpellInfo(10) or ""] = 1 -- Blizzard
+		BaseTickDuration[GetSpellInfo(5143) or ""] = 0.4 -- Arcane Missiles
+		BaseTickDuration[GetSpellInfo(12051) or ""] = 2 -- Evocation
+	elseif class == "MONK" then
+		BaseTickDuration[GetSpellInfo(117952) or ""] = 1 -- Crackling Jade Lightning
+		BaseTickDuration[GetSpellInfo(115175) or ""] = 1 -- Soothing Mist
+		BaseTickDuration[GetSpellInfo(113656) or ""] = 1 -- Fists of Fury
+		BaseTickDuration[GetSpellInfo(115294) or ""] = -1 -- Mana Tea
+	end
 
 	function CastingBarFrameTicksSet(Castbar, unit, name, stop)
 		Castbar.ticks = Castbar.ticks or {}
