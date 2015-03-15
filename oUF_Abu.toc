@@ -1,8 +1,8 @@
-## Interface: 60000
+## Interface: 60100
 ## Author: Abu
 ## Title: oUF_|cffffffffAbu|r
 ## RequiredDeps: oUF
-## Version: 6.0.3-6
+## Version: 6.1
 ## SavedVariables: oUFAbuSettings, oUFAbuAuraFilters
 ## SavedVariablesPerCharacter: oUFAbuProfile
 

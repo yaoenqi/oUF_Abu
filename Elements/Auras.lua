@@ -61,7 +61,8 @@ local function Aura_OnClick(self)
 end
 
 local function fixCooldownFlash(self, start, duration)
-	if (self.duration == duration) then return; end
+	if (self.duration == duration) and (self.starttime == start) then return; end
+	self.starttime = start
 	self.duration = duration
 	self:_SetCooldown(start, duration)
 end
