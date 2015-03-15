@@ -65,12 +65,8 @@ local function AuraTimer(self, elapsed)
 end
 
 local function UpdateIcon(self, texture, duration, expires)
-	SetPortraitToTexture(self.Icon, texture)
-
-	self.expires = expires
-	self.duration = duration
-	self:SetScript('OnUpdate', AuraTimer)
 end
+
 
 local Update = function(self, event, unit)
 	if (self.unit ~= unit) then 
@@ -81,10 +77,20 @@ local Update = function(self, event, unit)
 	local UnitDebuff, index = UnitDebuff, 0
 	while (true) do
 		index = index + 1
-		local name, _, icon, _, _, duration, expirationTime, _, _, _, spellId = (UnitDebuff or UnitBuff)(unit, index)
+		local name, _, icon, _, _, duration, expires, _, _, _, spellId = (UnitDebuff or UnitBuff)(unit, index)
 		if name then
 			if PortraitTimerDB[spellId] then
-				UpdateIcon(pt, icon, duration, expirationTime)
+
+				if (pt.texture ~= texture) then
+					SetPortraitToTexture(pt.Icon, texture)
+					pt.texture = texture
+				end
+
+				if (pt.expires ~= expires) or (pt.duration ~= duration) then
+					pt.expires = expires
+					pt.duration = duration
+					pt:SetScript('OnUpdate', AuraTimer)
+				end
 
 				pt:Show()
 
