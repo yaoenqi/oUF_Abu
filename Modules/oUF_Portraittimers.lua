@@ -64,10 +64,6 @@ local function AuraTimer(self, elapsed)
 	end
 end
 
-local function UpdateIcon(self, texture, duration, expires)
-end
-
-
 local Update = function(self, event, unit)
 	if (self.unit ~= unit) then 
 		return 
@@ -77,7 +73,7 @@ local Update = function(self, event, unit)
 	local UnitDebuff, index = UnitDebuff, 0
 	while (true) do
 		index = index + 1
-		local name, _, icon, _, _, duration, expires, _, _, _, spellId = (UnitDebuff or UnitBuff)(unit, index)
+		local name, _, texture, _, _, duration, expires, _, _, _, spellId = (UnitDebuff or UnitBuff)(unit, index)
 		if name then
 			if PortraitTimerDB[spellId] then
 
