@@ -5,6 +5,7 @@ local ignorePetSpells = {
 	115746, -- Felbolt  (Green Imp)
 	3110,	-- firebolt (imp)
 	31707,	-- waterbolt (water elemental)
+	85692,  -- Doom Bolt
 }
 
 ------------------------------------------------------------------
