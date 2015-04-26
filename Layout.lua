@@ -647,35 +647,39 @@ local function CreateUnitLayout(self, unit)
 		local GAP = 4.5
 		local SIZE = isFocus and 26 or 20
 
-		local function PositionAuras(frame, mode)
+		local function PositionAuras(element, mode)
 			if (mode == "TOP") then
-				frame:SetHeight((SIZE+GAP) * (isFocus and 3 or 3))
-				frame:SetWidth((SIZE+GAP) * (isFocus and 3 or 6))
-				frame:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', -3, 20)
-				frame.initialAnchor = 'BOTTOMLEFT'
-				frame['growth-x'] = 'RIGHT'
-				frame['growth-y'] = 'UP'
+				element:SetHeight((SIZE+GAP) * (isFocus and 3 or 3))
+				element:SetWidth((SIZE+GAP) * (isFocus and 3 or 6))
+				element:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', -3, 20)
+				element.initialAnchor = 'BOTTOMLEFT'
+				element['growth-x'] = 'RIGHT'
+				element['growth-y'] = 'UP'
 			elseif (mode == "BOTTOM") then
-				frame:SetHeight((SIZE+GAP) * (isFocus and 3 or 3))
-				frame:SetWidth((SIZE+GAP) * (isFocus and 3 or 4))
-				frame:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', -3, -8)
-				frame.initialAnchor = 'TOPLEFT'
-				frame['growth-x'] = 'RIGHT'
-				frame['growth-y'] = 'DOWN'
+				element:SetHeight((SIZE+GAP) * (isFocus and 3 or 3))
+				element:SetWidth((SIZE+GAP) * (isFocus and 3 or 4))
+				element:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', -3, -8)
+				element.initialAnchor = 'TOPLEFT'
+				element['growth-x'] = 'RIGHT'
+				element['growth-y'] = 'DOWN'
 			elseif (mode == "LEFT") then		
-				frame:SetHeight((SIZE+GAP) * (isFocus and 3 or 3))
-				frame:SetWidth((SIZE+GAP) * (isFocus and 5 or 8))
-				frame:SetPoint('TOPRIGHT', self, 'TOPLEFT', -8, -1.5)
-				frame.initialAnchor = 'TOPRIGHT'
-				frame['growth-x'] = 'LEFT'
-				frame['growth-y'] = 'DOWN'
+				element:SetHeight((SIZE+GAP) * (isFocus and 3 or 3))
+				element:SetWidth((SIZE+GAP) * (isFocus and 5 or 8))
+				element:SetPoint('TOPRIGHT', self, 'TOPLEFT', -8, -1.5)
+				element.initialAnchor = 'TOPRIGHT'
+				element['growth-x'] = 'LEFT'
+				element['growth-y'] = 'DOWN'
 			end
-			frame.spacing = GAP
-			frame.size = SIZE
-			frame.CustomFilter   = ns.CustomAuraFilters.target
-			frame.PostCreateIcon = ns.PostCreateAuraIcon
-			frame.PostUpdateIcon = ns.PostUpdateAuraIcon
-			frame.parent = self
+			element.spacing = GAP
+			element.size = SIZE
+			element.CustomFilter   = ns.CustomAuraFilters.target
+			element.PostCreateIcon = ns.PostCreateAuraIcon
+			element.PostUpdateIcon = ns.PostUpdateAuraIcon
+			element.parent = self
+
+			if (ns.config.largePlayerAuras) then
+				ns.EnableLargeIcons(element)
+			end
 		end
 
 		if (uconfig.buffPos == uconfig.debuffPos) and (uconfig.debuffPos ~= "NONE") then
@@ -846,14 +850,18 @@ oUF:Factory( function(self)
 	local target = self:Spawn('target', 'oUF_AbuTarget')
 	ns.CreateUnitAnchor(target, target, target, nil, 'target')
 
-	local targettarget = self:Spawn('targettarget', 'oUF_AbuTargetTarget')
-	targettarget:SetPoint('TOPLEFT', target, 'BOTTOMRIGHT', -78, -15)
+	if (config.targettarget.enable) then
+		local targettarget = self:Spawn('targettarget', 'oUF_AbuTargetTarget')
+		targettarget:SetPoint('TOPLEFT', target, 'BOTTOMRIGHT', -78, -15)
+	end
 
 	local focus = self:Spawn('focus', 'oUF_AbuFocus')
 	ns.CreateUnitAnchor(focus, focus, focus, nil, 'focus')
 
-	local focustarget = self:Spawn('focustarget', 'oUF_AbuFocusTarget')
-	focustarget:SetPoint('TOPLEFT', focus, 'BOTTOMRIGHT', -78, -15)
+	if (config.focustarget.enable) then
+		local focustarget = self:Spawn('focustarget', 'oUF_AbuFocusTarget')
+		focustarget:SetPoint('TOPLEFT', focus, 'BOTTOMRIGHT', -78, -15)
+	end
 
 	if (config.showParty) then
 		local party = oUF:SpawnHeader('oUF_AbuParty', nil, (config.showPartyInRaid and 'custom [group:raid] show;[group:party] show;hide') or 'custom [@raid6,exists] hide;show',
