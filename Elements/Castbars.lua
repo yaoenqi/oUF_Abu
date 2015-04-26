@@ -104,7 +104,6 @@ end
 --						Setup Castbars 							--
 ------------------------------------------------------------------
 local BasePos = {
-	focus = 	{'BOTTOM', 'TOP', 0, 30},
 	boss =		{'TOPRIGHT', 'TOPLEFT', -10, 0},
 	arena = 	{'TOPRIGHT', 'TOPLEFT', -30, -10},
 }
@@ -117,11 +116,11 @@ function ns.CreateCastbars(self)
 	Castbar:SetSize(uconfig.cbwidth, uconfig.cbheight)
 	ns.CreateBorder(Castbar, 11, 3)
 
-	if (self.cUnit == 'player' or self.cUnit == 'target' or self.cUnit == 'pet') then
-		ns.CreateCastbarAnchor(Castbar)
-	else
+	if (BasePos[self.cUnit]) then
 		local point, rpoint, x, y = unpack(BasePos[self.cUnit])
 		Castbar:SetPoint(point, self, rpoint, x + uconfig.cboffset[1], y + uconfig.cboffset[2])
+	else
+		ns.CreateCastbarAnchor(Castbar)
 	end
 
 	Castbar.Background = Castbar:CreateTexture(nil, 'BACKGROUND')
@@ -174,6 +173,8 @@ function ns.CreateCastbars(self)
 
 	Castbar.Text = ns.CreateFontString(Castbar, 13, 'LEFT')
 	Castbar.Text:SetPoint('LEFT', Castbar, 4, 0)
+	Castbar.Text:SetPoint('RIGHT', Castbar.Time, 'LEFT', -8, 0)
+	Castbar.Text:SetWordWrap(false)
 
 	Castbar.PostCastStart = ns.PostCastStart
 	Castbar.PostCastFailed = ns.PostCastFailed

@@ -32,6 +32,7 @@ ns.defaultConfig = {
 	combatText = false,
 	threatGlow = true,
 	colorPlayerDebuffsOnly = true,
+	largePlayerAuras = true,
 
 	healthcolormode = 'CLASS',
 	healthcolor = { 0.0, 0.1, 0.0 },
@@ -134,6 +135,7 @@ ns.defaultConfig = {
 	},
 	
 	targettarget = {
+		enable = true,
  		style = "normal",
 		scale = 1.2,
 		enableAura = false,
@@ -147,15 +149,16 @@ ns.defaultConfig = {
 		PowerTag = "PERCENT",
 		buffPos = "NONE",
 		debuffPos = "BOTTOM",
+		position = 'LEFT/300/80',
 		cbshow = true, 
-		cboffset = {0, 0},
 		cbwidth = 180,
 		cbheight = 20,
 		cbicon = 'NONE',
-		position = 'LEFT/300/80'
+		cbposition = 'LEFT/300/125',
 	},
 	
 	focustarget = {
+		enable = true,
  		style = "normal",
 		scale = 1.2,
 		enableAura = false,

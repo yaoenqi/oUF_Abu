@@ -1,6 +1,9 @@
 local _, ns = ...
 local L = ns.L
 
+-- Global stuff
+L.Enable = _G.ENABLE
+
 
 --  [[ 		Main Addon 		]]  --
 	L.OptionsLoadAfterCombat = "Options will be loaded after combat!"
