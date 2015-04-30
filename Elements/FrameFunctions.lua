@@ -165,21 +165,77 @@ function ns.CreateOutsideBar(parent, onTop, r, g, b)
 	bar:SetStatusBarColor(r or 1, g or 0, b or 0)
 	bar:SetFrameLevel(10)
 
+	local point, anchor, point2, x, y, step
 	if onTop then
-		bar:SetPoint('BOTTOM', parent.Health, 'TOP', 0, 3)
+		point, anchor, point2, x, y = 'BOTTOM', parent.Health, 'TOP', 0, 3
+		step = 2
 	else
-		bar:SetPoint('TOP', parent.Power, 'BOTTOM', 0, -2)
+		point, anchor, point2, x, y = 'TOP', parent.Power, 'BOTTOM', 0, -2
+		step = -2
 	end
+	bar:SetPoint(point, anchor, point2, x, y)
 	
 	local tex = bar:CreateTexture(nil, 'ARTWORK')
 	tex:SetSize(104, 28)
 	if onTop then
 		tex:SetTexture(textPath.. 'FrameBarTop')
-		tex:SetPoint('BOTTOM', parent.Health, 'TOP', 0, -5)
+		tex:SetPoint('TOP', 0, 12)
 	else
 		tex:SetTexture(textPath.. 'FrameBarBot')
-		tex:SetPoint('TOP', parent.Power, 'BOTTOM', 0, 7)
+		tex:SetPoint('BOTTOM', 0, -10)
 	end
+	--[=[
+	-- [[ ANIMATION IN ]]
+	local animation_in = bar:CreateAnimationGroup()
+	animation_in:SetScript("OnPlay", function(self)
+		bar:SetPoint(point, anchor, point2, x, y - step)
+	end)
+	animation_in:SetScript("OnFinished", function()
+		bar:SetPoint(point, anchor, point2, x, y)
+		bar:SetAlpha(1)
+	end)
+	local in_alpha = animation_in:CreateAnimation("Alpha")
+	in_alpha:SetDuration(0.2)
+	in_alpha:SetFromAlpha(0)
+	in_alpha:SetToAlpha(1)
+	local in_translation = animation_in:CreateAnimation("Translation")
+	in_translation:SetDuration(0.2)
+	in_translation:SetOffset(0, step)
+
+	--  [[ ANIMATION OUT]]
+	local animation_out = bar:CreateAnimationGroup()
+	animation_out:SetScript("OnFinished", function()
+		bar:SetAlpha(0) 
+	end)
+	local out_alpha = animation_out:CreateAnimation("Alpha")
+	out_alpha:SetDuration(0.2)
+	out_alpha:SetFromAlpha(1)
+	out_alpha:SetToAlpha(0)
+	local out_translation = animation_out:CreateAnimation("Translation")
+	out_translation:SetDuration(0.2)
+	out_translation:SetOffset(0, -step)
+
+	bar:SetAlpha(0)
+	bar:Show()
+	bar._Show = bar.Show
+	bar._Hide = bar.Hide
+	bar._IsShown = bar.IsShown
+	bar.IsShown = function(self) return self.is_shown end
+
+	bar.Show = function(self)
+		if (not self.is_shown) and (not animation_in:IsPlaying()) then
+			animation_in:Play()
+			self.is_shown = true
+		end
+	end
+
+	bar.Hide = function(self)
+		if (self.is_shown) and (not animation_out:IsPlaying()) then
+			animation_out:Play()
+			self.is_shown = false
+		end
+	end]=]
+
 	ns.PaintFrames(tex)
 	bar.Texture = tex
 	return bar
