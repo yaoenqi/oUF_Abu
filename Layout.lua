@@ -644,179 +644,82 @@ local function CreateUnitLayout(self, unit)
 	--[[ 	Auras		]]
 	if (cUnit == 'focus') or (cUnit == 'target') then
 		local isFocus = cUnit == 'focus'
-		local GAP = 4.5
-		local SIZE = isFocus and 26 or 20
 
-		local function PositionAuras(element, mode)
+		local function GetAuraData(mode)
+			local size, gap, columns, rows, initialAnchor, relAnchor, offX, offY
 			if (mode == "TOP") then
-				element:SetHeight((SIZE+GAP) * (isFocus and 3 or 3))
-				element:SetWidth((SIZE+GAP) * (isFocus and 3 or 6))
-				element:SetPoint('BOTTOMLEFT', self, 'TOPLEFT', -3, 20)
-				element.initialAnchor = 'BOTTOMLEFT'
-				element['growth-x'] = 'RIGHT'
-				element['growth-y'] = 'UP'
+				if isFocus then
+					columns, rows = 3, 3
+				else
+					columns, rows = 6, 3
+				end
+				initialAnchor, relAnchor, offX, offY = 'BOTTOMLEFT', 'TOPLEFT', -3, 20
 			elseif (mode == "BOTTOM") then
-				element:SetHeight((SIZE+GAP) * (isFocus and 3 or 3))
-				element:SetWidth((SIZE+GAP) * (isFocus and 3 or 4))
-				element:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', -3, -8)
-				element.initialAnchor = 'TOPLEFT'
-				element['growth-x'] = 'RIGHT'
-				element['growth-y'] = 'DOWN'
-			elseif (mode == "LEFT") then		
-				element:SetHeight((SIZE+GAP) * (isFocus and 3 or 3))
-				element:SetWidth((SIZE+GAP) * (isFocus and 5 or 8))
-				element:SetPoint('TOPRIGHT', self, 'TOPLEFT', -8, -1.5)
-				element.initialAnchor = 'TOPRIGHT'
-				element['growth-x'] = 'LEFT'
-				element['growth-y'] = 'DOWN'
+				if isFocus then
+					columns, rows = 3, 3
+				else
+					columns, rows = 4, 3
+				end
+				initialAnchor, relAnchor, offX, offY = 'TOPLEFT', 'BOTTOMLEFT', -3, -8
+			elseif (mode == "LEFT") then
+				if isFocus then
+					columns, rows = 5, 3
+				else
+					columns, rows = 8, 3
+				end
+				initialAnchor, relAnchor, offX, offY = 'TOPRIGHT', 'TOPLEFT', -8, -1.5
 			end
-			element.spacing = GAP
-			element.size = SIZE
-			element.CustomFilter   = ns.CustomAuraFilters.target
-			element.PostCreateIcon = ns.PostCreateAuraIcon
-			element.PostUpdateIcon = ns.PostUpdateAuraIcon
-			element.parent = self
-
-			if (ns.config.largePlayerAuras) then
-				ns.EnableLargeIcons(element)
-			end
+			size = isFocus and 26 or 20
+			gap = 4.5
+			return size, gap, columns, rows, initialAnchor, relAnchor, offX, offY
 		end
 
 		if (uconfig.buffPos == uconfig.debuffPos) and (uconfig.debuffPos ~= "NONE") then
-			self.Auras = CreateFrame('Frame', nil, self)
-			PositionAuras(self.Auras, uconfig.buffPos)
-			self.Auras.gap = true
-			if isFocus then
-				self.Auras.numBuffs = 10
-				self.Auras.numDebuffs = 10
-			end
-			self.Auras.PostUpdate = ns.PostUpdateAuras
+			local size, gap, columns, rows, initialAnchor, relAnchor, offX, offY = GetAuraData(uconfig.debuffPos)
+			self.Auras = ns.AddAuras(self, initialAnchor, size, gap, columns, rows)
+			self.Auras:SetPoint(initialAnchor, self, relAnchor, offX, offY)
+			self.Auras.CustomFilter = ns.CustomAuraFilters.target
 		else
 			if (uconfig.buffPos ~= "NONE") then
-				self.Buffs = CreateFrame('Frame', nil, self)
-				PositionAuras(self.Buffs, uconfig.buffPos)
-				self.Buffs.num = isFocus and 15 or 20
+				local size, gap, columns, rows, initialAnchor, relAnchor, offX, offY = GetAuraData(uconfig.buffPos)
+				self.Buffs = ns.AddBuffs(self, initialAnchor, size, gap, columns, rows)
+				self.Buffs:SetPoint(initialAnchor, self, relAnchor, offX, offY)
+				self.Buffs.CustomFilter = ns.CustomAuraFilters.target
 			end
 			if (uconfig.debuffPos ~= "NONE") then
-				self.Debuffs = CreateFrame('Frame', nil, self)
-				PositionAuras(self.Debuffs, uconfig.debuffPos)
-				self.Debuffs.num = isFocus and 15 or 20
-				self.Debuffs.PostUpdate = ns.PostUpdateAuras
+				local size, gap, columns, rows, initialAnchor, relAnchor, offX, offY = GetAuraData(uconfig.debuffPos)
+				self.Debuffs = ns.AddDebuffs(self, initialAnchor, size, gap, columns, rows)
+				self.Debuffs:SetPoint(initialAnchor, self, relAnchor, offX, offY)
+				self.Debuffs.CustomFilter = ns.CustomAuraFilters.target
 			end
 		end
 
 	elseif (self.IsTargetFrame and uconfig.enableAura) then
-		local GAP = 4
-		local SIZE = 20
-		self.Debuffs = CreateFrame('Frame', nil, self)
-		self.Debuffs:SetPoint('TOPLEFT', self.Health, 'TOPRIGHT', 7, 10)
-		self.Debuffs.size = SIZE
-		self.Debuffs.spacing = GAP
-		self.Debuffs:SetWidth((SIZE+GAP) * 3)
-		self.Debuffs:SetHeight((SIZE+GAP) * 2)
-		self.Debuffs.initialAnchor = 'TOPLEFT'
-		self.Debuffs['growth-y'] = 'DOWN'
-		self.Debuffs['growth-x'] = 'RIGHT'
-		self.Debuffs.num = 6
-
+		self.Debuffs = ns.AddDebuffs(self, 'TOPLEFT', 20, 4, 3, 2)
 		self.Debuffs.CustomFilter   = ns.CustomAuraFilters.target
-		self.Debuffs.PostCreateIcon = ns.PostCreateAuraIcon
-		self.Debuffs.PostUpdateIcon = ns.PostUpdateAuraIcon
-		self.Debuffs.parent = self
-	
-	elseif (cUnit == 'pet') then
-		local GAP = 4
-		local SIZE = 20
-		self.Debuffs = CreateFrame('Frame', nil, self)
-		self.Debuffs.size = SIZE
-		self.Debuffs:SetWidth((SIZE+GAP) * 6)
-		self.Debuffs:SetHeight(SIZE+GAP)
-		self.Debuffs.spacing = GAP
-		self.Debuffs:SetPoint('TOPLEFT', self.Power, 'BOTTOMLEFT', 1, -3)
-		self.Debuffs.initialAnchor = 'TOPLEFT'
-		self.Debuffs['growth-x'] = 'RIGHT'
-		self.Debuffs['growth-y'] = 'DOWN'
-		self.Debuffs.num = 9
+		self.Debuffs:SetPoint('TOPLEFT', self.Health, 'TOPRIGHT', 7, 10)
 
+	elseif (cUnit == 'pet') then
+		self.Debuffs = ns.AddDebuffs(self, 'TOPLEFT', 20, 4, 6, 1)
+		self.Debuffs:SetPoint('TOPLEFT', self.Power, 'BOTTOMLEFT', 1, -3)
 		self.Debuffs.CustomFilter   = ns.CustomAuraFilters.pet
-		self.Debuffs.PostCreateIcon = ns.PostCreateAuraIcon
-		self.Debuffs.PostUpdateIcon = ns.PostUpdateAuraIcon
-		self.Debuffs.parent = self
 	
 	elseif (self.IsPartyFrame) then
-		local GAP = 4
-		local SIZE = 20
-
-		self.Debuffs = CreateFrame('Frame', nil, self)
-		self.Debuffs:SetFrameStrata('BACKGROUND')
-		self.Debuffs:SetHeight((SIZE+GAP))
-		self.Debuffs:SetWidth((SIZE+GAP) * 4)
-		self.Debuffs.size = SIZE
-		self.Debuffs.spacing = GAP
+		self.Debuffs = ns.AddDebuffs(self, 'TOPLEFT', 20, 4, 4, 1)
 		self.Debuffs:SetPoint('TOPLEFT', self.Health, 'TOPRIGHT', 5, 1)
-		self.Debuffs.initialAnchor = 'LEFT'
-		self.Debuffs['growth-y'] = 'DOWN'
-		self.Debuffs['growth-x'] = 'RIGHT'
-		self.Debuffs.num = 4
-
 		self.Debuffs.CustomFilter   = ns.CustomAuraFilters.party
-		self.Debuffs.PostCreateIcon = ns.PostCreateAuraIcon
-		self.Debuffs.PostUpdateIcon = ns.PostUpdateAuraIcon
-		self.Debuffs.PostUpdate     = ns.PostUpdateAuras
-		self.Debuffs.parent = self
 
-		self.Buffs = CreateFrame('Frame', nil, self)
-		self.Buffs:SetFrameStrata('BACKGROUND')
-		self.Buffs:SetHeight((SIZE+GAP))
-		self.Buffs:SetWidth((SIZE+GAP) * 4)
-		self.Buffs.size = SIZE
-		self.Buffs.spacing = GAP
+		self.Buffs = ns.AddBuffs(self, 'TOPLEFT', 20, 4, 4, 1)
 		self.Buffs:SetPoint('TOPLEFT', self.Health, 'BOTTOMLEFT', 2, -11)
-		self.Buffs.initialAnchor = 'LEFT'
-		self.Buffs['growth-y'] = 'DOWN'
-		self.Buffs['growth-x'] = 'RIGHT'
-		self.Buffs.num = 4
-
 		self.Buffs.CustomFilter   = ns.CustomAuraFilters.party
-		self.Buffs.PostCreateIcon = ns.PostCreateAuraIcon
-		self.Buffs.PostUpdateIcon = ns.PostUpdateAuraIcon
-		self.Buffs.PostUpdate     = ns.PostUpdateAuras
-		self.Buffs.parent = self
 
 	elseif (cUnit == "boss") then
-		local GAP = 4.5
-		local SIZE = 30
-
-		self.Buffs = CreateFrame('Frame', nil, self)
-		self.Buffs.size = SIZE
-		self.Buffs.spacing = GAP
-		self.Buffs:SetHeight((SIZE+GAP))
-		self.Buffs:SetWidth((SIZE+GAP) * 5)
+		self.Buffs = ns.AddBuffs(self, 'TOPLEFT', 30, 4.5, 5, 1)
 		self.Buffs:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 3, -6)
-		self.Buffs.initialAnchor = 'TOPLEFT'
-		self.Buffs['growth-x'] = 'RIGHT'
-		self.Buffs['growth-y'] = 'DOWN'
-		self.Buffs.num = 4
 
-		self.Buffs.PostCreateIcon = ns.PostCreateAuraIcon
-		self.Buffs.PostUpdateIcon = ns.PostUpdateAuraIcon
-		self.Buffs.parent = self
-
-		self.Debuffs = CreateFrame('Frame', nil, self)
-		self.Debuffs.size = SIZE
-		self.Debuffs.spacing = GAP
-		self.Debuffs:SetHeight((SIZE+GAP))
-		self.Debuffs:SetWidth((SIZE+GAP) * 7)
-		self.Debuffs:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', -34, 18)
-		self.Debuffs.initialAnchor = 'TOPLEFT'
-		self.Debuffs['growth-x'] = 'LEFT'
-		self.Debuffs['growth-y'] = 'DOWN'
-		self.Debuffs.num = 6
-
+		self.Debuffs = ns.AddDebuffs(self, 'TOPRIGHT', 30, 4.5, 7, 1)
+		self.Debuffs:SetPoint('TOPRIGHT', self, 'BOTTOMLEFT', -34, 18)
 		self.Debuffs.CustomFilter   = ns.CustomAuraFilters.boss
-		self.Debuffs.PostCreateIcon = ns.PostCreateAuraIcon
-		self.Debuffs.PostUpdateIcon = ns.PostUpdateAuraIcon
-		self.Debuffs.parent = self
 	end
 	
 	--[[ 	Range Fader 	]]
@@ -864,7 +767,8 @@ oUF:Factory( function(self)
 	end
 
 	if (config.showParty) then
-		local party = oUF:SpawnHeader('oUF_AbuParty', nil, (config.showPartyInRaid and 'custom [group:raid] show;[group:party] show;hide') or 'custom [@raid6,exists] hide;show',
+		--local party = oUF:SpawnHeader('oUF_AbuParty', nil, (config.showPartyInRaid and 'custom [group:raid] show;[group:party] show;hide') or 'custom [@raid6,exists] hide;show',
+		local party = oUF:SpawnHeader('oUF_AbuParty', nil, (config.showPartyInRaid and 'custom [@raid6,exists] hide;show') or 'custom [group:party] show;hide',
 			'oUF-initialConfigFunction', [[
 				self:SetWidth(105)
 				self:SetHeight(30)

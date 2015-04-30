@@ -98,21 +98,9 @@ local function CreateArenaLayout(self, unit)
 	self.PortraitTimer.Remaining:SetTextColor(1, 1, 1)
 
 	--Auras
-	self.Buffs = CreateFrame('Frame', nil, self)
-	self.Buffs.size = 28
-	self.Buffs:SetHeight(self.Buffs.size * 3)
-	self.Buffs:SetWidth(self.Buffs.size * 4)
+	self.Buffs = ns.AddBuffs(self, 'TOPLEFT', 28, 5, 6, 1)
 	self.Buffs:SetPoint('TOPLEFT', self.Power, 'BOTTOMLEFT', 0, -7)
-	self.Buffs.initialAnchor = 'TOPLEFT'
-	self.Buffs['growth-x'] = 'RIGHT'
-	self.Buffs['growth-y'] = 'DOWN'
-	self.Buffs.num = 4
-	self.Buffs.spacing = 5
-
 	self.Buffs.CustomFilter   = ns.CustomAuraFilters.arena
-	self.Buffs.PostCreateIcon = ns.PostCreateAuraIcon
-	self.Buffs.PostUpdateIcon = ns.PostUpdateAuraIcon
-	self.Buffs.parent = self
 
 	--Castbars
 	if config.castbars and uconfig.cbshow then
