@@ -767,8 +767,7 @@ oUF:Factory( function(self)
 	end
 
 	if (config.showParty) then
-		--local party = oUF:SpawnHeader('oUF_AbuParty', nil, (config.showPartyInRaid and 'custom [group:raid] show;[group:party] show;hide') or 'custom [@raid6,exists] hide;show',
-		local party = oUF:SpawnHeader('oUF_AbuParty', nil, (config.showPartyInRaid and 'custom [@raid6,exists] hide;show') or 'custom [group:party] show;hide',
+		local party = oUF:SpawnHeader('oUF_AbuParty', nil, (config.showPartyInRaid and 'custom [@raid6,exists] hide;show') or 'custom [group:party,nogroup:raid] show; hide',
 			'oUF-initialConfigFunction', [[
 				self:SetWidth(105)
 				self:SetHeight(30)
