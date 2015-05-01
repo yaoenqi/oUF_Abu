@@ -339,8 +339,8 @@ end
 
 function ns.AddAuras(self, initialAnchor, size, gap, columns, rows)
 	local Auras = createElement(self, 'Auras', initialAnchor, size, gap, columns, rows)
-	Auras.numDebuffs = math.floor(rows*colums/2)
-	Auras.numBuffs = math.floor(rows*colums/2)
+	Auras.numDebuffs = math.floor(rows*columns/2)
+	Auras.numBuffs = math.floor(rows*columns/2)
 
 	Auras.gap = true
 	Auras.PostUpdateGapIcon = function(element, unit, icon, visibleBuffs)
