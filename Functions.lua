@@ -111,7 +111,7 @@ local function SetValueText(element, tag, cur, max, color, notMana)
 	elseif tag == TEXT_MAX then
 		s = format('%s', FormatValue(max))
 	elseif tag == TEXT_DEF then
-		s = format('-%s', (cur == max and '' or FormatValue(max-cur)))
+		s = format('%s', (cur == max and '' or '-'..FormatValue(max-cur)))
 	elseif tag == TEXT_PERCENT then
 		s = format('%d%%', cur / max * 100)
 	else
