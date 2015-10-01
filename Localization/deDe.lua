@@ -4,197 +4,197 @@ if ns.locale ~= "deDE" then return; end
 local L = ns.L
 
 
---  [[ 		Main Addon 		]]  --
---	L.OptionsLoadAfterCombat = 'Options will be loaded after combat!'
---	L.AuraAdded = 'Spell "%s" (%d) was added to the aura filter.'
---	L.AuraExists = 'Spell "%s" (%d) already exists'
---	L.Anchors_Unlocked = "Frames unlocked."
---	L.Anchors_Locked = "Frames locked."
---	L.Anchors_tooltipline1 = "Hold SHIFT to drag"
---	L.Anchors_tooltipline2 = "ALT-click to reset position"
---	L.Anchors_InCombat = "Can't unlock frames in combat."
---
---  [[		OPTIONS 		]] --
---	L.ReloadUIWarning_Desc = "You've made changes that requires a reload \n of the UI to take full effect, reload?"
---	L.NoEffectUntilRL = "These options will not take effect until you reload the UI."
+-- [[ 		Main Addon 		]]  --
+	L.OptionsLoadAfterCombat = "Die Einstellungen werden nach dem Kampf geladen"
+	L.AuraAdded = "Zauber '%s' (%d) wurde dem Aurafilter hinzugefügt."
+	L.AuraExists = "Zauber '%s' (%d) existiert bereits"
+	L.Anchors_Unlocked = "Fenster entsperrt."
+	L.Anchors_Locked = "Fenster fixiert."
+	L.Anchors_tooltipline1 = "Halte Shift, um das Fenster zu bewegen"
+	L.Anchors_tooltipline2 = "Alt-Klick, um die Position zurückzusetzen"
+	L.Anchors_InCombat = "Die Fenster können im Kampf nicht entsperrt werden."
 
---	---- PROFILES
---	L.EnterProfileName = "Enter Profile Name"
+	--[[		OPTIONS 		]] --
+	L.ReloadUIWarning_Desc = "Du hast Änderungen durchgeführt, die ein Neuladen des UIs verlangen, \n um komplett wirksam zu werden, neu laden?"
+	L.NoEffectUntilRL = "Diese Optionen werden erst nach einem Neuladen des UIs wirksam."
 
---	---- AURA PANEL
---	L.AuraFilters = "Aura Filters"
+	---- PROFILES
+	L.EnterProfileName = "Gib den Profilnamen ein"
 
---	L.AuraFilterGeneralDesc = "Add filters to new auras or edit existing ones."
---	L.AllFrames = "All Frames"
+	---- AURA PANEL
+	L.AuraFilters = "Aurafilter"
+	
+	L.AuraFilterGeneralDesc = "Füge den neuen Auren einen Filter hinzu oder editiere bestehende."
+	L.AllFrames = "Alle Fenster"
+	
+	L.AuraFilterArenaDesc = "Stärkungszauber, auf der weißen Liste, für die Arenafenster."
+	L.ArenaFrames = "Arenafenster"
+	
+	L.AuraFilterBossDesc = "Schwächungszauber, auf der weißen Liste, für die Bossfenster."
+	L.BossFrames = "Bossfenster"
+	
+	L.ShowAll = "Alle anzeigen"
+	L.OnlyOwn = "Nur eigene"
+	L.HideOnFriendly = "Auf freundlich Gesinnten verstecken"
+	L.NeverShow = "Niemals anzeigen"
+	
+	L.Auras_EnterSpellID = "Gib eine Zauber-ID ein"
+	L.Auras_AlreadyAdded = "Bereits hinzugefügt!"
+	L.Auras_InvalidSpellID = "Ungültige Zauber-ID!"
+	
+	---- GENERAL PANEL
+	
+	L.General = "Allgemein"
+	
+	L.General_ClassModule = "Standard-Klassenmodule aktivieren"
+	L.General_ClassModuleTip = "Blizzard-Module für deine Klasse aktivieren."
+	L.General_Party = "Gruppenfenster aktivieren"
+	L.General_PartyInRaid = "Gruppenfenster im Schlachtzug anzeigen"
+	L.General_Arena = "Arenafenster aktivieren"
+	L.General_Boss = "Bossfenster aktivieren"
+	L.General_Castbars = "Zauberleisten aktivieren"
+	L.General_Ticks = "Kanalisierte Ticks anzeigen"
+	L.General_PTimer = "Portraittimer anzeigen"
+	L.General_Feedback = "Kampffeedback anzeigen"
+	L.General_Threat = "Bedrohungsleuchten aktivieren"
+	L.General_OnlyPlayer = "Nur eigene Schwächungszauber färben"
+	L.General_AuraTimer = "Auratimer anzeigen"
+	L.General_AuraTimerTip = "Den eingebauten Auratimer deaktivieren"
+	L.General_Click = "Durchklickbare Fenster"
+	L.General_ClickTip = "Macht die Fenster durchklickbar."
+	L.General_ModKey = "Fokus-Modifikatortaste"
+	L.General_ModButton = "Fokus-Maustaste"
+	L.General_Absorb = "Absorbtionsleiste aktivieren"
+	L.General_AbsorbTip = "Eine Leiste, die die gesamte Absorbtion einer Einheit anzeigt, anzeigen."
+	L.General_ClassP = "Klassenportraits aktivieren"
+	L.General_ClassPTip = "Ein Klassensymbol anstatt eines Portraits bei Spielern anzeigen."
+	L.General_Resolve = "Entschlossenheit-Leiste aktivieren"
+	L.General_ResolveTip = "Eine Entschlossenheit-Leiste für Tanks über dem Spielerfenster anzeigen."
+	L.General_Enrage = "Krieger-Wutleiste aktivieren"
+	L.General_EnrageTip = "Eine Wutleiste für Furor-Krieger über dem Spielerfenster anzeigen."
+	L.General_WSBar = "Geschwächte-Seele-Leiste aktivieren"
+	L.General_WSBarTip = "Eine Leiste für 'Geschwächte Seele' für Priester anzeigen."
+	L.General_Arcane = "Magiers 'Arkane Aufladung' aktivieren"
+	L.General_ArcaneTip = "Einen Zähler für 'Arkane Aufladungen' anzeigen."
+	L.General_SnD = "Zerhäckseln-Leiste aktivieren"
+	L.General_SnDTip = "Eine Leiste für 'Zerhäckseln' anzeigen."
+	L.General_Ant = "Erwartung-Aufladungen anzeigen"
+	L.General_AntTip = "Zusätzliche Combopunkte für Aufladungen von 'Erwartung' anzeigen."
+	L.General_Shrooms = "Pilzsymbole anzeigen"
+	L.General_ShroomsTip = "Die Texturen um die Symbole, anstatt nur des Texts, anzeigen."
+	
+	---- TEXTURES,
+	L.Texture = "Texturen"
+	L.Texture_Statusbar = "Statusleistentextur"
+	L.Texture_Frames = "Fenster"
+	L.Texture_Path = "Benutzerdefinierter Texturpfad"
+	L.Texture_Player = "Spielerfensterstil"
+	L.Texture_Normal = "Normal"
+	L.Texture_NormalTip = "Normales Spielerfenster"
+	L.Texture_Rare = "Rar"
+	L.Texture_RareTip = "Rar-Spielerfenster"
+	L.Texture_Elite = "Elite"
+	L.Texture_EliteTip = "Elite-Spielerfenster"
+	L.Texture_RareElite = "Rar-Elite"
+	L.Texture_RareEliteTip = "Rar-Elite-Spielerfenster"
+	L.Texture_Custom = "Benutzerdefiniert"
+	L.Texture_CustomTip = "Benutzerdefiniertes Spielerfenster"
 
---	L.AuraFilterArenaDesc = "Whitelist buffs for the Arena Frames."
---	L.ArenaFrames = "Arena Frames"
+	-- COLORS:
+	L.Color_Class = "Klassenfarbe"
+	L.Color_ClassTip = "Klassenfarben benutzen"
+	L.Color_Gradient = "Farbverlauf"
+	L.Color_GradientTip ="Einen Farbverlauf von rot nach grün verwenden"
+	L.Color_Custom = "Benutzerdefinierte Farbe"
+	L.Color_CustomTip = "Eine benutzerdefinierte Farbe verwenden"
+	L.Color_Power = "Ressourcenfarbe"
+	L.Color_PowerTip = "Ressourcentypfarben verwenden"
+	
+	L.Color_Frame = "Fensterbedeckungsfarbe"
+	L.Color_Latency = "Zauberleistenlatenzfarbe"
+	L.Color_Backdrop = "Leistenhintergrundfarbe"
+	
+	L.Color_HealthBar = "Gesundheitsleistenfarbe"
+	L.Color_PowerBar = "Ressourcenleistenfarbe"
+	L.Color_NameText = "Namenstextfarbe"
+	L.Color_HealthText = "Gesundheitstextfarbe"
+	L.Color_PowerText = "Ressourcentextfarbe"
+	
+	---- FONTS
+	L.Font = "Schriftart"
+	L.Font_Outline = "Umriss"
+	L.Font_ThinOutline = "Dünner Umriss"
+	L.Font_ThickOutline = "Dicker Umriss"
+	L.Font_OutlineMono = "Einfarbiger Umriss"
+	L.Font_Number = "Zahlenschriftart"
+	L.Font_NumberSize = "Zahlenschriftgröße"
+	L.Font_NumberOutline = "Zahlennumrisstyp"
+	L.Font_Name = "Namensschriftart"
+	L.Font_NameSize = "Namensschriftgröße"
+	L.Font_NameOutline = "Namensumrisstyp"
+	
+	---- POSITIONS
+	L.Positions = "Positionen"
+	L.Positions_Name = "Einheitenfenster"
+	L.Positions_X = "Horizontal [x]"
+	L.Positions_Y = "Vertikal [y]"
+	L.Positions_Point = "Punkt"
+	L.Positions_Toggle = "Anker umschalten"
 
---	L.AuraFilterBossDesc = "Whitelist debuffs for the Boss Frames."
---	L.BossFrames = "Boss Frames"
+	---- UNITS
+	L.Tag_Numeric = "Numerisch"
+	L.Tag_Both = "Beides"
+	L.Tag_Percent = "Prozent"
+	L.Tag_Minimal = "Minimal"
+	L.Tag_Deficit = "Defizit"
+	L.Tag_Disable = "Deaktivieren"
+	L.Tag_NumericTip = "Werte als Zahlen anzeigen"
+	L.Tag_BothTip = "Beides - Prozent und Zahlen"
+	L.Tag_PercentTip = "Prozente anzeigen"
+	L.Tag_MinimalTip = "Prozente anzeigen, aber verstecken, wenn maximal"
+	L.Tag_DeficitTip = "Defizitwert anzeigen"
+	L.Tag_DisableTip = "Text dieses Fensters deaktivieren"
+	
+	L.Icon_DontShow = "Nicht anzeigen"
+	L.Icon_Left = "Symbol auf der linken Seite"
+	L.Icon_Right = "Symbol auf der rechten Seite"
 
---	L.ShowAll = "Show All"
---	L.OnlyOwn = "Only Own"
---	L.HideOnFriendly = "Hide on Friendly"
---	L.NeverShow = "Never Show"
-
---	L.Auras_EnterSpellID = "Enter a Spell ID"
---	L.Auras_AlreadyAdded = "Already added!"
---	L.Auras_InvalidSpellID = "Invalid Spell ID!"
-
---	---- GENERAL PANEL
---	L.General = "Basic"
-
---	L.General_ClassModule = "Enable Default Class Modules"
---	L.General_ClassModuleTip = "Enable Blizzard modules for your class."
---	L.General_Party = "Enable Party Frames"
---	L.General_PartyInRaid = "Display Party Frames in Raid"
---	L.General_Arena = "Enable Arena Frames"
---	L.General_Boss = "Enable Boss Frames"
---	L.General_Castbars = "Enable Castbars"
---	L.General_Ticks = "Display Channeling Ticks"
---	L.General_PTimer = "Show Portrait Timers"
---	L.General_Feedback = "Show Combat Feedback"
---	L.General_Threat = "Enable Threat Glow"
---	L.General_OnlyPlayer = "Only Color Player Debuffs"
---	L.General_AuraTimer = "Show Aura Timer"
---	L.General_AuraTimerTip = "Disable the inbuilt Aura Timer"
---	L.General_Click = "Clickthrough frames"
---	L.General_ClickTip = "Make the frames click through."
---	L.General_ModKey = "Focus Modifier Key"
---	L.General_ModButton = "Focus Mouse Button"
---	L.General_Absorb = "Enable Absorb Bar"
---	L.General_AbsorbTip = "Display a bar showing total absorb on a unit."
---	L.General_ClassP = "Enable Class Portraits"
---	L.General_ClassPTip = "Display a class icon instead of portrait on players."
---	L.General_Resolve = "Enable Resolve Bar"
---	L.General_ResolveTip = "Display a Resolve bar for Tanks above the player frame."
---	L.General_Enrage = "Enable Warrior Enrage Bar"
---	L.General_EnrageTip = "Display a Enrage bar for Fury Warriors above the player frame."
---	L.General_WSBar = "Enable Weakened Soul Bar"
---	L.General_WSBarTip = "Display a Weakened Soul bar for Priests."
---	L.General_Arcane = "Enable Mage Arcane Charge"
---	L.General_ArcaneTip = "Display a counter for Arcane Charges."
---	L.General_SnD = "Enable Slice and Dice bar"
---	L.General_SnDTip = "Display a bar for Slice and Dice."
---	L.General_Ant = "Show Anticipation Charges"
---	L.General_AntTip = "Display additional combopoints for Anticipation charges."
---	L.General_Shrooms = "Show Mushroom icons"
---	L.General_ShroomsTip = "Display the textures around the icons, instead of just the text."
-
---	---- TEXTURES,
---	L.Texture = "Textures"
---	L.Texture_Statusbar = "Statusbar Texture"
---	L.Texture_Frames = "Frames"
---	L.Texture_Path = "Custom Texture Path"
-
---	L.Texture_Player = "Player Frame Style"
---	L.Texture_Normal = "Normal"
---	L.Texture_NormalTip = "Normal Player Frame"
---	L.Texture_Rare = "Rare"
---	L.Texture_RareTip = "Rare Player Frame"
---	L.Texture_Elite = "Elite"
---	L.Texture_EliteTip = "Elite Player Frame"
---	L.Texture_RareElite = "Rare-Elite"
---	L.Texture_RareEliteTip = "Rare-Elite Player Frame"
---	L.Texture_Custom = "Custom"
---	L.Texture_CustomTip = "Custom Player Frame"
-
---	-- COLORS:
---	L.Color_Class = "Class Color"
---	L.Color_ClassTip = "Use class colors"
---	L.Color_Gradient = "Gradient color"
---	L.Color_GradientTip ="Use a gradient from green to red"
---	L.Color_Custom = "Custom Color"
---	L.Color_CustomTip = "Use a custom color"
---	L.Color_Power = "Power Color"
---	L.Color_PowerTip = "Use power type colors"
-
---	L.Color_Frame = "Frame Overlay Color"
---	L.Color_Latency = "Castbar Latency Color"
---	L.Color_Backdrop = "Bar Backdrop Color"
-
---	L.Color_HealthBar = "Health Bar Color"
---	L.Color_PowerBar = "Power Bar Color"
---	L.Color_NameText = "Name Text Color"
---	L.Color_HealthText = "Health Text Color"
---	L.Color_PowerText = "Power Text Color"
-
---	---- FONTS
---	L.Font = "Font"
---	L.Font_Outline = "Outline"
---	L.Font_ThinOutline = "Thin Outline"
---	L.Font_ThickOutline = "Thick Outline"
---	L.Font_OutlineMono = "Outline Monochrome"
---	L.Font_Number = "Number Font"
---	L.Font_NumberSize = "Numbar Font Size"
---	L.Font_NumberOutline = "Number Outline Type"
---	L.Font_Name = "Name Font"
---	L.Font_NameSize = "Name Font Size"
---	L.Font_NameOutline = "Name Outline Type"
---	
---	---- POSITIONS
---	L.Positions = "Positions"
---	L.Positions_Name = "Unit Frame"
---	L.Positions_X = "Horizontal [x]"
---	L.Positions_Y = "Vertical [y]"
---	L.Positions_Point = "Point"
---	L.Positions_Toggle = "Toggle Anchors"
-
---	---- UNITS
---	L.Tag_Numeric = "Numeric"
---	L.Tag_Both = "Both"
---	L.Tag_Percent = "Percent"
---	L.Tag_Minimal = "Minimal"
---	L.Tag_Deficit = "Deficit"
---	L.Tag_Disable = "Disable"
---	L.Tag_NumericTip = "Display values as numbers"
---	L.Tag_BothTip = "Both percentage and numbers"
---	L.Tag_PercentTip = "Display precentages"
---	L.Tag_MinimalTip = "Display percentages but hide when max"
---	L.Tag_DeficitTip = "Display a deficit value"
---	L.Tag_DisableTip = "Disable text on this frame"
-
---	L.Icon_DontShow = "Don't Show"
---	L.Icon_Left = "Icon on the left"
---	L.Icon_Right = "Icon on the right"
-
---	L.Fat = "Fat"
---	L.Normal = "Normal"
-
---	L.TOP = "Top"
---	L.BOTTOM = "Bottom"
---	L.LEFT = "Left"
---	L.CENTER = "Center"
---	L.RIGHT = "Right"
-
---	L.player = PLAYER
---	L.target = TARGET
---	L.targettarget = "Target Target"
---	L.pet = PET
---	L.focus = FOCUS
---	L.focustarget = "Focus Target"
---	L.party = PARTY
---	L.boss = BOSS
---	L.arena = ARENA
-
---	L.Scale = "Scale"
---	L.Style = "Style"
---	L.EnableAuras = "Enable Auras"
---	L.EnableAuraTip = "Enable auras for this unit"
---	L.BuffPos = "Buff Postion"
---	L.DebuffPos = "Debuff Postion"
-
---	L.Castbar = "Castbar"
---	L.ShowCastbar = "Show Castbar"
---	L.ShowCastbarTip = "Show Castbar for this unit"
---	L.Width = "Width"
---	L.Height = "Height"
---	L.CastbarIcon = "Castbar Icon"
---	L.HoriPos = "Horizontal Offset"
---	L.VertPos = "Vertical Offset"
-
---	L.TextHealthTag = "Health Text"
---	L.TextPowerTag = "Power Text"
-
---	L.UnitSpecific = "Unit Specific"
+	L.Fat = "Fett"
+	L.Normal = "Normal"
+	
+	L.TOP = "Oben"
+	L.BOTTOM = "Unten"
+	L.LEFT = "Links"
+	L.CENTER = "Mitte"
+	L.RIGHT = "Rechts"
+	
+	L.player = PLAYER
+	L.target = TARGET
+	L.targettarget = "Ziel des Ziels"
+	L.pet = PET
+	L.focus = "Fokusziel"
+	L.focustarget = "Ziel des Fokusziels"
+	L.party = PARTY
+	L.boss = BOSS
+	L.arena = ARENA
+	
+	L.Scale = "Skalierung"
+	L.Style = "Stil"
+	L.EnableAuras = "Auren aktivieren"
+	L.EnableAuraTip = "Auren für diese Einheit aktivieren"
+	L.BuffPos = "Stärkungszauberpostion"
+	L.DebuffPos = "Schwächungszauberpostion"
+	
+	L.Castbar = "Zauberleiste"
+	L.ShowCastbar = "Zauberleiste anzeigen"
+	L.ShowCastbarTip = "Zauberleiste für diese Einheit anzeigen"
+	L.Width = "Breite"
+	L.Height = "Höhe"
+	L.CastbarIcon = "Zauberleistensymbol"
+	L.HoriPos = "Horizontale Verschiebung"
+	L.VertPos = "Vertikale Verschiebung"
+	
+	L.TextHealthTag = "Gesundheitstext"
+	L.TextPowerTag = "Ressourcentext"
+	
+	L.UnitSpecific = "Einheitenspezifisch"
