@@ -88,6 +88,8 @@ local L = ns.L
 	L.Texture_Statusbar = "Statusleistentextur"
 	L.Texture_Frames = "Fenster"
 	L.Texture_Path = "Benutzerdefinierter Texturpfad"
+--L.Texture_Border = "Border Texture"
+
 	L.Texture_Player = "Spielerfensterstil"
 	L.Texture_Normal = "Normal"
 	L.Texture_NormalTip = "Normales Spielerfenster"

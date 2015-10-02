@@ -85,6 +85,7 @@ local L = ns.L
 	L.Texture_Statusbar = "状态条材质"
 	L.Texture_Frames = "框体"
 	L.Texture_Path = "自定义材质路径"
+--L.Texture_Border = "Border Texture"
 
 	L.Texture_Player = "玩家框体样式"
 	L.Texture_Normal = "正常"

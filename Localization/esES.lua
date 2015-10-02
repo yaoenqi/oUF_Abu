@@ -87,6 +87,8 @@ local L = ns.L
 --	L.Texture_Statusbar = "Statusbar Texture"
 --	L.Texture_Frames = "Frames"
 --	L.Texture_Path = "Custom Texture Path"
+--L.Texture_Border = "Border Texture"
+
 
 --	L.Texture_Player = "Player Frame Style"
 --	L.Texture_Normal = "Normal"

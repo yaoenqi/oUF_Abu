@@ -54,11 +54,10 @@ ns.defaultConfig = {
 	showArena = true,
 	showBoss = true,
 
-	textureBorder = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\borderNormal', --TODO maybe
-	textureBorderWhite = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\borderNormalWhite', --TODO maybe
-	textureBorderShadow = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\borderShadow', --TODO maybe
-	auraBorder = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\borderAura', --TODO maybe
-	auraShadow = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\borderShadow', --TODO maybe
+	borderType = 'neal',
+	textureBorder = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\2borderNormal',
+	textureBorderWhite = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\2borderWhite',
+	textureBorderShadow = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\2borderShadow',
 
 	statusbar = 'Interface\\AddOns\\oUF_Abu\\Media\\Texture\\Raid-Bar-Hp-Fill',
 	frameColor = {0.5, 0.5, 0.4},

@@ -81,6 +81,17 @@ function oUFAbu:ADDON_LOADED(event, addon)
 			SetOverrideBindingClick(Focuser, true, ns.config.focMod.."BUTTON"..ns.config.focBut, "Focuser")
 		end
 
+		--Border Texture
+		local prefix = ''
+		if (ns.config.borderType == 'neal') then
+			prefix = ''
+		elseif(ns.config.borderType == 'abu') then
+			prefix = '2'
+		end	
+		ns.config.textureBorder = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\'..prefix..'borderNormal' 
+		ns.config.textureBorderWhite = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\'..prefix..'borderWhite'
+		ns.config.textureBorderShadow = 'Interface\\AddOns\\oUF_Abu\\Media\\Border\\'..prefix..'borderShadow'
+
 		self:UnregisterEvent(event)
 		self:RegisterEvent("PLAYER_LOGOUT") -- For cleaning DB on logout
 

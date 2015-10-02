@@ -46,9 +46,6 @@ do
 	function createAuraIcon( element, index )
 		element.createdIcons = element.createdIcons + 1
 
-		local shadowtex = ns.config.auraShadow --[[Interface\AddOns\oUF_AbuRaid\Media\textureShadow]]
-		local bordertex = ns.config.auraBorder --[[Interface\AddOns\oUF_AbuRaid\Media\textureNormal -small]]
-
 		local button = CreateFrame("Button", element:GetName()..index, element)
 
 		local icon = button:CreateTexture(nil, "BACKGROUND")
@@ -57,7 +54,7 @@ do
 		button.icon = icon
 
 		local overlay = button:CreateTexture(nil, "OVERLAY")
-		overlay:SetTexture(bordertex)
+		overlay:SetTexture(ns.config.textureBorderWhite)
 		local X = 1.35
 		overlay:SetPoint('TOPRIGHT', button.icon, X, X)
 		overlay:SetPoint('BOTTOMLEFT', button.icon, -X, -X)
@@ -66,7 +63,7 @@ do
 		local shadow = button:CreateTexture(nil, 'BACKGROUND')
 		shadow:SetPoint('TOPLEFT', button.icon, 'TOPLEFT', -4, 4)
 		shadow:SetPoint('BOTTOMRIGHT', button.icon, 'BOTTOMRIGHT', 4, -4)
-		shadow:SetTexture(shadowtex)
+		shadow:SetTexture(ns.config.textureBorderShadow)
 		shadow:SetVertexColor(0, 0, 0, 1)
 		button.shadow = shadow
 

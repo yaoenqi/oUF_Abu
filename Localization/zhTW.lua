@@ -85,6 +85,7 @@ local L = ns.L
 	L.Texture_Statusbar = "狀態條材質"
 	L.Texture_Frames = "框架"
 	L.Texture_Path = "自定義材質路徑"
+--L.Texture_Border = "Border Texture"
 
 	L.Texture_Player = "玩家框架樣式"
 	L.Texture_Normal = "正常"
