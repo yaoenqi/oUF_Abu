@@ -15,7 +15,7 @@ local L = ns.L
 	L.Anchors_InCombat = "Die Fenster können im Kampf nicht entsperrt werden."
 
 	--[[		OPTIONS 		]] --
-	L.ReloadUIWarning_Desc = "Du hast Änderungen durchgeführt, die ein Neuladen des UIs verlangen, \n um komplett wirksam zu werden, neu laden?"
+	L.ReloadUIWarning_Desc = "Du hast Änderungen durchgeführt, die ein Neuladen des UIs verlangen, um komplett wirksam zu werden, neu laden?"
 	L.NoEffectUntilRL = "Diese Optionen werden erst nach einem Neuladen des UIs wirksam."
 
 	---- PROFILES
