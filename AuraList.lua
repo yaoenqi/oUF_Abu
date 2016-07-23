@@ -26,7 +26,7 @@ AuraList.CCImmunity = {
 
 AuraList.Defensive = {
 	122470,	--Touch of Karma
-	110913,	-- Dark Bagrain
+	--110913 removed,	-- Dark Bagrain
 	115176,	-- Zen Meditation
 	115203,	-- Fortifying Brew
 	115610,	-- Temporal Shield
@@ -34,7 +34,7 @@ AuraList.Defensive = {
 	122278,	-- Dampen Harm
 	122783,	-- Diffuse Magic
 	22812,	-- Barskin
-	30823,	-- Shamanistic Rage 
+	--30823 removed,	-- Shamanistic Rage 
 	33206,	-- Pain Suppression
 	47788,	-- Guardian Spirit
 	48707,	-- Anti-Magic Shell
@@ -50,16 +50,16 @@ AuraList.Defensive = {
 
 AuraList.Offensive = {
 	31884,	-- Avenging Wrath
-	51713,	-- Shadow Dance
+	--51713 removed,	-- Shadow Dance
 	1719,	-- Recklessness
 	12472,	-- Icy Veins
 	102342,	-- Ironbark
 
 	102543,	-- Incarnation: King of the Jungle
 	102560,	-- Incarnation: Chosen of Elune
-	113858,	-- Dark Soul
-	113861,	-- Dark Soul
-	113860,	-- Dark Soul
+	--113858 removed,	-- Dark Soul
+	--113861 removed,	-- Dark Soul
+	--113860 removed,	-- Dark Soul
 }
 
 AuraList.Helpful = {
@@ -79,7 +79,7 @@ AuraList.Helpful = {
 	77761,	-- Stampeding Roar (bear)
 	77764,	-- Stampeding Roar (cat)
 	85499,	-- Speed of Light
-	96268,	-- Deaths Advance
+	--96268 removed,	-- Deaths Advance
 }
 
 AuraList.Misc = {
@@ -87,38 +87,38 @@ AuraList.Misc = {
 }
 
 AuraList.Stun = {
-	105593,	-- Fist of Justice
+	--105593 removed,	-- Fist of Justice
 	107570,	-- Storm Bolt
 	108194,	-- Asphyxiate
 	117526,	-- Binding Shot
 	119381,	-- Leg Sweep
-	119392,	-- Charging Ox Wave
+	--119392 removed,	-- Charging Ox Wave
 	1833,	-- Cheap Shot
 	24394,	-- Intimidation
 	30283,	-- Shadowfury
 	408,	-- Kidney Shot
-	44572,	-- Deep Freeze
+	--44572 removed,	-- Deep Freeze
 	46968,	-- Shockwave
 	47481,	-- Gnaw
 	5211,	-- Bash
 	65929,	-- Charge Stun
 	6770,	-- Sap
 	853,	-- Hammer of Justice
-	87195,	-- Paralysis 
+	--87195 removed,	-- Paralysis 
 	88625,	-- Holy Word: Chastise	
 	89766,	-- Axe Toss 
 	91797,	-- Monstrous Blow (Gnaw with DT)
 	163505,	-- Rake
 	22570,	-- Maim
-	115001,	-- Remorseless Winter
-	115000 ,	-- Remorseless Winter
+	--115001 removed,	-- Remorseless Winter
+	--115000 removed ,	-- Remorseless Winter
 }
 
 AuraList.CC = {
 	33786,	-- Cyclone
-	102051,	-- Frostjaw
+	--102051 removed,	-- Frostjaw
 	102359,	-- Mass Entanglement
-	10326,	-- Turn Evil
+	--10326 removed,	-- Turn Evil
 	105421,	-- Blinding Light
 	107566,	-- Staggering Shout
 	114404,	-- Void Tendrils
@@ -126,7 +126,7 @@ AuraList.CC = {
 	116706,	-- Disable (2x)
 	118, 	-- Polymorph
 	128405,	-- Narrow Escape
-	1499,	-- Freezing Trap
+	--1499 removed,	-- Freezing Trap
 	19386,	-- Wyvern Sting
 	19387, 	-- Entrapment
 	20066,	-- Repentance
@@ -152,13 +152,13 @@ AuraList.CC = {
 }
 
 AuraList.Silence = {
-	114238,	-- Fae Silence (Glyph of Fae Silence)
+	--114238 removed,	-- Fae Silence (Glyph of Fae Silence)
 	1330,	-- Garrote - Silence
 	15487,	-- Silence (priest)
 	19647,	-- Spell Lock
 	28730,	-- Arcane Torrent
 	47476,	-- Strangulate
-	58357,	-- Glyph of Gag Order
+	--58357 removed,	-- Glyph of Gag Order
 	81261,	-- Solar Beam
 }
 
@@ -167,13 +167,14 @@ AuraList.Taunt = {
 	57604,	-- Death Grip
 	20736,	-- Distracting Shot
 	6795,	-- Growl
-	118585,	-- Leer of the Ox
+	--118585 removed,	-- Leer of the Ox 
 	116189,	-- Provoke
 	62124,	-- Reckoning
 	355,	-- Taunt
-	114198,	-- Mocking Banner
+	--114198 removed,	-- Mocking Banner
 }
 
+local s = ""
 for k, v in pairs(AuraList) do
 	for i = 1, #v do
 		assert(GetSpellInfo(v[i]), string.format("Invalid spellID: %d", v[i]))
