@@ -45,6 +45,8 @@ Hooks
 								Removing the table key entry will make the element fall-back
 								to its internal function again.
 ]]
+
+if true then return end --Is resolve removed ?
 local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, 'oUF_Resolve was unable to locate oUF install')

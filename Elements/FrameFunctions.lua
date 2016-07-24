@@ -163,7 +163,7 @@ function ns.CreateOutsideBar(parent, onTop, r, g, b)
 	local bar = ns.CreateStatusBar(parent, "BORDER", nil, true)
 	bar:SetSize(98, 9)
 	bar:SetStatusBarColor(r or 1, g or 0, b or 0)
-	bar:SetFrameLevel(10)
+	--bar:SetFrameLevel(10)
 
 	local point, anchor, point2, x, y, step
 	if onTop then

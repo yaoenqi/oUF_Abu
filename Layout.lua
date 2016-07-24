@@ -210,6 +210,7 @@ local function GetTargetTexture(cUnit, type)
 	end
 end
 
+
 local function UpdatePlayerFrame(self, ...)
 	local data = GetData(self.cUnit)
 
@@ -239,7 +240,12 @@ local function UpdatePlayerFrame(self, ...)
 	end
 	
 	self.PvP:ClearAllPoints()
-	if UnitHasVehicleUI('player') then
+	
+	local inVehicle = UnitHasVehicleUI('player')
+
+	ComboFrame_Update(ComboPointPlayerFrame)
+
+	if inVehicle then
 		self.Name:Show()
 		self.Level:Hide()
 
@@ -249,6 +255,22 @@ local function UpdatePlayerFrame(self, ...)
 		self.MasterLooter:SetPoint('TOPLEFT', self.Texture, 74, -14)
 		self.RaidIcon:SetPoint('CENTER', self.Portrait, 'TOP', 0, -5)
 		securecall('PlayerFrame_ShowVehicleTexture')
+
+		--ComboPointPlayerFrame:Hide()
+		if ( self.classPowerBar ) then
+			self.classPowerBar:Hide();
+		end
+
+		TotemFrame:Hide();
+
+		if ( playerClass == "SHAMAN" ) then
+		elseif ( playerClass == "DRUID" ) then
+			EclipseBarFrame:Hide();
+		elseif ( playerClass == "DEATHKNIGHT" ) then
+			RuneFrame:Hide();
+		elseif ( playerClass == "PRIEST" ) then
+			PriestBarFrame:Hide();
+		end
 	else
 		self.Name:Hide()
 		self.Level:Show()
@@ -259,6 +281,22 @@ local function UpdatePlayerFrame(self, ...)
 		self.MasterLooter:SetPoint('TOPRIGHT', self.Portrait, -3, 3)
 		self.RaidIcon:SetPoint('CENTER', self.Portrait, 'TOP', 0, -1)
 		securecall('PlayerFrame_HideVehicleTexture')
+
+		--ComboPointPlayerFrame:Show()
+		if ( self.classPowerBar ) then
+			self.classPowerBar:Setup();
+		end
+
+		TotemFrame_Update();
+
+		if ( playerClass == "SHAMAN" ) then
+		elseif ( playerClass == "DRUID" ) then
+			EclipseBar_UpdateShown(EclipseBarFrame);
+		elseif ( playerClass == "DEATHKNIGHT" ) then
+			RuneFrame:Show();
+		elseif ( playerClass == "PRIEST" ) then
+			PriestBarFrame_CheckAndShow();
+		end
 	end
 end
 
@@ -594,17 +632,34 @@ local function CreateUnitLayout(self, unit)
 	UpdateUnitFrameLayout(self, cUnit)
 	-- Load Class Modules
 	if ns.classModule[playerClass] and config then
-		ns.classModule[playerClass](self, config, uconfig)
+		self.classPowerBar = ns.classModule[playerClass](self, config, uconfig)
 	end
-	-- Combo Points
-	ns.CreateComboPoints(self)
 		
 	--[[ 	Player Frame		]] --
 	if (cUnit == 'player') then	
-		-- Vengeance support
+		-- Vengeance support REMOVED MAYBE
 		if config.showVengeance then
-			self.Resolve = ns.CreateOutsideBar(self, true, 1, 0, 0)
+			--self.Resolve = ns.CreateOutsideBar(self, true, 1, 0, 0)
 		end
+		-- Combo Points
+		--if playerClass == "DRUID" or playerClass == "ROGUE" then
+		ComboPointPlayerFrame:ClearAllPoints()
+		ComboPointPlayerFrame:SetParent(self)
+		ComboPointPlayerFrame:SetPoint('TOP', self, 'BOTTOM', 30, 0)
+
+		local origComboSetPoint = ComboPointPlayerFrame.SetPoint
+		function ComboPointPlayerFrame.SetPoint(self, a,s,d,f,g,h)
+			origComboSetPoint(self, 'TOP', self, 'BOTTOM', 30, 0)
+		end
+
+		--hooksecurefunc(ComboPointPlayerFrame, "SetPoint", function() print(debugstack()) end )
+
+
+		--end
+		--Totems
+		ns.classModule.Totems(self, config, uconfig)
+		--Alternate Mana Bar
+		ns.classModule.alternatePowerBar(self, config, uconfig)
 
 		-- PvP Timer
 		self.PvPTimer = ns.CreateFontString(self, 13, 'CENTER')
@@ -737,9 +792,12 @@ local function CreateUnitLayout(self, unit)
 	return self
 end
 
-local function fixPetFrame(self, event, ...) -- Petframe doesnt always update correctly
+--[[local function fixPetFrame(self, event, ...) -- Petframe doesnt always update correctly
 	oUF_AbuPet:GetScript('OnAttributeChanged')(oUF_AbuPet, 'unit', 'pet')
-end
+end]] -- fixed in newer oUF
+
+function _G.PlayerFrame_ToVehicleArt() end --disable blizzard frame swap
+function _G.PlayerFrame_ToPlayerArt() end
 
 oUF:Factory( function(self)
 	playerClass = select(2, UnitClass('player'))
@@ -753,7 +811,7 @@ oUF:Factory( function(self)
 
 	local pet = self:Spawn('pet', 'oUF_AbuPet')
 	ns.CreateUnitAnchor(pet, pet, pet, nil, 'pet')
-	player:RegisterEvent('UNIT_PET', fixPetFrame)
+	--player:RegisterEvent('UNIT_PET', fixPetFrame)
 
 	local target = self:Spawn('target', 'oUF_AbuTarget')
 	ns.CreateUnitAnchor(target, target, target, nil, 'target')

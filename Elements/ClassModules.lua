@@ -1,20 +1,66 @@
 local _, ns = ...
 ns.classModule = {}
 
-function ns.classModule.DEATHKNIGHT(self, config, uconfig)
-	if self.cUnit ~= "player" or not config.DEATHKNIGHT then return; end
-	RuneFrame:SetParent(self)
-	RuneFrame_OnLoad(RuneFrame)
-	RuneFrame:ClearAllPoints()
-	RuneFrame:SetPoint('TOP', self, 'BOTTOM', 32, -2)
-	for i = 1, 6 do
-		local b = _G['RuneButtonIndividual'..i.. 'Border']
-		ns.PaintFrames(b:GetRegions())
+function ns.classModule.Totems(self, config, uconfig) --totems overlap manabar but so did blizzards
+	if self.cUnit ~= "player" then return; end
+
+	TotemFrame:ClearAllPoints()
+	TotemFrame:SetPoint('TOP', self.Power, 'BOTTOM', -6, -0)
+	TotemFrame:SetParent(self)
+	TotemFrame:SetScale(uconfig.scale * 0.81)
+	TotemFrame:Show()
+
+	for i = 1, MAX_TOTEMS do
+		local _, totemBorder = _G['TotemFrameTotem'..i]:GetChildren()
+		ns.PaintFrames(totemBorder:GetRegions())
+
+		_G['TotemFrameTotem'..i]:SetFrameStrata('LOW')
+		--_G['TotemFrameTotem'..i.. 'IconCooldown']:SetAlpha(0)
+		--_G['TotemFrameTotem'..i.. 'IconCooldown'].noCooldownCount = true -- No OmniCC
+
+		_G['TotemFrameTotem'..i.. 'Duration']:SetParent(totemBorder)
+		_G['TotemFrameTotem'..i.. 'Duration']:SetDrawLayer('OVERLAY')
+		_G['TotemFrameTotem'..i.. 'Duration']:ClearAllPoints()
+		_G['TotemFrameTotem'..i.. 'Duration']:SetPoint('BOTTOM', _G['TotemFrameTotem'..i], 0, 3)
+		_G['TotemFrameTotem'..i.. 'Duration']:SetFont(config.fontNormal, 10, 'OUTLINE')
+		_G['TotemFrameTotem'..i.. 'Duration']:SetShadowOffset(0, 0)
+	end
+
+	--[[for i = 1, 3 do
+		local name = 'TotemFrameTotem'..i
+		local totem = _G[name]
+		local text = _G[name..'Duration']
+		local cooldown = _G[name..'IconCooldown']
+
+		text:ClearAllPoints()
+		text:SetFont(config.fontNormal, 12, 'OUTLINE')
+		text:SetDrawLayer('ARTWORK')
+		text.basesize = 12
+		text.ignoreOutline = true
+		table.insert(ns.fontstrings, text)
+
+		if ns.config.showShrooms then
+			local _, someframe = totem:GetChildren()
+			--ns.PaintFrames(someframe:GetRegions())
+			text:SetParent(cooldown)
+			text:ClearAllPoints()
+			text:SetPoint('CENTER', 1, 0)
+		else
+			totem:SetAlpha(0)
+			cooldown.Show = function(self) self:Hide() end
+			text:SetParent(TotemFrame)
+			text:SetPoint('CENTER', -40 + (i-1) * 29 , 13)
+		end
+	end]]
+
+	local origSetPoint = TotemFrame.SetPoint
+	function TotemFrame.SetPoint(self, p1, parent, p2, x, y) --crossing fingers
+		origSetPoint(self, p1, oUF_AbuPlayer, p2, x - 36, y + 14);
 	end
 end
 
-function ns.classModule.DRUID(self, config, uconfig)
-	if self.cUnit ~= "player" or not config.DRUID then return; end
+function ns.classModule.alternatePowerBar(self, config, uconfig)
+	if self.cUnit ~= "player" then return; end
 	-- Druid Manabar
 	self.DruidMana = ns.CreateOutsideBar(self, false, 0, 0, 1)
 	self.DruidMana.colorPower = true
@@ -23,6 +69,22 @@ function ns.classModule.DRUID(self, config, uconfig)
 	self.DruidMana.Value:SetPoint('CENTER', self.DruidMana, 0, 0.5)
 	self.DruidMana.Value:Hide()
 	self:Tag(self.DruidMana.Value, '[druidmana]')
+end
+
+function ns.classModule.DEATHKNIGHT(self, config, uconfig)
+	if self.cUnit ~= "player" or not config.DEATHKNIGHT then return; end
+	RuneFrame:SetParent(self)
+	RuneFrame_OnLoad(RuneFrame)
+	RuneFrame:ClearAllPoints()
+	RuneFrame:SetPoint('TOP', self, 'BOTTOM', 32, -2)
+	for i = 1, 6 do
+		local b = _G['RuneButtonIndividual'..i].Border
+		ns.PaintFrames(b:GetRegions())
+	end
+end
+
+function ns.classModule.DRUIDNOPE(self, config, uconfig)
+	if self.cUnit ~= "player" or not config.DRUID then return; end
 
 	-- Eclipsebar
 	EclipseBarFrame:SetParent(self)
@@ -39,7 +101,7 @@ function ns.classModule.DRUID(self, config, uconfig)
 	fs:SetShadowOffset(1, -1)
 	table.insert(ns.fontstrings, fs)
 
-	-- Druid mushrooms
+	--[[ Druid mushrooms
 	TotemFrame:ClearAllPoints()
 	TotemFrame:SetParent(self)
 	TotemFrame:SetScale(uconfig.scale * 0.75)
@@ -85,10 +147,18 @@ function ns.classModule.DRUID(self, config, uconfig)
 		else
 			TotemFrame:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 50, 0);
 		end
-	end)
+	end)]]
 end
 
-function ns.classModule.MAGE(self, config, uconfig)
+function ns.classModule.MAGE(self, config, uconfig) --part of ClassPowerBar
+	if self.cUnit == "player" then
+		MageArcaneChargesFrame:SetParent(self)
+		MageArcaneChargesFrame:ClearAllPoints()
+		MageArcaneChargesFrame:SetPoint('TOP', self, 'BOTTOM', 30, -0.5)
+		--ns.PaintFrames(select(2, MonkHarmonyBar:GetRegions()), 0.1)
+		return MageArcaneChargesFrame
+	end
+	--[[
 	if self.cUnit == "player" and config.showArcStacks then
 		local AuraOrbs = {
 			spellID = 36032, --114664
@@ -123,74 +193,75 @@ function ns.classModule.MAGE(self, config, uconfig)
 		end
 
 		self.AuraOrbs = AuraOrbs
-	end
+	end]]
 end
 
 function ns.classModule.MONK(self, config, uconfig)
 	if self.cUnit ~= "player" or not config.MONK then return; end
-	-- Orbs
-	MonkHarmonyBar:SetParent(self)
-	MonkHarmonyBar:SetScale(uconfig.scale * 0.81)
-	MonkHarmonyBar_OnLoad(MonkHarmonyBar)
-	MonkHarmonyBar:ClearAllPoints()
-	MonkHarmonyBar:SetPoint('TOP', self, 'BOTTOM', 31, 18)
-	ns.PaintFrames(select(2, MonkHarmonyBar:GetRegions()), 0.1)
-	-- Stagger Bar
+	-- Stagger Bar for tank monk
 	MonkStaggerBar:SetParent(self)
 	MonkStaggerBar:SetScale(uconfig.scale * .81)
 	MonkStaggerBar_OnLoad(MonkStaggerBar)
 	MonkStaggerBar:ClearAllPoints()
-	MonkStaggerBar:SetPoint('TOP', self, 'BOTTOM', 31, -22)
+	MonkStaggerBar:SetPoint('TOP', self, 'BOTTOM', 31, 0)
 	ns.PaintFrames(MonkStaggerBar.MonkBorder, 0.3)
-	-- Mistweaver manabar
-	PlayerFrameAlternateManaBar:SetParent(self)
-	PlayerFrameAlternateManaBar:SetScale(uconfig.scale * .81)
-	AlternatePowerBar_OnLoad(PlayerFrameAlternateManaBar)
-	PlayerFrameAlternateManaBar:ClearAllPoints()
-	PlayerFrameAlternateManaBar:SetPoint('TOP', self, 'BOTTOM', 31, -22)
-	ns.PaintFrames(PlayerFrameAlternateManaBar.MonkBorder, 0.3)
+	MonkStaggerBar:SetFrameLevel(1)
 
-	-- Stagger/Manabar movement
-	hooksecurefunc("AlternatePowerBar_SetLook", function(self)
-		local _, class = UnitClass("player")
-		if ( class == "MONK" and (GetSpecialization() == SPEC_MONK_MISTWEAVER or GetSpecialization() == SPEC_MONK_BREWMASTER)) then
-			self:ClearAllPoints()
-			self:SetPoint('TOP', oUF_AbuPlayer, 'BOTTOM', 31, -22)
-		end
-	end)
+	-- Monk combo points for Windwalker, part of ClassPowerBar
+	MonkHarmonyBarFrame:SetParent(self)
+	MonkHarmonyBarFrame:SetScale(uconfig.scale * 0.81)
+	MonkHarmonyBarFrame:ClearAllPoints()
+	MonkHarmonyBarFrame:SetPoint('TOP', self, 'BOTTOM', 31, 18)
+	ns.PaintFrames(select(2, MonkHarmonyBarFrame:GetRegions()), 0.1)
+
+	return MonkHarmonyBarFrame
 end
 
 function ns.classModule.PALADIN(self, config, uconfig)
-	if self.cUnit == "player" and config.PALADIN then
-		PaladinPowerBar:SetParent(self)
-		PaladinPowerBar:SetScale(uconfig.scale * 0.81)
-		PaladinPowerBar_OnLoad(PaladinPowerBar)
-		PaladinPowerBar:ClearAllPoints()
-		PaladinPowerBar:SetPoint('TOP', self, 'BOTTOM', 25, 2)
-		ns.PaintFrames(PaladinPowerBarBG, 0.1)
+	if self.cUnit == "player" then
+		if config.PALADIN then
+			print(PaladinPowerBarFrame:GetObjectType())
+			PaladinPowerBarFrame:SetParent(self)
+			PaladinPowerBarFrame:SetScale(uconfig.scale * 0.78)
+			PaladinPowerBarFrame:ClearAllPoints()
+			PaladinPowerBarFrame:SetPoint('TOP', self, 'BOTTOM', 28, 2)
+			--ns.PaintFrames(PaladinPowerBarBG, 0.1)
+			return PaladinPowerBarFrame
+		else
+			PaladinPowerBarFrame:Hide()
+			return false
+		end
 	end
 end
 
-function ns.classModule.PRIEST(self, config, uconfig)
+function ns.classModule.PRIEST(self, config, uconfig) -- only insanity now?
 	if (self.IsMainFrame) then
-		if self.cUnit == "player" and config.PRIEST  then
-			PriestBarFrame:SetParent(self)
-			PriestBarFrame_OnLoad(PriestBarFrame)
-			PriestBarFrame:ClearAllPoints()
-			PriestBarFrame:SetPoint('TOP', self, 'BOTTOM', 33, 1)
-			ns.PaintFrames(PriestBarFrame:GetRegions())
-		end
 		-- Weakened Soul Bar
-		if (config.showWeakenedSoul) then
-			local Aurabar = ns.CreateOutsideBar(self, true, 1, 0, 0)
-			Aurabar.spellID = 6788
-			Aurabar.filter = "HARMFUL"
-			self.Aurabar = Aurabar
-		end
+		--if (config.showWeakenedSoul) then
+		--	local Aurabar = ns.CreateOutsideBar(self, true, 1, 0, 0)
+		--	Aurabar.spellID = 6788
+		--	Aurabar.filter = "HARMFUL"
+		--	self.Aurabar = Aurabar
+		--end
+
+
+	end
+	if self.cUnit == "player" and config.PRIEST  then
+		--PriestBarFrame:SetParent(self) removed most likely
+		--PriestBarFrame_OnLoad(PriestBarFrame)
+		--PriestBarFrame:ClearAllPoints()
+		--PriestBarFrame:SetPoint('TOP', self, 'BOTTOM', 33, 1)
+		--ns.PaintFrames(PriestBarFrame:GetRegions())
+
+		InsanityBarFrame:SetParent(self) 
+		InsanityBarFrame:ClearAllPoints()
+		InsanityBarFrame:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT', 52, -50)
+		--ns.PaintFrames(select(2, MonkHarmonyBar:GetRegions()), 0.1)
+		return InsanityBarFrame
 	end
 end
 
-function ns.classModule.ROGUE(self, config, uconfig)
+function ns.classModule.ROGUENOPE(self, config, uconfig)
 	if self.cUnit == "player" and config.showSlicenDice then
 		local Aurabar = ns.CreateOutsideBar(self, true, 1, .6, 0)
 		Aurabar.spellID = 5171
@@ -198,8 +269,8 @@ function ns.classModule.ROGUE(self, config, uconfig)
 	end
 end
 
-function ns.classModule.SHAMAN(self, config, uconfig)
-	if self.cUnit ~= "player" or not config.SHAMAN then return; end
+function ns.classModule.SHAMAN(self, config, uconfig) --nothing ?
+	--[[if self.cUnit ~= "player" or not config.SHAMAN then return; end
 	TotemFrame:ClearAllPoints()
 	TotemFrame:SetPoint('TOP', self.Power, 'BOTTOM', -6, -0)
 	TotemFrame:SetParent(self)
@@ -221,33 +292,29 @@ function ns.classModule.SHAMAN(self, config, uconfig)
 		_G['TotemFrameTotem'..i.. 'Duration']:SetFont(config.fontNormal, 10, 'OUTLINE')
 		_G['TotemFrameTotem'..i.. 'Duration']:SetShadowOffset(0, 0)
 	end
+
+	return TotemFrame]]
 end
 
-function ns.classModule.WARLOCK(self, config, uconfig)
+function ns.classModule.WARLOCK(self, config, uconfig) --totembar fucks this up
 	if self.cUnit ~= "player" or not config.WARLOCK then return; end
-	WarlockPowerFrame_OnLoad(WarlockPowerFrame)
 	WarlockPowerFrame:SetParent(self)
 	WarlockPowerFrame:ClearAllPoints()
 	WarlockPowerFrame:SetPoint('TOP', self, 'BOTTOM', 30, -2)
 
 	-- Affliction
-	for i = 1, 4 do
-		local shard = _G["ShardBarFrameShard"..i];
+	for i = 1, 5 do
+		local shard = _G["WarlockPowerFrameShard"..i];
 		ns.PaintFrames(select(5,shard:GetRegions()), .2)
 	end
-
-	-- Destruction
-	ns.PaintFrames(BurningEmbersBarFrame.background, .3)
-	for i = 1, 4 do
-		local ember = BurningEmbersBarFrame["ember"..i];
-		ns.PaintFrames(ember.border)
-	end
+	
+	return WarlockPowerFrame
 end
 
-function ns.classModule.WARRIOR(self, config, uconfig)
+function ns.classModule.WARRIORNOPE(self, config, uconfig)
 	if self.cUnit == "player" and config.showEnraged then
 		local Aurabar = ns.CreateOutsideBar(self, true, 1, 0, 0)
-		Aurabar.spellID = 12880
+		Aurabar.spellID = 136224
 
 		Aurabar.Visibility = function(self, event, unit)
 			local bar = self.Aurabar
@@ -255,7 +322,7 @@ function ns.classModule.WARRIOR(self, config, uconfig)
 
 			if (index == 2) then -- Enrage(fury)
 				bar:SetStatusBarColor(1, 0, 0)
-				bar.spellName, bar.rank = GetSpellInfo(12880)
+				bar.spellName, bar.rank = GetSpellInfo(136224)
 			elseif (index == 1) then --Sweeping(arms)
 				bar:SetStatusBarColor(1, .6, 0)
 				bar.spellName, bar.rank = GetSpellInfo(12328)
@@ -267,7 +334,8 @@ function ns.classModule.WARRIOR(self, config, uconfig)
 	end
 end
 
-function ns.CreateComboPoints(self)
+--[==[ -- let's use blizzards instead, looks good
+function ns.CreateComboPoints(self) --OLD
 	local _, class = UnitClass('player')
 	if self.cUnit == "target" then
 
@@ -280,7 +348,7 @@ function ns.CreateComboPoints(self)
 		   return cos(de)*r, sin(de)*r
 		end
 
-		local anticipation = class == "ROGUE" and oUF_AbuPlayer.AuraOrbs
+		local anticipation --= class == "ROGUE" and oUF_AbuPlayer.AuraOrbs
 
 		for i = 1, MAX_COMBO_POINTS do
 			local p = points:CreateTexture(nil, 'ARTWORK')
@@ -353,15 +421,20 @@ function ns.CreateComboPoints(self)
 		rotation:SetDegrees(-49)
 		rotation:SetDuration(1)
 		local flashIn = rotate:CreateAnimation("ALPHA")
-		flashIn:SetChange(.75)
+		--flashIn:SetChange(.75) removed legion
+		flashIn:SetToAlpha(.75)
+		flashIn:SetFromAlpha(0)
 		flashIn:SetDuration(.5)
 		flashIn:SetEndDelay(.5)
 		local flashOut = rotate:CreateAnimation("ALPHA")
-		flashOut:SetChange(-.75)
+		--flashOut:SetChange(-.75) removed legion
+		flashIn:SetToAlpha(0)
+		flashIn:SetFromAlpha(.75)
 		flashOut:SetDuration(.5)
 		flashOut:SetStartDelay(.5)
 
 		points.Override = function(self, event, unit)
+		print('update', unit)
 			if unit == "pet" then return; end
 			local points = self.CPoints
 			local cp
@@ -408,13 +481,14 @@ function ns.CreateComboPoints(self)
 
 		self.CPoints = points
 
-	elseif (self.cUnit == "player" and class == "ROGUE") then
+	--[[elseif (self.cUnit == "player" and class == "ROGUE") then
 		-- Load it for player, its where the buff is, and player frame is created first
 		local AuraOrbs = {
 			spellID = 115189,
 			filter = "HELPFUL",
 			maxStacks = 0,
 		}
-		self.AuraOrbs = AuraOrbs
+		self.AuraOrbs = AuraOrbs]]
 	end
 end
+]==]

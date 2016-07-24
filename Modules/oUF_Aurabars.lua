@@ -105,6 +105,10 @@ local function Enable(self, unit)
 		if bar.spellID then
 			bar.spellName, bar.rank = GetSpellInfo(bar.spellID)
 		end
+
+		if not bar.spellName then
+			error(string.format('Invalid spell ID: %d', bar.spellID))
+		end
 		if not bar.rank then bar.rank = ""; end
 		
 		if(not bar:GetStatusBarTexture()) then

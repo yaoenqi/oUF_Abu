@@ -52,6 +52,11 @@ function ns.MultiCheck(what, ...)
 end
 
 -------------------------------------------------------------------------------
+local UnitIsGhost, GetSpellInfo, UnitIsConnected, UnitIsDead, UnitIsDeadOrGhost, UnitIsPlayer, UnitReaction, UnitIsEnemy, UnitSelectionColor =
+	  UnitIsGhost, GetSpellInfo, UnitIsConnected, UnitIsDead, UnitIsDeadOrGhost, UnitIsPlayer, UnitReaction, UnitIsEnemy, UnitSelectionColor
+local UnitPowerType, UnitPower, UnitPowerMax, UnitHasVehicleUI, UnitClass, UnitIsTapped, UnitIsTappedByPlayer, format = 
+	  UnitPowerType, UnitPower, UnitPowerMax, UnitHasVehicleUI, UnitClass, UnitIsTapped, UnitIsTappedByPlayer, format
+
 local function getClassColor(unit)
 	if UnitIsPlayer(unit) then
 		local _, class = UnitClass(unit)
@@ -65,12 +70,6 @@ local function getClassColor(unit)
 	end
 	return colors.fallback
 end
-
-local UnitIsGhost, GetSpellInfo, UnitIsConnected, UnitIsDead, UnitIsDeadOrGhost, UnitIsPlayer, UnitReaction, UnitIsEnemy, UnitSelectionColor =
-	  UnitIsGhost, GetSpellInfo, UnitIsConnected, UnitIsDead, UnitIsDeadOrGhost, UnitIsPlayer, UnitReaction, UnitIsEnemy, UnitSelectionColor
-local UnitPowerType, UnitPower, UnitPowerMax, UnitHasVehicleUI, UnitClass, UnitIsTapped, UnitIsTappedByPlayer, format = 
-	  UnitPowerType, UnitPower, UnitPowerMax, UnitHasVehicleUI, UnitClass, UnitIsTapped, UnitIsTappedByPlayer, format
-
 
 local function UpdatePortraitColor(self, unit, cur, max)
 	if (not UnitIsConnected(unit)) then
