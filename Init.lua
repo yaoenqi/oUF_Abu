@@ -232,11 +232,11 @@ function oUFAbu:SetupOptions()
 		InterfaceOptionsFrameOkay:Click()
 	end)
 
-	InterfaceOptionsUnitFramePanelPartyPets:Disable()
-	InterfaceOptionsUnitFramePanelArenaEnemyFrames:Disable()
-	InterfaceOptionsUnitFramePanelArenaEnemyCastBar:Disable()
-	InterfaceOptionsUnitFramePanelArenaEnemyPets:Disable()
-	InterfaceOptionsUnitFramePanelFullSizeFocusFrame:Disable()
+	--InterfaceOptionsUnitFramePanelPartyPets:Disable()
+	--InterfaceOptionsUnitFramePanelArenaEnemyFrames:Disable()
+	--InterfaceOptionsUnitFramePanelArenaEnemyCastBar:Disable()
+	--InterfaceOptionsUnitFramePanelArenaEnemyPets:Disable()
+	--InterfaceOptionsUnitFramePanelFullSizeFocusFrame:Disable()
 
 	_G.SLASH_OUFABU1 = "/ouf"
 	_G.SLASH_OUFABU2 = "/oufabu"
@@ -268,7 +268,7 @@ function oUFAbu:PLAYER_REGEN_ENABLED(event)
 		return;
 	end
 	InterfaceOptionsFrame_OpenToCategory('oUF Abu')
-	InterfaceOptionsFrame_OpenToCategory('oUF Abu')
+	--InterfaceOptionsFrame_OpenToCategory('oUF Abu')
 end
 
 function oUFAbu:OnSlashCommand(command)
@@ -276,7 +276,7 @@ function oUFAbu:OnSlashCommand(command)
 		self:ToggleAllAnchors()
 	elseif self:LoadOptions() then
 		InterfaceOptionsFrame_OpenToCategory('oUF Abu')
-		InterfaceOptionsFrame_OpenToCategory('oUF Abu')
+		--InterfaceOptionsFrame_OpenToCategory('oUF Abu') maybe not needed anymore?
 	end
 end
 
