@@ -4,8 +4,8 @@ local L = ns.L
 
 --  [[ 		Main Addon 		]]  --
 	L.OptionsLoadAfterCombat = '选项将在脱离战斗后加载!'
-	L.AuraAdded = 'Spell "%s" (%d) 已添加到光环过滤器.'
-	L.AuraExists = 'Spell "%s" (%d) 已存在'
+	L.AuraAdded = '"%s" (%d) 已成功添加.'
+	L.AuraExists = '"%s" (%d) 已存在'
 	L.Anchors_Unlocked = "框体已解锁."
 	L.Anchors_Locked = "框体已锁定."
 	L.Anchors_tooltipline1 = "按住 SHIFT键 拖动"
@@ -13,7 +13,7 @@ local L = ns.L
 	L.Anchors_InCombat = "不能在战斗中解锁框体."
 
 --  [[		OPTIONS 		]] --
-	L.ReloadUIWarning_Desc = "你的改动需要重载 \n 界面来完全生效,重载?"
+	L.ReloadUIWarning_Desc = "你的改动需要重载 \n 界面来完全生效,重载吗?"
 	L.NoEffectUntilRL = "这些设置将在重载后生效."
 
 	---- PROFILES
@@ -37,7 +37,7 @@ local L = ns.L
 	L.NeverShow = "从不显示"
 
 	L.Auras_EnterSpellID = "输入一个法术ID"
-	L.Auras_AlreadyAdded = "已添加!"
+	L.Auras_AlreadyAdded = "已添加过!"
 	L.Auras_InvalidSpellID = "无效的法术ID!"
 
 	---- GENERAL PANEL
@@ -64,28 +64,28 @@ local L = ns.L
 	L.General_ClassP = "启用职业图标头像"
 	L.General_ClassPTip = "显示一个职业图标替代玩家头像."	
 
-	L.General_showComboPoints = "Enable Combo Points"
-	L.General_showComboPointsTip = "Enable the Combo Points frame"
-	L.General_showRunes = "Enable Runes"
-	L.General_showRunesTip = "Enable Death Knight runes"
-	L.General_showAdditionalPower = "Enable Additional Power Bar"
-	L.General_showAdditionalPowerTip = "Enable the extra mana bar that some classes have"
-	L.General_showTotems = "Enable Totems"
-	L.General_showTotemsTip = "Enable Totems for the class (not valid for all classes)"
-	L.General_showArcaneStacks = "Enable Arcane Charge"
-	L.General_showArcaneStacksTip = "Enable Arcane Charge for Arcane Mages"
-	L.General_showChi = "Enable Chi Points"
-	L.General_showChiTip = "Enable Chi Points for Windwalker Monks"
-	L.General_showStagger = "Enable Stagger bar"
-	L.General_showStaggerTip = "Enable Stagger bar for Brewmaster Monks"
-	L.General_showHolyPower = "Enable Holy Power"
-	L.General_showHolyPowerTip = "Enable Holy Power for Retribution Paladins"
-	L.General_showInsanity = "Enable Insanity Overlay"
-	L.General_showInsanityTip = "Show the overlay over priests power bar when Insanity is used"
-	L.General_showShards = "Enable Shards"
-	L.General_showShardsTip = "Show the Warlock Shards beneath the player frame"
-	L.General_classAuraBar = "%s Aurabar"
-	L.General_classAuraBarTip = "Display an aura bar above the player frame for your specialization. \n Set the spell ID of the aura and set a color for the bar"
+	L.General_showComboPoints = "启用连击点"
+	L.General_showComboPointsTip = "启用连击点框体"
+	L.General_showRunes = "启用符文"
+	L.General_showRunesTip = "为死亡骑士启用符文"
+	L.General_showAdditionalPower = "启用附加能量条"
+	L.General_showAdditionalPowerTip = "为一些职业启用额外的法力条"
+	L.General_showTotems = "启用图腾"
+	L.General_showTotemsTip = "为萨满启用图腾(非所有职业)"
+	L.General_showArcaneStacks = "启用奥术充能"
+	L.General_showArcaneStacksTip = "为奥法启用奥术充能"
+	L.General_showChi = "启用真气点"
+	L.General_showChiTip = "为风行武僧启用真气点"
+	L.General_showStagger = "启用醉拳条"
+	L.General_showStaggerTip = "为酒仙武僧启用醉拳条"
+	L.General_showHolyPower = "启用圣能"
+	L.General_showHolyPowerTip = "为惩戒骑士启用圣能"
+	L.General_showInsanity = "启用狂乱值覆盖"
+	L.General_showInsanityTip = "当进入狂乱时用覆盖暗影牧师的法力条"
+	L.General_showShards = "启用碎片"
+	L.General_showShardsTip = "在玩家框体下显示术士的碎片"
+	L.General_classAuraBar = "%s 光环条"
+	L.General_classAuraBarTip = "为你的专精在玩家框体上显示一个光环条. \n 设置光环条的法术ID和颜色"
 
 	---- TEXTURES,
 	L.Texture = "材质"
